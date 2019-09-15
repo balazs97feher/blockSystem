@@ -20,9 +20,17 @@ namespace simulation
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static Canvas AppCanvas;
         public MainWindow()
         {
             InitializeComponent();
+            AppCanvas = Layout;
+
+
+            /*EmptyField e = new EmptyField();
+            e.Coord.X = 100;
+            e.Coord.Y = 100;
+            e.Draw();*/
         }
     }
 }
