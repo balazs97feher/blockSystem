@@ -16,16 +16,17 @@ namespace simulation
     public abstract class Field
     {
         public Coordinates Coord;
-        protected const int SquareSize = 60;
+        protected const int SquareSize = 50;
 
         public virtual void Draw()
         {
             Rectangle Rect = new System.Windows.Shapes.Rectangle
             {
                 Stroke = System.Windows.Media.Brushes.LightGray,
+                StrokeThickness = 0.5,
                 Fill = System.Windows.Media.Brushes.Green,
-                Height = SquareSize,
-                Width = SquareSize
+                Height = Field.SquareSize,
+                Width = Field.SquareSize
             };
 
             Canvas.SetTop(Rect, Coord.Y);
