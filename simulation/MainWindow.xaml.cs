@@ -27,9 +27,9 @@ namespace simulation
             AppCanvas = Layout;
 
             StraightTrack t2 = new StraightTrack();
-            t2.Coord.X = 150;
+            t2.Coord.X = 200;
             t2.Coord.Y = 50;
-            t2.TrackOrientation = Orientation.VerticalCenter;
+            t2.TrackOrientation = Orientation.HorizontalCenter;
             t2.Draw();
             StraightTrack t = new StraightTrack();
             t.Coord.X = 100;
@@ -51,6 +51,14 @@ namespace simulation
             t5.Coord.Y = 150;
             t5.TrackOrientation = Orientation.TopLeft;
             t5.Draw();
+
+            Switch s = new Switch();
+            s.Coord.X = 150;
+            s.Coord.Y = 50;
+            s.Straight = true;
+            s.State = TrackState.Occupied;
+            s.Orientation = SwitchOrientation.PointBladesLeft;
+            s.Draw();
 
         }
     }
