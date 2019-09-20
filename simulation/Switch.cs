@@ -10,19 +10,35 @@ namespace simulation
 {
     public enum SwitchOrientation
     {
-        PointBladesLeft, //a gyok jobb oldalon
-        PointBladesRight //a gyok bal oldalon
+        PointBladesCW, //a gyok jobb oldalon; CW fele valt
+        PointBladesCCW //a gyok bal oldalon; CCW fele valt
     }
 
     public class Switch : Track
     {
         public Track DivergingTrack;
-        public bool Straight;
         public SwitchOrientation Orientation;
-        public override Track NextTrack()
+        public bool Straight;
+
+        public Switch(int x, int y, SwitchOrientation so) : base(x,y)
         {
-            if (Straight) return StraightTrack;
-            else return DivergingTrack; //MUKODES?????? mindket iranyban????
+            Orientation = so;
+        }
+        public override Track GetNextTrack()
+        {
+            switch(Orientation)
+            {
+                case SwitchOrientation.PointBladesCW:
+                    if (Track.Clockwise == false) return PrevStraightTrack;
+                    else if (Straight == true) return NextStraightTrack;
+                    else return DivergingTrack;
+                case SwitchOrientation.PointBladesCCW:
+                    if (Track.Clockwise == true) return NextStraightTrack;
+                    else if (Straight == true) return PrevStraightTrack;
+                    else return DivergingTrack;
+                default:
+                    throw new InvalidOperationException();
+            }
         }
 
 
@@ -51,7 +67,7 @@ namespace simulation
             L1.Stroke = L4.Stroke = System.Windows.Media.Brushes.Black;
             L2.Stroke = L3.Stroke = L5.Stroke = GetStateColor(TrackState.Default);
             if (Straight == true) L2.Stroke = L3.Stroke = GetStateColor(State);
-            else if (Orientation == SwitchOrientation.PointBladesLeft) L2.Stroke = L5.Stroke = GetStateColor(State); //set the color of the proper lights,
+            else if (Orientation == SwitchOrientation.PointBladesCW) L2.Stroke = L5.Stroke = GetStateColor(State); //set the color of the proper lights,
             else L3.Stroke = L5.Stroke = GetStateColor(State); //depending on the orientation and direction of the switch
             L4.StrokeStartLineCap = L4.StrokeEndLineCap = System.Windows.Media.PenLineCap.Round;
             L1.Y1 = L1.Y2 = L2.Y1 = L2.Y2 = L3.Y1 = L3.Y2 = Field.SquareSize / 2;
@@ -61,27 +77,27 @@ namespace simulation
             L2.X2 = Field.SquareSize * 5 / 12;
             L3.X1 = Field.SquareSize * 7 / 12;
             L3.X2 = Field.SquareSize * 11 / 12;
-            if (Orientation == SwitchOrientation.PointBladesLeft)
+            if (Orientation == SwitchOrientation.PointBladesCW)
             {
                 L4.X1 = Field.SquareSize;
                 L4.Y1 = Field.SquareSize / 2;
                 L4.X2 = Field.SquareSize / 2;
-                L4.Y2 = Field.SquareSize;
+                L4.Y2 = 0;
                 L5.X1 = Field.SquareSize * 11 / 12;
-                L5.Y1 = Field.SquareSize * 7 / 12;
+                L5.Y1 = Field.SquareSize * 5 / 12;
                 L5.X2 = Field.SquareSize * 7 / 12;
-                L5.Y2 = Field.SquareSize * 11 / 12;
+                L5.Y2 = Field.SquareSize * 1 / 12;
             }
             else
             {
                 L4.X1 = 0;
                 L4.Y1 = Field.SquareSize / 2;
                 L4.X2 = Field.SquareSize / 2;
-                L4.Y2 = Field.SquareSize;
+                L4.Y2 = 0;
                 L5.X1 = Field.SquareSize * 1 / 12;
-                L5.Y1 = Field.SquareSize * 7 / 12;
+                L5.Y1 = Field.SquareSize * 5 / 12;
                 L5.X2 = Field.SquareSize * 5 / 12;
-                L5.Y2 = Field.SquareSize * 11 / 12;
+                L5.Y2 = Field.SquareSize * 1 / 12;
             }
             MainWindow.AppCanvas.Children.Add(L1);
             MainWindow.AppCanvas.Children.Add(L2);

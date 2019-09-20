@@ -16,7 +16,12 @@ namespace simulation
     public abstract class Field
     {
         public Coordinates Coord;
-        protected const int SquareSize = 50;
+        public const int SquareSize = 100;
+        protected Field(int x, int y)
+        {
+            Coord.X = x;
+            Coord.Y = y;
+        }
 
         public virtual void Draw()
         {

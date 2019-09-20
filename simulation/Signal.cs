@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace simulation
 {
-    public class EmptyField : Field
+    public class Signal : Field
     {
-        public EmptyField(int x, int y) : base(x, y) { }
+        public Signal(int x, int y) : base(x,y)
+        {
+
+        }
+
     }
 }

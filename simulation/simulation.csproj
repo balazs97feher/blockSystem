@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Signal.cs" />
     <Compile Include="StraightTrack.cs" />
     <Compile Include="Switch.cs" />
     <Compile Include="Track.cs" />

@@ -14,12 +14,21 @@ namespace simulation
     }
     public abstract class Track : Field
     {
-        public Track StraightTrack;
-        public virtual Track NextTrack() //merre haladjon tovabb a szerelveny
-        {
-            return StraightTrack; //alapesetben az egyenes szomszedot adja vissza (valto eseten lehet kitero is)
-        }
+        public static bool Clockwise = true; //default direction is clockwise
+        public Track NextStraightTrack;
+        public Track PrevStraightTrack;
         public TrackState State;
+
+        protected Track(int x, int y) : base(x,y)
+        {
+            State = TrackState.Default;
+        }
+        public virtual Track GetNextTrack() //merre haladjon tovabb a szerelveny
+        {
+            if (Clockwise) return NextStraightTrack;
+            else return PrevStraightTrack;
+        }
+        
 
 
         public override void Draw()
@@ -35,7 +44,7 @@ namespace simulation
                 case TrackState.Occupied:
                     return System.Windows.Media.Brushes.Red;
                 case TrackState.Highlighted:
-                    return System.Windows.Media.Brushes.Yellow;
+                    return System.Windows.Media.Brushes.White;
                 default:
                     return System.Windows.Media.Brushes.DarkGray;
             }

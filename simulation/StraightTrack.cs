@@ -22,6 +22,11 @@ namespace simulation
     {
         public Orientation TrackOrientation;
 
+        public StraightTrack(int x, int y, Orientation o) : base(x,y)
+        {
+            TrackOrientation = o;
+        }
+
         public override void Draw()
         {
             base.Draw();
