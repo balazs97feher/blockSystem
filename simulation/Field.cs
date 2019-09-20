@@ -13,11 +13,11 @@ namespace simulation
         public int X, Y;
     }
 
-    public abstract class Field
+    public class Field
     {
         public Coordinates Coord;
-        public const int SquareSize = 100;
-        protected Field(int x, int y)
+        public const int SquareSize = 120;
+        public Field(int x, int y)
         {
             Coord.X = x;
             Coord.Y = y;

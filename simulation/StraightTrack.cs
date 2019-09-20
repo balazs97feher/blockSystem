@@ -50,13 +50,10 @@ namespace simulation
             Line L1 = new Line();
             Line L2 = new Line();
             Line L3 = new Line();
-            L1.StrokeThickness = L2.StrokeThickness = L3.StrokeThickness = 10;
-            Canvas.SetLeft(L1, Coord.X);
-            Canvas.SetLeft(L2, Coord.X);
-            Canvas.SetLeft(L3, Coord.X);
-            Canvas.SetTop(L1, Coord.Y);
-            Canvas.SetTop(L2, Coord.Y);
-            Canvas.SetTop(L3, Coord.Y);
+            List<Line> Lines = new List<Line> { L1, L2, L3 };
+            Lines.ForEach(L => L.StrokeThickness = 10);
+            Lines.ForEach(L => Canvas.SetLeft(L, Coord.X));
+            Lines.ForEach(L => Canvas.SetTop(L, Coord.Y));
             L1.Stroke = System.Windows.Media.Brushes.Black;
             L2.Stroke = L3.Stroke = GetStateColor(State);
             if (TrackOrientation == Orientation.VerticalCenter)
@@ -79,9 +76,7 @@ namespace simulation
                 L3.X1 = Field.SquareSize * 7 / 12;
                 L3.X2 = Field.SquareSize * 11 / 12;
             }
-            MainWindow.AppCanvas.Children.Add(L1);
-            MainWindow.AppCanvas.Children.Add(L2);
-            MainWindow.AppCanvas.Children.Add(L3);
+            Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
         }
 
         void DrawCorner()

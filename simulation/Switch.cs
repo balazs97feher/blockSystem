@@ -10,13 +10,12 @@ namespace simulation
 {
     public enum SwitchOrientation
     {
-        PointBladesCW, //a gyok jobb oldalon; CW fele valt
-        PointBladesCCW //a gyok bal oldalon; CCW fele valt
+        CW, //a gyok jobb oldalon; CW fele valt
+        CCW //a gyok bal oldalon; CCW fele valt
     }
 
     public class Switch : Track
     {
-        public Track DivergingTrack;
         public SwitchOrientation Orientation;
         public bool Straight;
 
@@ -24,25 +23,6 @@ namespace simulation
         {
             Orientation = so;
         }
-        public override Track GetNextTrack()
-        {
-            switch(Orientation)
-            {
-                case SwitchOrientation.PointBladesCW:
-                    if (Track.Clockwise == false) return PrevStraightTrack;
-                    else if (Straight == true) return NextStraightTrack;
-                    else return DivergingTrack;
-                case SwitchOrientation.PointBladesCCW:
-                    if (Track.Clockwise == true) return NextStraightTrack;
-                    else if (Straight == true) return PrevStraightTrack;
-                    else return DivergingTrack;
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
-
-
-
 
 
         public override void Draw()
@@ -53,21 +33,14 @@ namespace simulation
             Line L3 = new Line();
             Line L4 = new Line(); //diverging
             Line L5 = new Line(); //diverging
-            L1.StrokeThickness = L2.StrokeThickness = L3.StrokeThickness = L4.StrokeThickness = L5.StrokeThickness = 10;
-            Canvas.SetLeft(L1, Coord.X);
-            Canvas.SetLeft(L2, Coord.X);
-            Canvas.SetLeft(L3, Coord.X);
-            Canvas.SetLeft(L4, Coord.X);
-            Canvas.SetLeft(L5, Coord.X);
-            Canvas.SetTop(L1, Coord.Y);
-            Canvas.SetTop(L2, Coord.Y);
-            Canvas.SetTop(L3, Coord.Y);
-            Canvas.SetTop(L4, Coord.Y);
-            Canvas.SetTop(L5, Coord.Y);
+            List<Line> Lines = new List<Line> { L1, L2, L3, L4, L5 };
+            Lines.ForEach(L => L.StrokeThickness = 10);
+            Lines.ForEach(L => Canvas.SetLeft(L, Coord.X));
+            Lines.ForEach(L => Canvas.SetTop(L, Coord.Y));
             L1.Stroke = L4.Stroke = System.Windows.Media.Brushes.Black;
             L2.Stroke = L3.Stroke = L5.Stroke = GetStateColor(TrackState.Default);
             if (Straight == true) L2.Stroke = L3.Stroke = GetStateColor(State);
-            else if (Orientation == SwitchOrientation.PointBladesCW) L2.Stroke = L5.Stroke = GetStateColor(State); //set the color of the proper lights,
+            else if (Orientation == SwitchOrientation.CW) L2.Stroke = L5.Stroke = GetStateColor(State); //set the color of the proper lights,
             else L3.Stroke = L5.Stroke = GetStateColor(State); //depending on the orientation and direction of the switch
             L4.StrokeStartLineCap = L4.StrokeEndLineCap = System.Windows.Media.PenLineCap.Round;
             L1.Y1 = L1.Y2 = L2.Y1 = L2.Y2 = L3.Y1 = L3.Y2 = Field.SquareSize / 2;
@@ -77,7 +50,7 @@ namespace simulation
             L2.X2 = Field.SquareSize * 5 / 12;
             L3.X1 = Field.SquareSize * 7 / 12;
             L3.X2 = Field.SquareSize * 11 / 12;
-            if (Orientation == SwitchOrientation.PointBladesCW)
+            if (Orientation == SwitchOrientation.CW)
             {
                 L4.X1 = Field.SquareSize;
                 L4.Y1 = Field.SquareSize / 2;
@@ -99,12 +72,15 @@ namespace simulation
                 L5.X2 = Field.SquareSize * 5 / 12;
                 L5.Y2 = Field.SquareSize * 1 / 12;
             }
-            MainWindow.AppCanvas.Children.Add(L1);
-            MainWindow.AppCanvas.Children.Add(L2);
-            MainWindow.AppCanvas.Children.Add(L3);
-            MainWindow.AppCanvas.Children.Add(L4);
-            MainWindow.AppCanvas.Children.Add(L5);
+            L5.MouseDown += DoSwitch;
+            Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
         }
 
+        private void DoSwitch(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Straight = false;
+            System.Windows.MessageBox.Show("Switch successful.","Feedback", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+
+        }
     }
 }
