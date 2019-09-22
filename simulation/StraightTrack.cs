@@ -8,7 +8,7 @@ using System.Windows.Shapes;
 
 namespace simulation
 {
-    public enum Orientation
+    public enum TrackOrientation
     {
         TopRight,
         TopLeft,
@@ -20,23 +20,23 @@ namespace simulation
 
     public class StraightTrack : Track
     {
-        public Orientation TrackOrientation;
+        public TrackOrientation Orientation;
 
-        public StraightTrack(int x, int y, Orientation o) : base(x,y)
+        public StraightTrack(int x, int y, TrackOrientation o) : base(x,y)
         {
-            TrackOrientation = o;
+            Orientation = o;
         }
 
         public override void Draw()
         {
             base.Draw();
 
-            switch (TrackOrientation)
+            switch (Orientation)
             {
-                case Orientation.HorizontalCenter:
+                case TrackOrientation.HorizontalCenter:
                     DrawCenter();
                     break;
-                case Orientation.VerticalCenter:
+                case TrackOrientation.VerticalCenter:
                     DrawCenter();
                     break;
                 default:
@@ -56,7 +56,7 @@ namespace simulation
             Lines.ForEach(L => Canvas.SetTop(L, Coord.Y));
             L1.Stroke = System.Windows.Media.Brushes.Black;
             L2.Stroke = L3.Stroke = GetStateColor(State);
-            if (TrackOrientation == Orientation.VerticalCenter)
+            if (Orientation == TrackOrientation.VerticalCenter)
             {
                 L1.X1 = L1.X2 = L2.X1 = L2.X2 = L3.X1 = L3.X2 = Field.SquareSize / 2;
                 L1.Y1 = 0;
@@ -83,17 +83,16 @@ namespace simulation
         {
             Line L1 = new Line();
             Line L2 = new Line();
-            L1.StrokeThickness = L2.StrokeThickness = 10;
-            Canvas.SetLeft(L1, Coord.X);
-            Canvas.SetLeft(L2, Coord.X);
-            Canvas.SetTop(L1, Coord.Y);
-            Canvas.SetTop(L2, Coord.Y);
+            List<Line> Lines = new List<Line> { L1, L2 };
+            Lines.ForEach(L => L.StrokeThickness = 10);
+            Lines.ForEach(L => Canvas.SetLeft(L, Coord.X));
+            Lines.ForEach(L => Canvas.SetTop(L, Coord.Y));
             L1.Stroke = System.Windows.Media.Brushes.Black;
             L2.Stroke = GetStateColor(State);
             L1.StrokeStartLineCap = L1.StrokeEndLineCap = System.Windows.Media.PenLineCap.Round;
-            switch (TrackOrientation)
+            switch (Orientation)
             {
-                case Orientation.TopRight:
+                case TrackOrientation.TopRight:
                     L1.X1 = Field.SquareSize / 2;
                     L1.Y1 = 0;
                     L1.X2 = Field.SquareSize;
@@ -103,7 +102,7 @@ namespace simulation
                     L2.X2 = Field.SquareSize * 11 / 12;
                     L2.Y2 = Field.SquareSize * 5 / 12;
                     break;
-                case Orientation.BottomLeft:
+                case TrackOrientation.BottomLeft:
                     L1.X1 = 0;
                     L1.Y1 = Field.SquareSize / 2;
                     L1.X2 = Field.SquareSize / 2;
@@ -113,7 +112,7 @@ namespace simulation
                     L2.X2 = Field.SquareSize * 5 / 12;
                     L2.Y2 = Field.SquareSize * 11 / 12;
                     break;
-                case Orientation.TopLeft:
+                case TrackOrientation.TopLeft:
                     L1.X1 = Field.SquareSize / 2;
                     L1.Y1 = 0;
                     L1.X2 = 0;
@@ -123,7 +122,7 @@ namespace simulation
                     L2.X2 = Field.SquareSize * 1 / 12;
                     L2.Y2 = Field.SquareSize * 5 / 12;
                     break;
-                case Orientation.BottomRight:
+                case TrackOrientation.BottomRight:
                     L1.X1 = Field.SquareSize;
                     L1.Y1 = Field.SquareSize / 2;
                     L1.X2 = Field.SquareSize / 2;
@@ -134,8 +133,7 @@ namespace simulation
                     L2.Y2 = Field.SquareSize * 11 / 12;
                     break;
             }
-            MainWindow.AppCanvas.Children.Add(L1);
-            MainWindow.AppCanvas.Children.Add(L2);
+            Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
         }
 
     }
