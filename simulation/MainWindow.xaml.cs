@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Timers;
+using System.Windows.Threading;
 
 namespace simulation
 {
@@ -22,19 +24,21 @@ namespace simulation
     public partial class MainWindow : Window
     {
         public static Canvas AppCanvas;
+        public int k;
         public MainWindow()
         {
             InitializeComponent();
             AppCanvas = ApplicationCanvas;
 
-
             Layout.Initialize();
             Layout.Draw();
 
-
-
-
+            Control.Initialize();
         }
+
+
+
+
 
         private void DirectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -67,6 +71,15 @@ namespace simulation
             else MessageBox.Show("Please select a signal by clicking on it.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
         }
 
-        
+
+        private void SwitchLeft(object sender, RoutedEventArgs e)
+        {
+            Layout.LeftSwitch.DoSwitch();
+        }
+
+        private void SwitchRight(object sender, RoutedEventArgs e)
+        {
+            Layout.RightSwitch.DoSwitch();
+        }
     }
 }

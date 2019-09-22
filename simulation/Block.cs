@@ -21,6 +21,16 @@ namespace simulation
             CWSignal = null;
         }
 
+        public void Occupy()
+        {
+            Tracks.ForEach(t => t.SetState(TrackState.Occupied));
+        }
+
+        public void Free()
+        {
+            Tracks.ForEach(t => t.SetState(TrackState.Default));
+        }
+
         public void Draw()
         {
             Tracks.ForEach(t => t.Draw());

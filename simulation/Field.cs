@@ -13,7 +13,7 @@ namespace simulation
         public int X, Y;
     }
 
-    public class Field
+    public abstract class Field
     {
         public Coordinates Coord;
         public const int SquareSize = 120;

@@ -20,36 +20,64 @@ namespace simulation
         public bool Straight;
         private Visual Display;
 
-        public Switch(int x, int y, SwitchOrientation so) : base(x,y)
+        public Switch(int x, int y, SwitchOrientation so) : base(x, y)
         {
             Straight = true;
             Orientation = so;
-            Display = new Visual();
+            Display = new Visual(this);
+        }
+
+        public override void SetState(TrackState S)
+        {
+            State = S;
+            Display.Update();
+        }
+
+        public void DoSwitch()
+        {
+            Straight = !Straight;
+            Display.Update();
         }
 
         public override void Draw()
         {
             base.Draw();
-            Display.Draw(this);
+            Display.Draw();
         }
 
         class Visual
         {
-            public Line BackgroundStraight;
-            public Line MiddleStraight;
-            public Line BackgroundDiverging; //diverging
-            public Line MiddleDiverging;  //diverging
+            private Switch S;
+            private Line BackgroundStraight;
+            private Line MiddleStraight;
+            private Line BackgroundDiverging; //diverging
+            private Line MiddleDiverging;  //diverging
 
-            public Visual()
+            public Visual(Switch S)
             {
+                this.S = S;
                 BackgroundStraight = new Line();
                 MiddleStraight = new Line();
                 BackgroundDiverging = new Line();
                 MiddleDiverging = new Line();
             }
 
-            public void Draw(Switch S)
-            { 
+            public void Update()
+            {
+                if (S.Straight)
+                {
+                    MiddleStraight.Stroke = S.GetStateColor(S.State);
+                    MiddleDiverging.Stroke = System.Windows.Media.Brushes.Black;
+                }
+                else
+                {
+                    MiddleDiverging.Stroke = S.GetStateColor(S.State);
+                    MiddleStraight.Stroke = System.Windows.Media.Brushes.Black;
+                }
+            }
+
+            public void Draw()
+            {
                 List<Line> Lines = new List<Line> { BackgroundStraight, MiddleStraight, BackgroundDiverging, MiddleDiverging };
                 Lines.ForEach(L => L.StrokeThickness = 10);
                 Lines.ForEach(L => Canvas.SetLeft(L, S.Coord.X));
@@ -85,7 +113,6 @@ namespace simulation
                     MiddleDiverging.X2 = Field.SquareSize * 5 / 12;
                     MiddleDiverging.Y2 = Field.SquareSize * 1 / 12;
                 }
-                MiddleDiverging.MouseDown += S.DoSwitch;
                 Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
             }
 
@@ -93,11 +120,8 @@ namespace simulation
 
 
 
-        private void DoSwitch(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Straight=!Straight;
-            System.Windows.MessageBox.Show("Switch successful.","Feedback", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-            
-        }
+
+
+        
     }
 }

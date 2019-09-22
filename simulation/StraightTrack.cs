@@ -23,41 +23,59 @@ namespace simulation
         public TrackOrientation Orientation;
         private Visual Display;
 
-        public StraightTrack(int x, int y, TrackOrientation o) : base(x,y)
+        public StraightTrack(int x, int y, TrackOrientation o) : base(x, y)
         {
             Orientation = o;
-            Display = new Visual();
+            Display = new Visual(this);
+        }
+
+        public override void SetState(TrackState S)
+        {
+            State = S;
+            Display.Update();
         }
 
         public override void Draw()
         {
             base.Draw();
-            switch (Orientation)
-            {
-                case TrackOrientation.HorizontalCenter:
-                    Display.DrawCenter(this);
-                    break;
-                case TrackOrientation.VerticalCenter:
-                    Display.DrawCenter(this);
-                    break;
-                default:
-                    Display.DrawCorner(this);
-                    break;
-            }
+            Display.Draw();
         }
 
         class Visual
         {
-            Line Background;
-            Line Middle;
+            private StraightTrack T;
+            private Line Background;
+            private Line Middle;
 
-            public Visual()
+            public Visual(StraightTrack T)
             {
-                Background=new Line();
-                Middle= new Line();
+                this.T = T;
+                Background = new Line();
+                Middle = new Line();
             }
 
-            public void DrawCenter(StraightTrack T)
+            public void Update()
+            {
+                Middle.Stroke = T.GetStateColor(T.State);
+            }
+
+            public void Draw()
+            {
+                switch (T.Orientation)
+                {
+                    case TrackOrientation.HorizontalCenter:
+                        DrawCenter();
+                        break;
+                    case TrackOrientation.VerticalCenter:
+                        DrawCenter();
+                        break;
+                    default:
+                        DrawCorner();
+                        break;
+                }
+            }
+
+            public void DrawCenter()
             {
                 List<Line> Lines = new List<Line> { Background, Middle };
                 Lines.ForEach(L => L.StrokeThickness = 10);
@@ -84,7 +102,7 @@ namespace simulation
                 Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
             }
 
-            public void DrawCorner(StraightTrack T)
+            public void DrawCorner()
             {
                 List<Line> Lines = new List<Line> { Background, Middle };
                 Lines.ForEach(L => L.StrokeThickness = 10);
@@ -138,9 +156,10 @@ namespace simulation
                 }
                 Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
             }
+
         }
 
-        
+
 
     }
 }

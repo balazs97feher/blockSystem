@@ -19,5 +19,9 @@
             <ComboBoxItem>Red</ComboBoxItem>
             <ComboBoxItem>White</ComboBoxItem>
         </ComboBox>
+        <Label Content="Set left switch" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="318"/>
+        <Button Content="Switch" Canvas.Left="323" Canvas.Top="529" Width="80" Click="SwitchLeft" Height="22"/>
+        <Label Content="Set right switch" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="462"/>
+        <Button Content="Switch" Canvas.Left="467" Canvas.Top="529" Width="80" Height="22" Click="SwitchRight"/>
     </Canvas>
 </Window>

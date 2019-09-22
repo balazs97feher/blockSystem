@@ -20,11 +20,14 @@ namespace simulation
         {
             State = TrackState.Default;
         }
+
+        public abstract void SetState(TrackState S);
     
         public override void Draw()
         {
             base.Draw();
         }
+
         public System.Windows.Media.SolidColorBrush GetStateColor(TrackState s) //milyen szinnel rajzoljuk ki a szakaszt
         {
             switch(s)
