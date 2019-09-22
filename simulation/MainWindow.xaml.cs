@@ -36,6 +36,37 @@ namespace simulation
 
         }
 
+        private void DirectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
+            if (item.Content.ToString() == "Clockwise")
+            {
+                Control.DirectionCW = true;
+            }
+            else Control.DirectionCW = false;
+        }
+
+        private void SignalChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Control.SelectedSignal != null)
+            {
+                ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
+                switch (item.Content.ToString())
+                {
+                    case "Green":
+                        Control.SelectedSignal.SetState(SignalState.Green);
+                        break;
+                    case "Red":
+                        Control.SelectedSignal.SetState(SignalState.Red);
+                        break;
+                    case "White":
+                        Control.SelectedSignal.SetState(SignalState.White);
+                        break;
+                }
+            }
+            else MessageBox.Show("Please select a signal by clicking on it.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+        }
+
         
     }
 }

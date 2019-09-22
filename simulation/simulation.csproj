@@ -56,6 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Block.cs" />
+    <Compile Include="Control.cs" />
     <Compile Include="Layout.cs" />
     <Compile Include="Signal.cs" />
     <Compile Include="StraightTrack.cs" />

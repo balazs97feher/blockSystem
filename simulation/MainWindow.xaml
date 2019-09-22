@@ -8,6 +8,16 @@
         Title="Simulation" Height="1024" Width="1280">
     <Canvas x:Name="ApplicationCanvas" >
         <Rectangle Width="1200" Height="480" Fill="Green" Canvas.Left="0" Canvas.Top="0" />
-        <Label Content="Build layout" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
+        <Label Content="Set direction" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
+        <ComboBox Canvas.Left="15" Canvas.Top="529" Width="129" SelectionChanged="DirectionChanged">
+            <ComboBoxItem>Clockwise</ComboBoxItem>
+            <ComboBoxItem>Counterclockwise</ComboBoxItem>
+        </ComboBox>
+        <Label Content="Set signals" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="160"/>
+        <ComboBox Canvas.Left="166" Canvas.Top="529" Width="129" Height="22" SelectionChanged="SignalChanged">
+            <ComboBoxItem>Green</ComboBoxItem>
+            <ComboBoxItem>Red</ComboBoxItem>
+            <ComboBoxItem>White</ComboBoxItem>
+        </ComboBox>
     </Canvas>
 </Window>

@@ -28,15 +28,23 @@ namespace simulation
         public SignalState State;
         public SignalOrientation Orientation;
         public Image SignalImg;
+        private static int NextId = 1;
+        private int Id;
 
         public Signal(int x, int y, SignalOrientation o) : base(x, y)
         {
             Orientation = o;
             State = SignalState.Red;
             SignalImg = new Image { Width = 30 };
+            SignalImg.MouseDown += SignalImg_MouseDown;
             SetState(State);
+            Id = NextId++;
         }
 
+        private void SignalImg_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Control.SelectedSignal = this;
+        }
 
         public void SetState(SignalState s)
         {
@@ -56,18 +64,18 @@ namespace simulation
             }
             bitmap.EndInit();
             SignalImg.Source = bitmap;
+            RotateTransform rotateTransform = new RotateTransform((double)Orientation);
+            SignalImg.RenderTransform = rotateTransform;
             Canvas.SetTop(SignalImg, Coord.Y);
             Canvas.SetLeft(SignalImg, Coord.X);
             Canvas.SetZIndex(SignalImg, 1);
-            RotateTransform rotateTransform = new RotateTransform((double)Orientation);
-            SignalImg.RenderTransform = rotateTransform;
         }
 
         public override void Draw()
         {
-
             MainWindow.AppCanvas.Children.Add(SignalImg);
         }
+
 
 
     }

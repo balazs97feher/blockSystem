@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace simulation
 {
@@ -84,6 +85,18 @@ namespace simulation
         {
             Blocks.ForEach(b => b.Draw());
         }
+
+        static private void AddLabel(int x, int y, string content)
+        {
+            Label L = new Label();
+            L.Content = content;
+            L.FontSize = 14;
+            Canvas.SetTop(L, y);
+            Canvas.SetLeft(L, x);
+            Canvas.SetZIndex(L, 1);
+            MainWindow.AppCanvas.Children.Add(L);
+        }
+        
 
     }
 }
