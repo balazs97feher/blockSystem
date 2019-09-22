@@ -21,120 +21,126 @@ namespace simulation
     public class StraightTrack : Track
     {
         public TrackOrientation Orientation;
+        private Visual Display;
 
         public StraightTrack(int x, int y, TrackOrientation o) : base(x,y)
         {
             Orientation = o;
+            Display = new Visual();
         }
 
         public override void Draw()
         {
             base.Draw();
-
             switch (Orientation)
             {
                 case TrackOrientation.HorizontalCenter:
-                    DrawCenter();
+                    Display.DrawCenter(this);
                     break;
                 case TrackOrientation.VerticalCenter:
-                    DrawCenter();
+                    Display.DrawCenter(this);
                     break;
                 default:
-                    DrawCorner();
+                    Display.DrawCorner(this);
                     break;
             }
         }
 
-        void DrawCenter()
+        class Visual
         {
-            Line L1 = new Line();
-            Line L2 = new Line();
-            Line L3 = new Line();
-            List<Line> Lines = new List<Line> { L1, L2, L3 };
-            Lines.ForEach(L => L.StrokeThickness = 10);
-            Lines.ForEach(L => Canvas.SetLeft(L, Coord.X));
-            Lines.ForEach(L => Canvas.SetTop(L, Coord.Y));
-            L1.Stroke = System.Windows.Media.Brushes.Black;
-            L2.Stroke = L3.Stroke = GetStateColor(State);
-            if (Orientation == TrackOrientation.VerticalCenter)
+            Line Background;
+            Line Middle;
+
+            public Visual()
             {
-                L1.X1 = L1.X2 = L2.X1 = L2.X2 = L3.X1 = L3.X2 = Field.SquareSize / 2;
-                L1.Y1 = 0;
-                L1.Y2 = Field.SquareSize;
-                L2.Y1 = Field.SquareSize / 12;
-                L2.Y2 = Field.SquareSize * 5 / 12;
-                L3.Y1 = Field.SquareSize * 7 / 12;
-                L3.Y2 = Field.SquareSize * 11 / 12;
+                Background=new Line();
+                Middle= new Line();
             }
-            else
+
+            public void DrawCenter(StraightTrack T)
             {
-                L1.Y1 = L1.Y2 = L2.Y1 = L2.Y2 = L3.Y1 = L3.Y2 = Field.SquareSize / 2;
-                L1.X1 = 0;
-                L1.X2 = Field.SquareSize;
-                L2.X1 = Field.SquareSize / 12;
-                L2.X2 = Field.SquareSize * 5 / 12;
-                L3.X1 = Field.SquareSize * 7 / 12;
-                L3.X2 = Field.SquareSize * 11 / 12;
+                List<Line> Lines = new List<Line> { Background, Middle };
+                Lines.ForEach(L => L.StrokeThickness = 10);
+                Lines.ForEach(L => Canvas.SetLeft(L, T.Coord.X));
+                Lines.ForEach(L => Canvas.SetTop(L, T.Coord.Y));
+                Background.Stroke = System.Windows.Media.Brushes.Black;
+                Middle.Stroke = T.GetStateColor(T.State);
+                if (T.Orientation == TrackOrientation.VerticalCenter)
+                {
+                    Background.X1 = Background.X2 = Middle.X1 = Middle.X2 = Field.SquareSize / 2;
+                    Background.Y1 = 0;
+                    Background.Y2 = Field.SquareSize;
+                    Middle.Y1 = Field.SquareSize * 1 / 5;
+                    Middle.Y2 = Field.SquareSize * 4 / 5;
+                }
+                else
+                {
+                    Background.Y1 = Background.Y2 = Middle.Y1 = Middle.Y2 = Field.SquareSize / 2;
+                    Background.X1 = 0;
+                    Background.X2 = Field.SquareSize;
+                    Middle.X1 = Field.SquareSize * 1 / 5;
+                    Middle.X2 = Field.SquareSize * 4 / 5;
+                }
+                Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
             }
-            Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
+
+            public void DrawCorner(StraightTrack T)
+            {
+                List<Line> Lines = new List<Line> { Background, Middle };
+                Lines.ForEach(L => L.StrokeThickness = 10);
+                Lines.ForEach(L => Canvas.SetLeft(L, T.Coord.X));
+                Lines.ForEach(L => Canvas.SetTop(L, T.Coord.Y));
+                Background.Stroke = System.Windows.Media.Brushes.Black;
+                Middle.Stroke = T.GetStateColor(T.State);
+                Background.StrokeStartLineCap = Background.StrokeEndLineCap = System.Windows.Media.PenLineCap.Round;
+                switch (T.Orientation)
+                {
+                    case TrackOrientation.TopRight:
+                        Background.X1 = Field.SquareSize / 2;
+                        Background.Y1 = 0;
+                        Background.X2 = Field.SquareSize;
+                        Background.Y2 = Field.SquareSize / 2;
+                        Middle.X1 = Field.SquareSize * 7 / 12;
+                        Middle.Y1 = Field.SquareSize * 1 / 12;
+                        Middle.X2 = Field.SquareSize * 11 / 12;
+                        Middle.Y2 = Field.SquareSize * 5 / 12;
+                        break;
+                    case TrackOrientation.BottomLeft:
+                        Background.X1 = 0;
+                        Background.Y1 = Field.SquareSize / 2;
+                        Background.X2 = Field.SquareSize / 2;
+                        Background.Y2 = Field.SquareSize;
+                        Middle.X1 = Field.SquareSize * 1 / 12;
+                        Middle.Y1 = Field.SquareSize * 7 / 12;
+                        Middle.X2 = Field.SquareSize * 5 / 12;
+                        Middle.Y2 = Field.SquareSize * 11 / 12;
+                        break;
+                    case TrackOrientation.TopLeft:
+                        Background.X1 = Field.SquareSize / 2;
+                        Background.Y1 = 0;
+                        Background.X2 = 0;
+                        Background.Y2 = Field.SquareSize / 2;
+                        Middle.X1 = Field.SquareSize * 5 / 12;
+                        Middle.Y1 = Field.SquareSize * 1 / 12;
+                        Middle.X2 = Field.SquareSize * 1 / 12;
+                        Middle.Y2 = Field.SquareSize * 5 / 12;
+                        break;
+                    case TrackOrientation.BottomRight:
+                        Background.X1 = Field.SquareSize;
+                        Background.Y1 = Field.SquareSize / 2;
+                        Background.X2 = Field.SquareSize / 2;
+                        Background.Y2 = Field.SquareSize;
+                        Middle.X1 = Field.SquareSize * 11 / 12;
+                        Middle.Y1 = Field.SquareSize * 7 / 12;
+                        Middle.X2 = Field.SquareSize * 7 / 12;
+                        Middle.Y2 = Field.SquareSize * 11 / 12;
+                        break;
+                }
+                Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
+            }
         }
 
-        void DrawCorner()
-        {
-            Line L1 = new Line();
-            Line L2 = new Line();
-            List<Line> Lines = new List<Line> { L1, L2 };
-            Lines.ForEach(L => L.StrokeThickness = 10);
-            Lines.ForEach(L => Canvas.SetLeft(L, Coord.X));
-            Lines.ForEach(L => Canvas.SetTop(L, Coord.Y));
-            L1.Stroke = System.Windows.Media.Brushes.Black;
-            L2.Stroke = GetStateColor(State);
-            L1.StrokeStartLineCap = L1.StrokeEndLineCap = System.Windows.Media.PenLineCap.Round;
-            switch (Orientation)
-            {
-                case TrackOrientation.TopRight:
-                    L1.X1 = Field.SquareSize / 2;
-                    L1.Y1 = 0;
-                    L1.X2 = Field.SquareSize;
-                    L1.Y2 = Field.SquareSize / 2;
-                    L2.X1 = Field.SquareSize * 7 / 12;
-                    L2.Y1 = Field.SquareSize * 1 / 12;
-                    L2.X2 = Field.SquareSize * 11 / 12;
-                    L2.Y2 = Field.SquareSize * 5 / 12;
-                    break;
-                case TrackOrientation.BottomLeft:
-                    L1.X1 = 0;
-                    L1.Y1 = Field.SquareSize / 2;
-                    L1.X2 = Field.SquareSize / 2;
-                    L1.Y2 = Field.SquareSize;
-                    L2.X1 = Field.SquareSize * 1 / 12;
-                    L2.Y1 = Field.SquareSize * 7 / 12;
-                    L2.X2 = Field.SquareSize * 5 / 12;
-                    L2.Y2 = Field.SquareSize * 11 / 12;
-                    break;
-                case TrackOrientation.TopLeft:
-                    L1.X1 = Field.SquareSize / 2;
-                    L1.Y1 = 0;
-                    L1.X2 = 0;
-                    L1.Y2 = Field.SquareSize / 2;
-                    L2.X1 = Field.SquareSize * 5 / 12;
-                    L2.Y1 = Field.SquareSize * 1 / 12;
-                    L2.X2 = Field.SquareSize * 1 / 12;
-                    L2.Y2 = Field.SquareSize * 5 / 12;
-                    break;
-                case TrackOrientation.BottomRight:
-                    L1.X1 = Field.SquareSize;
-                    L1.Y1 = Field.SquareSize / 2;
-                    L1.X2 = Field.SquareSize / 2;
-                    L1.Y2 = Field.SquareSize;
-                    L2.X1 = Field.SquareSize * 11 / 12;
-                    L2.Y1 = Field.SquareSize * 7 / 12;
-                    L2.X2 = Field.SquareSize * 7 / 12;
-                    L2.Y2 = Field.SquareSize * 11 / 12;
-                    break;
-            }
-            Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
-        }
+        
 
     }
 }

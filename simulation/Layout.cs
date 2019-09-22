@@ -83,6 +83,7 @@ namespace simulation
 
         static public void Draw()
         {
+            //MainWindow.AppCanvas.Children.Clear();
             Blocks.ForEach(b => b.Draw());
         }
 

@@ -18,69 +18,86 @@ namespace simulation
     {
         public SwitchOrientation Orientation;
         public bool Straight;
+        private Visual Display;
 
         public Switch(int x, int y, SwitchOrientation so) : base(x,y)
         {
+            Straight = true;
             Orientation = so;
+            Display = new Visual();
         }
-
 
         public override void Draw()
         {
             base.Draw();
-            Line L1 = new Line();
-            Line L2 = new Line();
-            Line L3 = new Line();
-            Line L4 = new Line(); //diverging
-            Line L5 = new Line(); //diverging
-            List<Line> Lines = new List<Line> { L1, L2, L3, L4, L5 };
-            Lines.ForEach(L => L.StrokeThickness = 10);
-            Lines.ForEach(L => Canvas.SetLeft(L, Coord.X));
-            Lines.ForEach(L => Canvas.SetTop(L, Coord.Y));
-            L1.Stroke = L4.Stroke = System.Windows.Media.Brushes.Black;
-            L2.Stroke = L3.Stroke = L5.Stroke = GetStateColor(TrackState.Default);
-            if (Straight == true) L2.Stroke = L3.Stroke = GetStateColor(State);
-            else if (Orientation == SwitchOrientation.CW) L2.Stroke = L5.Stroke = GetStateColor(State); //set the color of the proper lights,
-            else L3.Stroke = L5.Stroke = GetStateColor(State); //depending on the orientation and direction of the switch
-            L4.StrokeStartLineCap = L4.StrokeEndLineCap = System.Windows.Media.PenLineCap.Round;
-            L1.Y1 = L1.Y2 = L2.Y1 = L2.Y2 = L3.Y1 = L3.Y2 = Field.SquareSize / 2;
-            L1.X1 = 0;
-            L1.X2 = Field.SquareSize;
-            L2.X1 = Field.SquareSize / 12;
-            L2.X2 = Field.SquareSize * 5 / 12;
-            L3.X1 = Field.SquareSize * 7 / 12;
-            L3.X2 = Field.SquareSize * 11 / 12;
-            if (Orientation == SwitchOrientation.CW)
-            {
-                L4.X1 = Field.SquareSize;
-                L4.Y1 = Field.SquareSize / 2;
-                L4.X2 = Field.SquareSize / 2;
-                L4.Y2 = 0;
-                L5.X1 = Field.SquareSize * 11 / 12;
-                L5.Y1 = Field.SquareSize * 5 / 12;
-                L5.X2 = Field.SquareSize * 7 / 12;
-                L5.Y2 = Field.SquareSize * 1 / 12;
-            }
-            else
-            {
-                L4.X1 = 0;
-                L4.Y1 = Field.SquareSize / 2;
-                L4.X2 = Field.SquareSize / 2;
-                L4.Y2 = 0;
-                L5.X1 = Field.SquareSize * 1 / 12;
-                L5.Y1 = Field.SquareSize * 5 / 12;
-                L5.X2 = Field.SquareSize * 5 / 12;
-                L5.Y2 = Field.SquareSize * 1 / 12;
-            }
-            L5.MouseDown += DoSwitch;
-            Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
+            Display.Draw(this);
         }
+
+        class Visual
+        {
+            public Line BackgroundStraight;
+            public Line MiddleStraight;
+            public Line BackgroundDiverging; //diverging
+            public Line MiddleDiverging;  //diverging
+
+            public Visual()
+            {
+                BackgroundStraight = new Line();
+                MiddleStraight = new Line();
+                BackgroundDiverging = new Line();
+                MiddleDiverging = new Line();
+            }
+
+            public void Draw(Switch S)
+            { 
+                List<Line> Lines = new List<Line> { BackgroundStraight, MiddleStraight, BackgroundDiverging, MiddleDiverging };
+                Lines.ForEach(L => L.StrokeThickness = 10);
+                Lines.ForEach(L => Canvas.SetLeft(L, S.Coord.X));
+                Lines.ForEach(L => Canvas.SetTop(L, S.Coord.Y));
+                Lines.ForEach(L => L.Stroke = System.Windows.Media.Brushes.Black);
+                if (S.Straight) MiddleStraight.Stroke = S.GetStateColor(TrackState.Default);
+                else MiddleDiverging.Stroke = S.GetStateColor(TrackState.Default);
+                BackgroundDiverging.StrokeStartLineCap = BackgroundDiverging.StrokeEndLineCap = System.Windows.Media.PenLineCap.Round;
+                BackgroundStraight.Y1 = BackgroundStraight.Y2 = MiddleStraight.Y1 = MiddleStraight.Y2 = Field.SquareSize / 2;
+                BackgroundStraight.X1 = 0;
+                BackgroundStraight.X2 = Field.SquareSize;
+                MiddleStraight.X1 = Field.SquareSize * 1 / 5;
+                MiddleStraight.X2 = Field.SquareSize * 4 / 5;
+                if (S.Orientation == SwitchOrientation.CW)
+                {
+                    BackgroundDiverging.X1 = Field.SquareSize;
+                    BackgroundDiverging.Y1 = Field.SquareSize / 2;
+                    BackgroundDiverging.X2 = Field.SquareSize / 2;
+                    BackgroundDiverging.Y2 = 0;
+                    MiddleDiverging.X1 = Field.SquareSize * 11 / 12;
+                    MiddleDiverging.Y1 = Field.SquareSize * 5 / 12;
+                    MiddleDiverging.X2 = Field.SquareSize * 7 / 12;
+                    MiddleDiverging.Y2 = Field.SquareSize * 1 / 12;
+                }
+                else
+                {
+                    BackgroundDiverging.X1 = 0;
+                    BackgroundDiverging.Y1 = Field.SquareSize / 2;
+                    BackgroundDiverging.X2 = Field.SquareSize / 2;
+                    BackgroundDiverging.Y2 = 0;
+                    MiddleDiverging.X1 = Field.SquareSize * 1 / 12;
+                    MiddleDiverging.Y1 = Field.SquareSize * 5 / 12;
+                    MiddleDiverging.X2 = Field.SquareSize * 5 / 12;
+                    MiddleDiverging.Y2 = Field.SquareSize * 1 / 12;
+                }
+                MiddleDiverging.MouseDown += S.DoSwitch;
+                Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
+            }
+
+        }
+
+
 
         private void DoSwitch(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Straight = false;
+            Straight=!Straight;
             System.Windows.MessageBox.Show("Switch successful.","Feedback", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
-
+            
         }
     }
 }
