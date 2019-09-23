@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:simulation"
         mc:Ignorable="d"
-        Title="Simulation" Height="1024" Width="1280">
+        Title="Simulation" Height="768" Width="1366">
     <Canvas x:Name="ApplicationCanvas" >
         <Rectangle Width="1200" Height="480" Fill="Green" Canvas.Left="0" Canvas.Top="0" />
+
         <Label Content="Set direction" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
         <ComboBox Canvas.Left="15" Canvas.Top="529" Width="129" SelectionChanged="DirectionChanged">
             <ComboBoxItem>Clockwise</ComboBoxItem>
@@ -19,9 +20,22 @@
             <ComboBoxItem>Red</ComboBoxItem>
             <ComboBoxItem>White</ComboBoxItem>
         </ComboBox>
+
         <Label Content="Set left switch" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="318"/>
         <Button Content="Switch" Canvas.Left="323" Canvas.Top="529" Width="80" Click="SwitchLeft" Height="22"/>
         <Label Content="Set right switch" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="462"/>
         <Button Content="Switch" Canvas.Left="467" Canvas.Top="529" Width="80" Height="22" Click="SwitchRight"/>
+
+        <Label Content="Set speed" Canvas.Top="566" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
+        <Slider Name="slValue" Canvas.Left="15" Canvas.Top="608" Width="280" Maximum="120" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
+        
+        <TextBox Height="24" Canvas.Left="300" TextWrapping="Wrap" Text="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="608" Width="45" FontSize="20"/>
+        <Label Content="Current speed:" Canvas.Top="671" Canvas.Bottom="20" FontSize="20" Canvas.Left="10" Width="144"/>
+        <TextBlock x:Name="DisplayVelocity" Canvas.Left="154" TextWrapping="Wrap" Text="{Binding Speed}" Canvas.Top="659" Height="49" Width="98" FontSize="36"/>
+        <Label Content="Set departure" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="626"/>
+        <ComboBox Canvas.Left="631" Canvas.Top="529" Width="129" Height="22" SelectionChanged="DepartureChanged">
+            <ComboBoxItem Content="Track#1"/>
+            <ComboBoxItem Content="Track#2"/>
+        </ComboBox>
     </Canvas>
 </Window>

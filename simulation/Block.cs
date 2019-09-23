@@ -8,6 +8,7 @@ namespace simulation
 {
     class Block
     {
+        public int Length;
         public List<Track> Tracks;
         public Signal CWSignal;
         public Signal CCWSignal;
@@ -15,6 +16,7 @@ namespace simulation
 
         public Block(int Id)
         {
+            Length = 0;
             Tracks = new List<Track>();
             this.Id = Id;
             CCWSignal = null;

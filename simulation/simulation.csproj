@@ -62,6 +62,7 @@
     <Compile Include="StraightTrack.cs" />
     <Compile Include="Switch.cs" />
     <Compile Include="Track.cs" />
+    <Compile Include="Train.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

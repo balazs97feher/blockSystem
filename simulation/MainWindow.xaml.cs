@@ -34,6 +34,7 @@ namespace simulation
             Layout.Draw();
 
             Control.Initialize();
+            DisplayVelocity.DataContext = Control.Fecske;
         }
 
 
@@ -80,6 +81,26 @@ namespace simulation
         private void SwitchRight(object sender, RoutedEventArgs e)
         {
             Layout.RightSwitch.DoSwitch();
+
+        }
+
+        private void DepartureChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
+            switch (item.Content.ToString())
+            {
+                case "Track#1":
+                    Control.SetDeparture(0);
+                    break;
+                case "Track#2":
+                    Control.SetDeparture(1);
+                    break;
+            }
+        }
+
+        private void SpeedChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Control.SetSpeed = (int)(sender as Slider).Value;
         }
     }
 }
