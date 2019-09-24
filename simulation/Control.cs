@@ -15,11 +15,13 @@ namespace simulation
         public static Train Fecske;
         public static int SetSpeed;
 
+        public static bool Initialized = false; //do we have a train instance
         public static DispatcherTimer Timer;
 
         public static void Initialize()
         {
             Fecske = new Train(0);
+            Initialized = true;
             SetDeparture(0);
             Timer = new System.Windows.Threading.DispatcherTimer();
             Timer.Tick += new EventHandler(Tick);
@@ -29,15 +31,16 @@ namespace simulation
 
         private static void Tick(object sender, EventArgs e)
         {
-            if (Fecske.DistanceFromEOB<=0)
+            int RemainingDistance = Fecske.Roll();
+            if(RemainingDistance>0)
             {
                 FreeBlock(Fecske.Block);
                 int NextBlock = Layout.GetNextBlock(Fecske.Block);
                 Fecske.Block = NextBlock;
                 Fecske.DistanceFromEOB = Layout.Blocks[NextBlock].Length;
                 OccupyBlock(Fecske.Block);
+                Fecske.Roll(RemainingDistance);
             }
-            Fecske.Roll();
             if (SetSpeed > Fecske.Speed) Fecske.Accelerate();
             else if (SetSpeed < Fecske.Speed) Fecske.Break();
         }
@@ -46,10 +49,13 @@ namespace simulation
 
         static public void SetDeparture(int BlockId)
         {
-            FreeBlock(Control.Fecske.Block);
-            Fecske.Block = BlockId;
-            Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
-            OccupyBlock(BlockId);
+            if (Initialized)
+            {
+                FreeBlock(Control.Fecske.Block);
+                Fecske.Block = BlockId;
+                Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
+                OccupyBlock(BlockId);
+            }
         }
 
         static public void OccupyBlock(int BlockId)

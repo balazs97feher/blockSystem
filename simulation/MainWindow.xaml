@@ -10,12 +10,13 @@
         <Rectangle Width="1200" Height="480" Fill="Green" Canvas.Left="0" Canvas.Top="0" />
 
         <Label Content="Set direction" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
-        <ComboBox Canvas.Left="15" Canvas.Top="529" Width="129" SelectionChanged="DirectionChanged">
+        <ComboBox Canvas.Left="15" Canvas.Top="529" Width="129" SelectionChanged="DirectionChanged" SelectedIndex="0">
             <ComboBoxItem>Clockwise</ComboBoxItem>
             <ComboBoxItem>Counterclockwise</ComboBoxItem>
         </ComboBox>
+        
         <Label Content="Set signals" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="160"/>
-        <ComboBox Canvas.Left="166" Canvas.Top="529" Width="129" Height="22" SelectionChanged="SignalChanged">
+        <ComboBox Canvas.Left="166" Canvas.Top="529" Width="129" Height="22" SelectionChanged="SignalChanged" SelectedIndex="1">
             <ComboBoxItem>Green</ComboBoxItem>
             <ComboBoxItem>Red</ComboBoxItem>
             <ComboBoxItem>White</ComboBoxItem>
@@ -28,12 +29,13 @@
 
         <Label Content="Set speed" Canvas.Top="566" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
         <Slider Name="slValue" Canvas.Left="15" Canvas.Top="608" Width="280" Maximum="120" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
-        
         <TextBox Height="24" Canvas.Left="300" TextWrapping="Wrap" Text="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="608" Width="45" FontSize="20"/>
+        
         <Label Content="Current speed:" Canvas.Top="671" Canvas.Bottom="20" FontSize="20" Canvas.Left="10" Width="144"/>
         <TextBlock x:Name="DisplayVelocity" Canvas.Left="154" TextWrapping="Wrap" Text="{Binding Speed}" Canvas.Top="659" Height="49" Width="98" FontSize="36"/>
+        
         <Label Content="Set departure" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="626"/>
-        <ComboBox Canvas.Left="631" Canvas.Top="529" Width="129" Height="22" SelectionChanged="DepartureChanged">
+        <ComboBox Canvas.Left="631" Canvas.Top="529" Width="129" Height="22" SelectionChanged="DepartureChanged" SelectedIndex="0">
             <ComboBoxItem Content="Track#1"/>
             <ComboBoxItem Content="Track#2"/>
         </ComboBox>

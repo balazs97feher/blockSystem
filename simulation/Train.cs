@@ -39,9 +39,19 @@ namespace simulation
             Speed = 0;
         }
 
-        public void Roll()
+        public int Roll() //when crossing block border, returns the remaining distance, that the train goes after crossing
         {
-            DistanceFromEOB -= Speed;
+            if (DistanceFromEOB >= Speed)
+            {
+                DistanceFromEOB -= Speed;
+                return 0;
+            }
+            else return Speed - DistanceFromEOB;
+        }
+
+        public void Roll(int D) //the train rolls for D distance
+        {
+            DistanceFromEOB -= D;
         }
 
         public void Accelerate()

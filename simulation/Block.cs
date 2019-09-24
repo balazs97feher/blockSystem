@@ -16,7 +16,7 @@ namespace simulation
 
         public Block(int Id)
         {
-            Length = 0;
+            Length = 1000;
             Tracks = new List<Track>();
             this.Id = Id;
             CCWSignal = null;

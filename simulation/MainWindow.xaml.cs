@@ -69,7 +69,8 @@ namespace simulation
                         break;
                 }
             }
-            else MessageBox.Show("Please select a signal by clicking on it.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
+            else if (Control.Initialized)
+                MessageBox.Show("Please select a signal by clicking on it.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
         }
 
 
