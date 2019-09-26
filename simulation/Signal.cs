@@ -13,7 +13,7 @@ namespace simulation
     {
         Red,
         Green,
-        White,
+        Yellow,
         Blank
     }
 
@@ -76,8 +76,8 @@ namespace simulation
                     case SignalState.Red:
                         bitmap.UriSource = new Uri(@"pack://application:,,,/3l_red.png");
                         break;
-                    case SignalState.White:
-                        bitmap.UriSource = new Uri(@"pack://application:,,,/3l_white.png");
+                    case SignalState.Yellow:
+                        bitmap.UriSource = new Uri(@"pack://application:,,,/3l_yellow.png");
                         break;
                 }
                 bitmap.EndInit();

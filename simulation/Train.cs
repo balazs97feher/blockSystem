@@ -13,9 +13,9 @@ namespace simulation
     public class Train : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged; // need to implement the above interface to display speed
-        private void NotifyPropertyChanged()
+        private void NotifyPropertyChanged(string Property)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Speed"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
 
         private int speed;
@@ -25,11 +25,12 @@ namespace simulation
             set
             {
                 speed = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("Speed");
             }
         }
         public int Block; // which block the train is currently in
         public int DistanceFromEOB; // distance from the end of the block
+
         public const int Acceleration = 1;
         public const int Deceleration = 1;
 

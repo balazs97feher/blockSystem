@@ -64,8 +64,8 @@ namespace simulation
                     case "Red":
                         Control.SelectedSignal.SetState(SignalState.Red);
                         break;
-                    case "White":
-                        Control.SelectedSignal.SetState(SignalState.White);
+                    case "Yellow":
+                        Control.SelectedSignal.SetState(SignalState.Yellow);
                         break;
                 }
             }

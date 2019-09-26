@@ -8,8 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("3l_green.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("3l_red.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("3l_white.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("3l_yellow.png")]
 
 

@@ -33,7 +33,7 @@ namespace simulation
             switch(s)
             {
                 case TrackState.Default:
-                    return System.Windows.Media.Brushes.DarkGray;
+                    return System.Windows.Media.Brushes.Gray;
                 case TrackState.Occupied:
                     return System.Windows.Media.Brushes.Red;
                 case TrackState.Highlighted:

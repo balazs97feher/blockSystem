@@ -56,6 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Block.cs" />
+    <Compile Include="Constraint.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="Layout.cs" />
     <Compile Include="Signal.cs" />
@@ -106,7 +107,9 @@
   <ItemGroup>
     <Resource Include="3l_green.png" />
     <Resource Include="3l_red.png" />
-    <Resource Include="3l_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="3l_yellow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
