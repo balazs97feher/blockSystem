@@ -44,9 +44,9 @@ namespace simulation
             ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
             if (item.Content.ToString() == "Clockwise")
             {
-                Control.DirectionCW = true;
+                Layout.SetCWDirection(true);
             }
-            else Control.DirectionCW = false;
+            else Layout.SetCWDirection(false);
         }
 
         private void SwitchLeft(object sender, RoutedEventArgs e)
@@ -57,7 +57,6 @@ namespace simulation
         private void SwitchRight(object sender, RoutedEventArgs e)
         {
             Layout.RightSwitch.DoSwitch();
-
         }
 
         private void DepartureChanged(object sender, SelectionChangedEventArgs e)

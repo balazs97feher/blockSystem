@@ -31,13 +31,15 @@ namespace simulation
         public int Block; // which block the train is currently in
         public int DistanceFromEOB; // distance from the end of the block
 
-        public const int Acceleration = 1;
-        public const int Deceleration = 1;
+        public int Acceleration;
+        public int Deceleration;
 
         public Train(int Block)
         {
             this.Block = Block;
             Speed = 0;
+            Acceleration = 1;
+            Deceleration = 1;
         }
 
         public int Roll() //when crossing block border, returns the remaining distance, that the train goes after crossing

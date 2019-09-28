@@ -26,24 +26,43 @@ namespace simulation
 
     public class Signal : Field
     {
+        private Block ContainerBlock;
         public SignalState State;
+        public int MaxSpeed;
         public SignalOrientation Orientation;
         private static int NextId = 1;
         private int Id;
         private Visual Display;
 
 
-        public Signal(int x, int y, SignalOrientation o) : base(x, y)
+        public Signal(int x, int y, SignalOrientation o, Block b) : base(x, y)
         {
             Orientation = o;
-            State = SignalState.Red;
+            ContainerBlock = b;
             Display = new Visual(this);
+            SetState(SignalState.Red);
+            MaxSpeed = 0;
             Id = NextId++;
         }
 
         public void SetState(SignalState s)
         {
             State = s;
+            switch (s)
+            {
+                case SignalState.Green:
+                    MaxSpeed = 120;
+                    break;
+                case SignalState.Red:
+                    MaxSpeed = 0;
+                    break;
+                case SignalState.Yellow:
+                    MaxSpeed = 40;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            ContainerBlock.UpdateEOBSpeed();
             Display.Update();
         }
 

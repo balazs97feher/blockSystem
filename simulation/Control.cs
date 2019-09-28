@@ -16,8 +16,6 @@ namespace simulation
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
 
-        public static bool DirectionCW = true;
-
         public Train Fecske;
         private int setSpeed;
         public int SetSpeed
@@ -47,6 +45,7 @@ namespace simulation
 
         private void Tick(object sender, EventArgs e)
         {
+            if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed) SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
             int RemainingDistance = Fecske.Roll();
             if(RemainingDistance>0)
             {
@@ -57,8 +56,8 @@ namespace simulation
                 OccupyBlock(Fecske.Block);
                 Fecske.Roll(RemainingDistance);
             }
-            if (setSpeed > Fecske.Speed) Fecske.Accelerate();
-            else if (setSpeed < Fecske.Speed) Fecske.Break();
+            if (SetSpeed > Fecske.Speed) Fecske.Accelerate();
+            else if (SetSpeed < Fecske.Speed) Fecske.Break();
         }
 
 

@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace simulation
 {
-    class Block
+    public class Block
     {
         public int Length;
         public List<Track> Tracks;
         public Signal CWSignal;
         public Signal CCWSignal; // signals at either end of the block
         public int Id;
+
+        public int EOBSpeed; // maximum speed at which the train is allowed to reach the end of the current block
 
         public Block(int Id)
         {
@@ -21,6 +23,26 @@ namespace simulation
             this.Id = Id;
             CCWSignal = null;
             CWSignal = null;
+            EOBSpeed = 120;
+        }
+
+        public void AddCWSignal(Signal S)
+        {
+            CWSignal = S;
+            UpdateEOBSpeed();
+        }
+
+        public void AddCCWSignal(Signal S)
+        {
+            CCWSignal = S;
+            UpdateEOBSpeed();
+        }
+
+        public virtual void UpdateEOBSpeed()
+        {
+            if (Layout.DirectionCW == true && CWSignal != null) EOBSpeed = CWSignal.MaxSpeed;
+            else if (Layout.DirectionCW==false && CCWSignal != null) EOBSpeed = CCWSignal.MaxSpeed;
+            else EOBSpeed = 120;
         }
 
         public virtual void Occupy()

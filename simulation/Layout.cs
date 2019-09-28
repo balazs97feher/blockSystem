@@ -12,6 +12,7 @@ namespace simulation
         static public List<Block> Blocks=new List<Block>();
         static public Switch LeftSwitch;
         static public Switch RightSwitch;
+        static public bool DirectionCW = true;
 
         static public void Initialize()
         {
@@ -26,8 +27,8 @@ namespace simulation
                 B_0.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_0.CWSignal = new Signal(480, 340, SignalOrientation.CW);
-            B_0.CCWSignal = new Signal(960, 310, SignalOrientation.CCW);
+            B_0.AddCWSignal(new Signal(480, 340, SignalOrientation.CW, B_0));
+            B_0.AddCCWSignal(new Signal(960, 310, SignalOrientation.CCW, B_0));
             Blocks.Add(B_0);
 
             // ***************** Block#1 *****************
@@ -38,8 +39,8 @@ namespace simulation
                 B_1.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_1.CWSignal = new Signal(480, 410, SignalOrientation.CW);
-            B_1.CCWSignal = new Signal(960, 380, SignalOrientation.CCW);
+            B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, B_1));
+            B_1.AddCCWSignal(new Signal(960, 380, SignalOrientation.CCW, B_1));
             Blocks.Add(B_1);
 
             // ***************** Block#2 *****************
@@ -52,7 +53,6 @@ namespace simulation
             x -= Field.SquareSize;
             B_2.Horizontal= new StraightTrack(x, y, TrackOrientation.HorizontalCenter);
             x -= Field.SquareSize;
-            B_2.CCWSignal = new Signal(230, 380, SignalOrientation.CCW);
             Blocks.Add(B_2);
 
             // ***************** Block#3 *****************
@@ -66,6 +66,7 @@ namespace simulation
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.VerticalCenter));
             y -= Field.SquareSize;
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.BottomRight));
+            B_3.AddCCWSignal(new Signal(230, 380, SignalOrientation.CCW, B_3));
             Blocks.Add(B_3);
 
             // ***************** Block#4 *****************
@@ -90,6 +91,7 @@ namespace simulation
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.TopLeft));
             x -= Field.SquareSize;
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
+            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, B_5));
             Blocks.Add(B_5);
 
             // ***************** Block#6 *****************
@@ -101,7 +103,6 @@ namespace simulation
             B_6.S= RightSwitch;
             y -= Field.SquareSize;
             B_6.Bottom= new StraightTrack(x, y, TrackOrientation.BottomLeft);
-            B_6.CWSignal = new Signal(1210, 410, SignalOrientation.CW);
             Blocks.Add(B_6);
         }
 
@@ -127,7 +128,7 @@ namespace simulation
 
         static public int GetNextBlock(int CurrentBlock)
         {
-            if (Control.DirectionCW)
+            if (DirectionCW)
             {
                 if (CurrentBlock == 0) return 2;
                 if (CurrentBlock > 0 && CurrentBlock < 6) return CurrentBlock + 1;
@@ -141,6 +142,12 @@ namespace simulation
                 if (Layout.LeftSwitch.Straight == true) return 1; // Block#3
                 else return 0;
             }
+        }
+
+        static public void SetCWDirection(bool IsCW)
+        {
+            DirectionCW = IsCW;
+            Blocks.ForEach(B => B.UpdateEOBSpeed());
         }
 
     }
