@@ -24,7 +24,8 @@ namespace simulation
     public partial class MainWindow : Window
     {
         public static Canvas AppCanvas;
-        public int k;
+        public static Control Controller;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,16 +33,11 @@ namespace simulation
 
             Layout.Initialize();
             Layout.Draw();
+            Controller = new Control();
 
-            Control.Initialize();
-            DisplayVelocity.DataContext = Control.Fecske;
-            slValue.DataContext = Control.SetSpeed;
-            
+            DisplayVelocity.DataContext = Controller.Fecske;
+            SpeedSlide.DataContext = Controller;
         }
-
-
-
-
 
         private void DirectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -66,21 +62,24 @@ namespace simulation
 
         private void DepartureChanged(object sender, SelectionChangedEventArgs e)
         {
-            ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
-            switch (item.Content.ToString())
+            if (Control.Initialized)
             {
-                case "Track#1":
-                    Control.SetDeparture(0);
-                    break;
-                case "Track#2":
-                    Control.SetDeparture(1);
-                    break;
+                ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
+                switch (item.Content.ToString())
+                {
+                    case "Track#1":
+                        Controller.SetDeparture(0);
+                        break;
+                    case "Track#2":
+                        Controller.SetDeparture(1);
+                        break;
+                }
             }
         }
 
         private void SpeedChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Control.SetSpeed = (int)(sender as Slider).Value;
+            Controller.SetSpeed = (int)(sender as Slider).Value;
         }
     }
 }

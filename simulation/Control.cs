@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,17 +8,33 @@ using System.Windows.Threading;
 
 namespace simulation
 {
-    public static class Control
-    {
+    public class Control : INotifyPropertyChanged
+    { // need to implement the above interface for data binding
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(string Property)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
+        }
+
         public static bool DirectionCW = true;
 
-        public static Train Fecske;
-        public static int SetSpeed;
+        public Train Fecske;
+        private int setSpeed;
+        public int SetSpeed
+        {
+            get { return setSpeed; }
+            set
+            {
+                setSpeed = value;
+                NotifyPropertyChanged("SetSpeed");
+            }
+        }
 
-        public static bool Initialized = false; //do we have a train instance
-        public static DispatcherTimer Timer;
 
-        public static void Initialize()
+        public static bool Initialized = false; //do we have a controller
+        public DispatcherTimer Timer;
+
+        public Control()
         {
             Fecske = new Train(0);
             Initialized = true;
@@ -28,7 +45,7 @@ namespace simulation
             Timer.Start();
         }
 
-        private static void Tick(object sender, EventArgs e)
+        private void Tick(object sender, EventArgs e)
         {
             int RemainingDistance = Fecske.Roll();
             if(RemainingDistance>0)
@@ -40,17 +57,17 @@ namespace simulation
                 OccupyBlock(Fecske.Block);
                 Fecske.Roll(RemainingDistance);
             }
-            if (SetSpeed > Fecske.Speed) Fecske.Accelerate();
-            else if (SetSpeed < Fecske.Speed) Fecske.Break();
+            if (setSpeed > Fecske.Speed) Fecske.Accelerate();
+            else if (setSpeed < Fecske.Speed) Fecske.Break();
         }
 
 
 
-        static public void SetDeparture(int BlockId)
+        public void SetDeparture(int BlockId)
         {
             if (Initialized)
             {
-                FreeBlock(Control.Fecske.Block);
+                FreeBlock(Fecske.Block);
                 Fecske.Block = BlockId;
                 Fecske.Speed = 0;
                 Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
@@ -58,12 +75,12 @@ namespace simulation
             }
         }
 
-        static public void OccupyBlock(int BlockId)
+        public void OccupyBlock(int BlockId)
         {
             Layout.Blocks[BlockId].Occupy();
         }
 
-        static public void FreeBlock(int BlockId)
+        public void FreeBlock(int BlockId)
         {
             Layout.Blocks[BlockId].Free();
         }

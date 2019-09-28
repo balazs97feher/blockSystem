@@ -27,8 +27,8 @@
         </ComboBox>
 
         <Label Content="Set speed" Canvas.Top="566" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
-        <Slider Name="slValue" Value="{Binding SetSpeed, XPath=Value, Mode=TwoWay}" Canvas.Left="15" Canvas.Top="608" Width="280" Maximum="120" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
-        <TextBox Height="24" Canvas.Left="300" TextWrapping="Wrap" Text="{Binding ElementName=slValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="608" Width="45" FontSize="20"/>
+        <Slider Name="SpeedSlide" Value="{Binding SetSpeed}" Canvas.Left="15" Canvas.Top="608" Width="280" Maximum="120" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
+        <TextBox Height="24" Canvas.Left="300" TextWrapping="Wrap" Text="{Binding ElementName=SpeedSlide, Path=Value, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="608" Width="45" FontSize="20"/>
 
         <Label Content="Current speed:" Canvas.Top="671" Canvas.Bottom="20" FontSize="20" Canvas.Left="10" Width="144"/>
         <TextBlock x:Name="DisplayVelocity" Canvas.Left="154" TextWrapping="Wrap" Text="{Binding Speed}" Canvas.Top="646" Height="62" Width="133" FontSize="48"/>
