@@ -35,6 +35,8 @@ namespace simulation
 
             Control.Initialize();
             DisplayVelocity.DataContext = Control.Fecske;
+            slValue.DataContext = Control.SetSpeed;
+            
         }
 
 
@@ -50,29 +52,6 @@ namespace simulation
             }
             else Control.DirectionCW = false;
         }
-
-        private void SignalChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (Control.SelectedSignal != null)
-            {
-                ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
-                switch (item.Content.ToString())
-                {
-                    case "Green":
-                        Control.SelectedSignal.SetState(SignalState.Green);
-                        break;
-                    case "Red":
-                        Control.SelectedSignal.SetState(SignalState.Red);
-                        break;
-                    case "Yellow":
-                        Control.SelectedSignal.SetState(SignalState.Yellow);
-                        break;
-                }
-            }
-            else if (Control.Initialized)
-                MessageBox.Show("Please select a signal by clicking on it.", "Warning", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
-        }
-
 
         private void SwitchLeft(object sender, RoutedEventArgs e)
         {

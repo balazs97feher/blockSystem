@@ -39,7 +39,7 @@ namespace simulation
                 case TrackState.Highlighted:
                     return System.Windows.Media.Brushes.White;
                 default:
-                    return System.Windows.Media.Brushes.DarkGray;
+                    throw new ArgumentOutOfRangeException();
             }
         }
 

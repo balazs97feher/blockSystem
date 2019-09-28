@@ -10,7 +10,6 @@ namespace simulation
     public static class Control
     {
         public static bool DirectionCW = true;
-        public static Signal SelectedSignal = null;
 
         public static Train Fecske;
         public static int SetSpeed;
@@ -53,6 +52,7 @@ namespace simulation
             {
                 FreeBlock(Control.Fecske.Block);
                 Fecske.Block = BlockId;
+                Fecske.Speed = 0;
                 Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
                 OccupyBlock(BlockId);
             }

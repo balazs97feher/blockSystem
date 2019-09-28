@@ -66,13 +66,15 @@ namespace simulation
             {
                 if (S.Straight)
                 {
-                    MiddleStraight.Stroke = S.GetStateColor(S.State);
-                    MiddleDiverging.Stroke = System.Windows.Media.Brushes.Black;
+                    if (S.State == TrackState.Occupied) MiddleStraight.Stroke = S.GetStateColor(TrackState.Occupied);
+                    else MiddleStraight.Stroke = S.GetStateColor(TrackState.Highlighted);
+                    MiddleDiverging.Stroke = S.GetStateColor(TrackState.Default);
                 }
                 else
                 {
-                    MiddleDiverging.Stroke = S.GetStateColor(S.State);
-                    MiddleStraight.Stroke = System.Windows.Media.Brushes.Black;
+                    if (S.State == TrackState.Occupied) MiddleDiverging.Stroke = S.GetStateColor(TrackState.Occupied);
+                    else MiddleDiverging.Stroke = S.GetStateColor(TrackState.Highlighted);
+                    MiddleStraight.Stroke = S.GetStateColor(TrackState.Default);
                 }
             }
 
@@ -83,8 +85,16 @@ namespace simulation
                 Lines.ForEach(L => Canvas.SetLeft(L, S.Coord.X));
                 Lines.ForEach(L => Canvas.SetTop(L, S.Coord.Y));
                 Lines.ForEach(L => L.Stroke = System.Windows.Media.Brushes.Black);
-                if (S.Straight) MiddleStraight.Stroke = S.GetStateColor(TrackState.Default);
-                else MiddleDiverging.Stroke = S.GetStateColor(TrackState.Default);
+                if (S.Straight)
+                {
+                    MiddleStraight.Stroke = S.GetStateColor(TrackState.Highlighted);
+                    MiddleDiverging.Stroke = S.GetStateColor(TrackState.Default);
+                }
+                else
+                {
+                    MiddleDiverging.Stroke = S.GetStateColor(TrackState.Highlighted);
+                    MiddleStraight.Stroke = S.GetStateColor(TrackState.Default);
+                }
                 BackgroundDiverging.StrokeStartLineCap = BackgroundDiverging.StrokeEndLineCap = System.Windows.Media.PenLineCap.Round;
                 BackgroundStraight.Y1 = BackgroundStraight.Y2 = MiddleStraight.Y1 = MiddleStraight.Y2 = Field.SquareSize / 2;
                 BackgroundStraight.X1 = 0;
@@ -118,10 +128,5 @@ namespace simulation
 
         }
 
-
-
-
-
-        
     }
 }

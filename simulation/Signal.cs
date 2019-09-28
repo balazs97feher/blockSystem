@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -64,6 +65,36 @@ namespace simulation
                 SignalImg.MouseDown += SignalClicked;
             }
 
+            private void SignalClicked(object sender, MouseButtonEventArgs e)
+            {
+                ComboBox c = new ComboBox();
+                c.ItemsSource = new List<string> { "Green", "Red", "Yellow" };
+                Canvas.SetLeft(c, S.Coord.X);
+                Canvas.SetTop(c, S.Coord.Y);
+                MainWindow.AppCanvas.Children.Add(c);
+                c.SelectionChanged += SignalChanged;
+            }
+
+            private void SignalChanged(object sender, SelectionChangedEventArgs e)
+            {
+                ComboBox C = (ComboBox)sender;
+                switch ((string)C.SelectedItem)
+                {
+                    case "Green":
+                        S.SetState(SignalState.Green);
+                        break;
+                    case "Red":
+                        S.SetState(SignalState.Red);
+                        break;
+                    case "Yellow":
+                        S.SetState(SignalState.Yellow);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                MainWindow.AppCanvas.Children.Remove(C);
+            }
+
             public void Update()
             {
                 bitmap = new BitmapImage();
@@ -97,10 +128,6 @@ namespace simulation
             }
 
 
-            private void SignalClicked(object sender, System.Windows.Input.MouseButtonEventArgs e)
-            {
-                Control.SelectedSignal = S;
-            }
         }
 
     }

@@ -11,7 +11,7 @@ namespace simulation
         public int Length;
         public List<Track> Tracks;
         public Signal CWSignal;
-        public Signal CCWSignal;
+        public Signal CCWSignal; // signals at either end of the block
         public int Id;
 
         public Block(int Id)
@@ -23,17 +23,17 @@ namespace simulation
             CWSignal = null;
         }
 
-        public void Occupy()
+        public virtual void Occupy()
         {
             Tracks.ForEach(t => t.SetState(TrackState.Occupied));
         }
 
-        public void Free()
+        public virtual void Free()
         {
             Tracks.ForEach(t => t.SetState(TrackState.Default));
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
             Tracks.ForEach(t => t.Draw());
             if (CWSignal != null) CWSignal.Draw();

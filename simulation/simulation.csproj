@@ -62,6 +62,7 @@
     <Compile Include="Signal.cs" />
     <Compile Include="StraightTrack.cs" />
     <Compile Include="Switch.cs" />
+    <Compile Include="SwitchBlock.cs" />
     <Compile Include="Track.cs" />
     <Compile Include="Train.cs" />
     <Page Include="MainWindow.xaml">
