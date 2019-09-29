@@ -64,8 +64,11 @@ namespace simulation
 
         public void Break()
         {
-            Speed -= Deceleration;
+            if (Speed > Deceleration) Speed -= Deceleration;
+            else Speed = 0;
         }
+
+        
 
 
     }

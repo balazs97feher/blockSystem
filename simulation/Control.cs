@@ -43,11 +43,19 @@ namespace simulation
             Timer.Start();
         }
 
+
+
         private void Tick(object sender, EventArgs e)
         {
-            if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed) SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
+            if (DepartureConstraints() == false) SetSpeed = 0;
+            else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed)
+            {
+                SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
+                SetDeceleration();
+                System.Windows.MessageBox.Show(Fecske.Deceleration.ToString());
+            }
             int RemainingDistance = Fecske.Roll();
-            if(RemainingDistance>0)
+            if (RemainingDistance > 0)
             {
                 FreeBlock(Fecske.Block);
                 int NextBlock = Layout.GetNextBlock(Fecske.Block);
@@ -60,6 +68,14 @@ namespace simulation
             else if (SetSpeed < Fecske.Speed) Fecske.Break();
         }
 
+
+
+
+        public void SetDeceleration()
+        {
+            int T = (2 * Fecske.DistanceFromEOB) / Fecske.Speed;
+            Fecske.Deceleration = Fecske.Speed / T + 1;
+        }
 
 
         public void SetDeparture(int BlockId)
@@ -82,6 +98,49 @@ namespace simulation
         public void FreeBlock(int BlockId)
         {
             Layout.Blocks[BlockId].Free();
+        }
+
+        public bool DepartureConstraints()
+        {
+            if (Fecske.Block > 1) return true;
+            if (Layout.DirectionCW == true)
+            {
+                if (Fecske.Block == 0)
+                {
+                    if (Layout.LeftSwitch.Straight==true)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (Layout.LeftSwitch.Straight == false)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+            else
+            {
+                if (Fecske.Block == 0)
+                {
+                    if (Layout.RightSwitch.Straight == true)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (Layout.RightSwitch.Straight == false)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+            }
         }
 
     }
