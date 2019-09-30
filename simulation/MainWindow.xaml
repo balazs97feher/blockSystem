@@ -1,0 +1,35 @@
+﻿<Window x:Class="simulation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:simulation"
+        mc:Ignorable="d"
+        Title="Simulation" Height="1080" Width="1920">
+    <Canvas x:Name="ApplicationCanvas" >
+        <Label Content="Set direction" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
+        <ComboBox Canvas.Left="15" Canvas.Top="529" Width="129" SelectionChanged="DirectionChanged" SelectedIndex="0">
+            <ComboBoxItem>Clockwise</ComboBoxItem>
+            <ComboBoxItem>Counterclockwise</ComboBoxItem>
+        </ComboBox>
+
+        <Label Content="Set left switch" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="168"/>
+        <Button Content="Switch" Canvas.Left="173" Canvas.Top="529" Width="80" Click="SwitchLeft" Height="22"/>
+        <Label Content="Set right switch" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="312"/>
+        <Button Content="Switch" Canvas.Left="317" Canvas.Top="529" Width="80" Height="22" Click="SwitchRight"/>
+
+        <Label Content="Set departure" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="476"/>
+        <ComboBox Canvas.Left="481" Canvas.Top="529" Width="129" Height="22" SelectionChanged="DepartureChanged" SelectedIndex="0">
+            <ComboBoxItem Content="Track#1"/>
+            <ComboBoxItem Content="Track#2"/>
+        </ComboBox>
+
+        <Label Content="Set speed" Canvas.Top="566" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
+        <Slider Name="SpeedSlide" Value="{Binding SetSpeed}" Canvas.Left="15" Canvas.Top="608" Width="280" Maximum="120" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
+        <TextBox Height="24" Canvas.Left="300" TextWrapping="Wrap" Text="{Binding ElementName=SpeedSlide, Path=Value, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="608" Width="45" FontSize="20"/>
+
+        <Label Content="Current speed:" Canvas.Top="671" Canvas.Bottom="20" FontSize="20" Canvas.Left="10" Width="144"/>
+        <TextBlock x:Name="DisplayVelocity" Canvas.Left="154" TextWrapping="Wrap" Text="{Binding Speed}" Canvas.Top="646" Height="62" Width="133" FontSize="48"/>
+
+    </Canvas>
+</Window>

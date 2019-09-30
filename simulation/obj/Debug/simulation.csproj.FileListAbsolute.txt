@@ -1,0 +1,15 @@
+D:\szakdolgozat\blockSystem\simulation\bin\Debug\simulation.exe.config
+D:\szakdolgozat\blockSystem\simulation\bin\Debug\simulation.exe
+D:\szakdolgozat\blockSystem\simulation\bin\Debug\simulation.pdb
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\simulation.csprojAssemblyReference.cache
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\MainWindow.g.cs
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\App.g.cs
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\simulation_MarkupCompile.cache
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\simulation_MarkupCompile.lref
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\MainWindow.baml
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\simulation.g.resources
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\simulation.Properties.Resources.resources
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\simulation.csproj.GenerateResource.cache
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\simulation.csproj.CoreCompileInputs.cache
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\simulation.exe
+D:\szakdolgozat\blockSystem\simulation\obj\Debug\simulation.pdb
