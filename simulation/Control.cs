@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using System.Windows;
 
 namespace simulation
 {
@@ -53,7 +54,10 @@ namespace simulation
 
         private void Tick(object sender, EventArgs e)
         {
-            if (DepartureConstraints() == false) SetSpeed = 0;
+            if (DepartureConstraints() == false)
+            {
+                SetSpeed = 0;
+            }
             else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed) SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
             Roll();
             if (SetSpeed > Fecske.Speed) Fecske.Accelerate();
@@ -174,6 +178,31 @@ namespace simulation
                     return true;
                 }
             }
+        }
+
+        public void SwitchRight()
+        {
+            if (Layout.Blocks[0].CCWSignal.State == SignalState.Red && Layout.Blocks[1].CCWSignal.State == SignalState.Red
+                && Layout.Blocks[5].CWSignal.State == SignalState.Red)
+            {
+                //TODO signal
+                Layout.RightSwitch.DoSwitch();
+            }
+            else MessageBox.Show("Switch cannot be done, because signals permit passing.", "Warning",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        public void SwitchLeft()
+        {
+            if (Layout.Blocks[0].CWSignal.State == SignalState.Red && Layout.Blocks[1].CWSignal.State == SignalState.Red
+                && Layout.Blocks[3].CCWSignal.State == SignalState.Red)
+            {
+                //TODO signal
+                Layout.LeftSwitch.DoSwitch();
+
+            }
+            else MessageBox.Show("Switch cannot be done, because signals permit passing.", "Warning",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
     }

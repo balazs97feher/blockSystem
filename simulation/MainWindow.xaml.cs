@@ -51,12 +51,12 @@ namespace simulation
 
         private void SwitchLeft(object sender, RoutedEventArgs e)
         {
-            Layout.LeftSwitch.DoSwitch();
+            Controller.SwitchLeft();
         }
 
         private void SwitchRight(object sender, RoutedEventArgs e)
         {
-            Layout.RightSwitch.DoSwitch();
+            Controller.SwitchRight();
         }
 
         private void DepartureChanged(object sender, SelectionChangedEventArgs e)

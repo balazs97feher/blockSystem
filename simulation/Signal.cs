@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -28,6 +29,7 @@ namespace simulation
     {
         private Block ContainerBlock;
         public SignalState State;
+        public bool Settable;
         public int MaxSpeed;
         private SignalOrientation Orientation;
         private Visual Display;
@@ -40,6 +42,7 @@ namespace simulation
             Display = new Visual(this);
             SetState(SignalState.Red);
             MaxSpeed = 0;
+            Settable = true;
         }
 
         public void SetState(SignalState s)
@@ -83,12 +86,17 @@ namespace simulation
 
             private void SignalClicked(object sender, MouseButtonEventArgs e)
             {
-                ComboBox c = new ComboBox();
-                c.ItemsSource = new List<string> { "Green", "Red", "Yellow" };
-                Canvas.SetLeft(c, S.Coord.X);
-                Canvas.SetTop(c, S.Coord.Y);
-                MainWindow.AppCanvas.Children.Add(c);
-                c.SelectionChanged += SignalChanged;
+                if (S.Settable)
+                {
+                    ComboBox c = new ComboBox();
+                    c.ItemsSource = new List<string> { "Green", "Red", "Yellow" };
+                    Canvas.SetLeft(c, S.Coord.X);
+                    Canvas.SetTop(c, S.Coord.Y);
+                    MainWindow.AppCanvas.Children.Add(c);
+                    c.SelectionChanged += SignalChanged;
+                }
+                else MessageBox.Show("Signal cannot be set. Please check switches.", "Warning",
+                MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
             private void SignalChanged(object sender, SelectionChangedEventArgs e)
