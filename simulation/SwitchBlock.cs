@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace simulation
 {
-    class SwitchBlock : Block //a fork shaped block
-    { //contains exactly 3 Track instances: 1 horizontal, 1 switch, 1 bottomleft/bottomright
+    // a fork shaped block
+    // contains exactly 3 Track instances: 1 horizontal, 1 switch, 1 bottomleft/bottomright
+    class SwitchBlock : Block
+    {
         public Switch S;
         public StraightTrack Bottom;
         public StraightTrack Horizontal;

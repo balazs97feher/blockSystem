@@ -5,10 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:simulation"
         mc:Ignorable="d"
-        Title="Simulation" Height="768" Width="1366">
+        Title="Simulation" Height="1080" Width="1920">
     <Canvas x:Name="ApplicationCanvas" >
-        <Rectangle Width="1440" Height="480" Fill="Green" Canvas.Left="0" Canvas.Top="0" />
-
         <Label Content="Set direction" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
         <ComboBox Canvas.Left="15" Canvas.Top="529" Width="129" SelectionChanged="DirectionChanged" SelectedIndex="0">
             <ComboBoxItem>Clockwise</ComboBoxItem>

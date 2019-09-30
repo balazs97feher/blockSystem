@@ -61,7 +61,7 @@ namespace simulation
 
         private void DepartureChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Control.Initialized)
+            if (Control.Initialized) // checks if there is a train to depart at all
             {
                 ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
                 switch (item.Content.ToString())
@@ -80,5 +80,6 @@ namespace simulation
         {
             Controller.SetSpeed = (int)(sender as Slider).Value;
         }
+
     }
 }

@@ -18,7 +18,7 @@ namespace simulation
 
         public Block(int Id)
         {
-            Length = 1000;
+            Length = 3000;
             Tracks = new List<Track>();
             this.Id = Id;
             CCWSignal = null;
@@ -41,7 +41,7 @@ namespace simulation
         public virtual void UpdateEOBSpeed()
         {
             if (Layout.DirectionCW == true && CWSignal != null) EOBSpeed = CWSignal.MaxSpeed;
-            else if (Layout.DirectionCW==false && CCWSignal != null) EOBSpeed = CCWSignal.MaxSpeed;
+            else if (Layout.DirectionCW == false && CCWSignal != null) EOBSpeed = CCWSignal.MaxSpeed;
             else EOBSpeed = 120;
         }
 

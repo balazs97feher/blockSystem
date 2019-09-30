@@ -29,9 +29,7 @@ namespace simulation
         private Block ContainerBlock;
         public SignalState State;
         public int MaxSpeed;
-        public SignalOrientation Orientation;
-        private static int NextId = 1;
-        private int Id;
+        private SignalOrientation Orientation;
         private Visual Display;
 
 
@@ -42,7 +40,6 @@ namespace simulation
             Display = new Visual(this);
             SetState(SignalState.Red);
             MaxSpeed = 0;
-            Id = NextId++;
         }
 
         public void SetState(SignalState s)
@@ -137,7 +134,6 @@ namespace simulation
             public void Draw()
             {
                 Update();
-                SignalImg.Source = bitmap;
                 RotateTransform rotateTransform = new RotateTransform((double)S.Orientation);
                 SignalImg.RenderTransform = rotateTransform;
                 Canvas.SetTop(SignalImg, S.Coord.Y);

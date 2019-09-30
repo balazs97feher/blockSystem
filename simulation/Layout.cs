@@ -17,7 +17,7 @@ namespace simulation
         static public void Initialize()
         {
             int x = 0, y = 0;
-            DrawBackground();
+            DrawBackground(12, 4);
 
             // ***************** Block#0 *****************
             Block B_0 = new Block(0);
@@ -111,13 +111,13 @@ namespace simulation
             Blocks.ForEach(b => b.Draw());
         }
 
-        static private void DrawBackground()
+        static private void DrawBackground(int N, int M) // draws a NxM grid as background
         {
             int x = 0, y = 0;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < M; i++)
             {
                 x = 0;
-                for (int j = 0; j < 12; j++)
+                for (int j = 0; j < N; j++)
                 {
                     (new Field(x, y)).Draw();
                     x += Field.SquareSize;

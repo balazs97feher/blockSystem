@@ -20,7 +20,7 @@ namespace simulation
 
     public class StraightTrack : Track
     {
-        public TrackOrientation Orientation;
+        private TrackOrientation Orientation;
         private Visual Display;
 
         public StraightTrack(int x, int y, TrackOrientation o) : base(x, y)
@@ -75,7 +75,7 @@ namespace simulation
                 }
             }
 
-            public void DrawCenter()
+            private void DrawCenter()
             {
                 List<Line> Lines = new List<Line> { Background, Middle };
                 Lines.ForEach(L => L.StrokeThickness = 10);
@@ -102,7 +102,7 @@ namespace simulation
                 Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
             }
 
-            public void DrawCorner()
+            private void DrawCorner()
             {
                 List<Line> Lines = new List<Line> { Background, Middle };
                 Lines.ForEach(L => L.StrokeThickness = 10);

@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace simulation
 {
-
-
-
     public class Train : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged; // need to implement the above interface to display speed
@@ -42,7 +39,7 @@ namespace simulation
             Deceleration = 1;
         }
 
-        public int Roll() //when crossing block border, returns the remaining distance, that the train goes after crossing
+        public int Roll() //when crossing block border, returns the remaining distance that the train goes after crossing
         {
             if (DistanceFromEOB >= Speed)
             {
@@ -52,7 +49,7 @@ namespace simulation
             else return Speed - DistanceFromEOB;
         }
 
-        public void Roll(int D) //the train rolls for D distance
+        public void Roll(int D) // the train rolls for D distance
         {
             DistanceFromEOB -= D;
         }
@@ -67,9 +64,6 @@ namespace simulation
             if (Speed > Deceleration) Speed -= Deceleration;
             else Speed = 0;
         }
-
-        
-
 
     }
 }

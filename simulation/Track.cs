@@ -12,6 +12,7 @@ namespace simulation
         Occupied,
         Highlighted
     }
+
     public abstract class Track : Field
     {
         public TrackState State;
@@ -22,11 +23,6 @@ namespace simulation
         }
 
         public abstract void SetState(TrackState S);
-    
-        public override void Draw()
-        {
-            base.Draw();
-        }
 
         public System.Windows.Media.SolidColorBrush GetStateColor(TrackState s) //milyen szinnel rajzoljuk ki a szakaszt
         {
@@ -42,7 +38,6 @@ namespace simulation
                     throw new ArgumentOutOfRangeException();
             }
         }
-
 
     }
 }

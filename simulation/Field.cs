@@ -39,7 +39,5 @@ namespace simulation
             MainWindow.AppCanvas.Children.Add(Rect);
         }
 
-
-        
     }
 }

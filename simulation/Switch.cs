@@ -10,13 +10,13 @@ namespace simulation
 {
     public enum SwitchOrientation
     {
-        CW, //a gyok jobb oldalon; CW fele valt
-        CCW //a gyok bal oldalon; CCW fele valt
+        CW, // points on the left
+        CCW // points on the right
     }
 
     public class Switch : Track
     {
-        public SwitchOrientation Orientation;
+        private SwitchOrientation Orientation;
         public bool Straight;
         private Visual Display;
 
