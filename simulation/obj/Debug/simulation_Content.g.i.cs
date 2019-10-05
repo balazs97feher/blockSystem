@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("3l_yellow.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("dashboard.jpg")]
 
 

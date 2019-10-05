@@ -6,30 +6,37 @@
         xmlns:local="clr-namespace:simulation"
         mc:Ignorable="d"
         Title="Simulation" Height="1080" Width="1920">
-    <Canvas x:Name="ApplicationCanvas" >
-        <Label Content="Set direction" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
-        <ComboBox Canvas.Left="15" Canvas.Top="529" Width="129" SelectionChanged="DirectionChanged" SelectedIndex="0">
-            <ComboBoxItem>Clockwise</ComboBoxItem>
-            <ComboBoxItem>Counterclockwise</ComboBoxItem>
+    <Canvas x:Name="ApplicationCanvas" Background="Green">
+        <Label Content="Menetirány" Canvas.Top="482" Canvas.Bottom="20" FontSize="28" Canvas.Left="10" Width="155"/>
+        <ComboBox Canvas.Left="15" Canvas.Top="529" Width="140" SelectionChanged="DirectionChanged" SelectedIndex="0" Height="32" FontSize="16">
+            <ComboBoxItem>Balra</ComboBoxItem>
+            <ComboBoxItem>Jobbra</ComboBoxItem>
         </ComboBox>
 
-        <Label Content="Set left switch" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="168"/>
-        <Button Content="Switch" Canvas.Left="173" Canvas.Top="529" Width="80" Click="SwitchLeft" Height="22"/>
-        <Label Content="Set right switch" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="312"/>
-        <Button Content="Switch" Canvas.Left="317" Canvas.Top="529" Width="80" Height="22" Click="SwitchRight"/>
+        <Label Content="Bal váltó" Canvas.Top="482" Canvas.Bottom="20" FontSize="28" Canvas.Left="360"/>
+        <Button Content="Működtetés" Canvas.Left="366" Canvas.Top="529" Width="100" Click="SwitchLeft" Height="32" FontSize="16"/>
+        <Label Content="Jobb váltó" Canvas.Top="482" Canvas.Bottom="20" FontSize="28" Canvas.Left="960"/>
+        <Button Content="Működtetés" Canvas.Left="964" Canvas.Top="529" Width="100" Height="32" Click="SwitchRight" FontSize="16"/>
 
-        <Label Content="Set departure" Canvas.Top="492" Canvas.Bottom="20" FontSize="20" Canvas.Left="476"/>
-        <ComboBox Canvas.Left="481" Canvas.Top="529" Width="129" Height="22" SelectionChanged="DepartureChanged" SelectedIndex="0">
-            <ComboBoxItem Content="Track#1"/>
-            <ComboBoxItem Content="Track#2"/>
+        <Label Content="Indulás" Canvas.Top="482" Canvas.Bottom="20" FontSize="28" Canvas.Left="193" Width="134"/>
+        <ComboBox Canvas.Left="197" Canvas.Top="529" Width="129" Height="32" SelectionChanged="DepartureChanged" SelectedIndex="0" FontSize="16">
+            <ComboBoxItem Content="Felső vágány"/>
+            <ComboBoxItem Content="Alsó vágány"/>
         </ComboBox>
 
-        <Label Content="Set speed" Canvas.Top="566" Canvas.Bottom="20" FontSize="20" Canvas.Left="10"/>
-        <Slider Name="SpeedSlide" Value="{Binding SetSpeed}" Canvas.Left="15" Canvas.Top="608" Width="280" Maximum="120" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
-        <TextBox Height="24" Canvas.Left="300" TextWrapping="Wrap" Text="{Binding ElementName=SpeedSlide, Path=Value, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="608" Width="45" FontSize="20"/>
+        <Label Content="Sebesség beállítása" Canvas.Top="583" Canvas.Bottom="20" FontSize="28" Canvas.Left="10"/>
+        <Slider Name="SpeedSlide" Value="{Binding SetSpeed}" Canvas.Left="15" Canvas.Top="625" Width="280" Maximum="80" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
+        <TextBox Height="39" Canvas.Left="300" TextWrapping="Wrap" Text="{Binding ElementName=SpeedSlide, Path=Value, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="610" Width="51" FontSize="28" Background="Green" BorderThickness="0"/>
 
-        <Label Content="Current speed:" Canvas.Top="671" Canvas.Bottom="20" FontSize="20" Canvas.Left="10" Width="144"/>
-        <TextBlock x:Name="DisplayVelocity" Canvas.Left="154" TextWrapping="Wrap" Text="{Binding Speed}" Canvas.Top="646" Height="62" Width="133" FontSize="48"/>
+        <TextBlock x:Name="DisplayVelocity" Canvas.Left="654" TextWrapping="Wrap" Text="{Binding Speed}" Canvas.Top="622" Height="90" Width="133" FontSize="64" Foreground="Red" Panel.ZIndex="2" TextAlignment="Center"/>
+        <Image Height="280" Canvas.Left="455" Canvas.Top="494" Width="524" >
+            <Image.Source>
+                <BitmapImage UriSource="dashboard.jpg" />
+            </Image.Source>
+        </Image>
+        <Label Content="Információ" Canvas.Top="664" Canvas.Bottom="20" FontSize="28" Canvas.Left="10"/>
+        <TextBox x:Name="Information" Height="62" Canvas.Left="15" TextWrapping="Wrap" Text="{Binding Information}" Canvas.Top="712" Width="451" Background="Green" BorderThickness="1" FontSize="22" Foreground="LightGray"/>
+
 
     </Canvas>
 </Window>

@@ -16,14 +16,14 @@ namespace simulation
 
         public int EOBSpeed; // maximum speed at which the train is allowed to reach the end of the current block
 
-        public Block(int Id)
+        public Block(int Id, int Length)
         {
-            Length = 3000;
+            this.Length = Length;
             Tracks = new List<Track>();
             this.Id = Id;
             CCWSignal = null;
             CWSignal = null;
-            EOBSpeed = 120;
+            EOBSpeed = 80;
         }
 
         public void AddCWSignal(Signal S)
@@ -42,7 +42,7 @@ namespace simulation
         {
             if (Layout.DirectionCW == true && CWSignal != null) EOBSpeed = CWSignal.MaxSpeed;
             else if (Layout.DirectionCW == false && CCWSignal != null) EOBSpeed = CCWSignal.MaxSpeed;
-            else EOBSpeed = 120;
+            else EOBSpeed = 80;
         }
 
         public virtual void Occupy()

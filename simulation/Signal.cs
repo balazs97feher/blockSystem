@@ -15,8 +15,7 @@ namespace simulation
     {
         Red,
         Green,
-        Yellow,
-        Blank
+        Yellow
     }
 
     public enum SignalOrientation
@@ -25,8 +24,9 @@ namespace simulation
         CCW = 90
     }
 
-    public class Signal : Field
+    public class Signal
     {
+        public Coordinates Coord;
         private Block ContainerBlock;
         public SignalState State;
         public bool Settable;
@@ -35,14 +35,16 @@ namespace simulation
         private Visual Display;
 
 
-        public Signal(int x, int y, SignalOrientation o, Block b) : base(x, y)
+        public Signal(int x, int y, SignalOrientation o, Block b, bool settable)
         {
+            Coord.X = x;
+            Coord.Y = y;
             Orientation = o;
             ContainerBlock = b;
+            Settable = settable;
             Display = new Visual(this);
             SetState(SignalState.Red);
             MaxSpeed = 0;
-            Settable = true;
         }
 
         public void SetState(SignalState s)
@@ -51,7 +53,7 @@ namespace simulation
             switch (s)
             {
                 case SignalState.Green:
-                    MaxSpeed = 120;
+                    MaxSpeed = 80;
                     break;
                 case SignalState.Red:
                     MaxSpeed = 0;
@@ -66,7 +68,7 @@ namespace simulation
             Display.Update();
         }
 
-        public override void Draw()
+        public void Draw()
         {
             Display.Draw();
         }
@@ -89,7 +91,7 @@ namespace simulation
                 if (S.Settable)
                 {
                     ComboBox c = new ComboBox();
-                    c.ItemsSource = new List<string> { "Green", "Red", "Yellow" };
+                    c.ItemsSource = new List<string> { "Zöld", "Piros", "Sárga" };
                     Canvas.SetLeft(c, S.Coord.X);
                     Canvas.SetTop(c, S.Coord.Y);
                     MainWindow.AppCanvas.Children.Add(c);
@@ -104,13 +106,13 @@ namespace simulation
                 ComboBox C = (ComboBox)sender;
                 switch ((string)C.SelectedItem)
                 {
-                    case "Green":
+                    case "Zöld":
                         S.SetState(SignalState.Green);
                         break;
-                    case "Red":
+                    case "Piros":
                         S.SetState(SignalState.Red);
                         break;
-                    case "Yellow":
+                    case "Sárga":
                         S.SetState(SignalState.Yellow);
                         break;
                     default:

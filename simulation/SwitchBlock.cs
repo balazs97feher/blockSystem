@@ -14,7 +14,7 @@ namespace simulation
         public StraightTrack Bottom;
         public StraightTrack Horizontal;
 
-        public SwitchBlock(int Id) : base(Id) { EOBSpeed = 40; }
+        public SwitchBlock(int Id, int Length) : base(Id, Length) { EOBSpeed = 40; }
 
         public override void UpdateEOBSpeed()
         {

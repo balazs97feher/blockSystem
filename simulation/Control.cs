@@ -17,6 +17,17 @@ namespace simulation
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
 
+        private string information; // information, instructions and warnings for the user
+        public string Information
+        {
+            get { return information; }
+            set
+            {
+                information = value;
+                NotifyPropertyChanged("Information");
+            }
+        }
+
         public Train Fecske;
         private int setSpeed;
         public int SetSpeed // the speed that's been set
@@ -29,9 +40,6 @@ namespace simulation
             }
         }
 
-        private Signal PrevSignal;
-        private SignalState PrevSignalState;
-
         public static bool Initialized = false; //do we have a controller
         private DispatcherTimer Timer;
 
@@ -39,7 +47,6 @@ namespace simulation
         {
             Fecske = new Train(0);
             Initialized = true;
-            PrevSignal = null;
             SetDeparture(0);
             StartTimer();
         }
@@ -83,24 +90,10 @@ namespace simulation
 
         public void SetSignal() // sets the signal to red that the train has passed
         {
-            ResetSignal();
             if (Layout.DirectionCW == true && Layout.Blocks[Fecske.Block].CWSignal != null)
-            {
-                PrevSignal = Layout.Blocks[Fecske.Block].CWSignal;
-                PrevSignalState = PrevSignal.State;
-                PrevSignal.SetState(SignalState.Red);
-            }
+                Layout.Blocks[Fecske.Block].CWSignal.SetState(SignalState.Red);
             else if (Layout.DirectionCW == false && Layout.Blocks[Fecske.Block].CCWSignal != null)
-            {
-                PrevSignal = Layout.Blocks[Fecske.Block].CCWSignal;
-                PrevSignalState = PrevSignal.State;
-                PrevSignal.SetState(SignalState.Red);
-            }
-        }
-
-        public void ResetSignal() // once the train is out of a block, it resets the previous block's signal to it's original state
-        {
-            if (PrevSignal != null) PrevSignal.SetState(PrevSignalState);
+                Layout.Blocks[Fecske.Block].CCWSignal.SetState(SignalState.Red);
         }
 
         public void SetDeceleration() // sets the deceleration of the train according to its speed and the current block's speedlimit
@@ -113,7 +106,6 @@ namespace simulation
                 else Fecske.Deceleration = D;
             }
         }
-
 
         public void SetDeparture(int BlockId)
         {
@@ -185,8 +177,9 @@ namespace simulation
             if (Layout.Blocks[0].CCWSignal.State == SignalState.Red && Layout.Blocks[1].CCWSignal.State == SignalState.Red
                 && Layout.Blocks[5].CWSignal.State == SignalState.Red)
             {
-                //TODO signal
                 Layout.RightSwitch.DoSwitch();
+                Layout.Blocks[0].CCWSignal.Settable = !Layout.Blocks[0].CCWSignal.Settable;
+                Layout.Blocks[1].CCWSignal.Settable = !Layout.Blocks[1].CCWSignal.Settable;
             }
             else MessageBox.Show("Switch cannot be done, because signals permit passing.", "Warning",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -197,9 +190,9 @@ namespace simulation
             if (Layout.Blocks[0].CWSignal.State == SignalState.Red && Layout.Blocks[1].CWSignal.State == SignalState.Red
                 && Layout.Blocks[3].CCWSignal.State == SignalState.Red)
             {
-                //TODO signal
                 Layout.LeftSwitch.DoSwitch();
-
+                Layout.Blocks[0].CWSignal.Settable = !Layout.Blocks[0].CWSignal.Settable;
+                Layout.Blocks[1].CWSignal.Settable = !Layout.Blocks[1].CWSignal.Settable;
             }
             else MessageBox.Show("Switch cannot be done, because signals permit passing.", "Warning",
                 MessageBoxButton.OK, MessageBoxImage.Warning);

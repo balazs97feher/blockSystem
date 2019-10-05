@@ -37,12 +37,13 @@ namespace simulation
 
             DisplayVelocity.DataContext = Controller.Fecske;
             SpeedSlide.DataContext = Controller;
+            Information.DataContext = Controller;
         }
 
         private void DirectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
-            if (item.Content.ToString() == "Clockwise")
+            if (item.Content.ToString() == "Balra")
             {
                 Layout.SetCWDirection(true);
             }
@@ -66,10 +67,10 @@ namespace simulation
                 ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
                 switch (item.Content.ToString())
                 {
-                    case "Track#1":
+                    case "Felső vágány":
                         Controller.SetDeparture(0);
                         break;
-                    case "Track#2":
+                    case "Alsó vágány":
                         Controller.SetDeparture(1);
                         break;
                 }
