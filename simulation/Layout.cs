@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 
 namespace simulation
@@ -13,12 +9,14 @@ namespace simulation
         static public Switch LeftSwitch;
         static public Switch RightSwitch;
         static public bool DirectionCW = true;
+        static private Canvas Canvas;
+        
 
-        static public void Initialize()
+        static public void Initialize(Canvas C)
         {
+            Canvas = C;
             int x = 0, y = 0;
-            DrawBackground(12, 4);
-
+            
             // ***************** Block#0 *****************
             Block B_0 = new Block(0, 2000);
             x = Field.SquareSize * 4; y = Field.SquareSize * 2;
@@ -27,8 +25,8 @@ namespace simulation
                 B_0.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_0.AddCWSignal(new Signal(480, 340, SignalOrientation.CW, B_0, false)); // signals of block#0 are not settable,
-            B_0.AddCCWSignal(new Signal(960, 310, SignalOrientation.CCW, B_0, false)); // because switches are pointing straight 
+            B_0.AddCWSignal(new Signal(480, 340, SignalOrientation.CW, B_0, false, Canvas)); // signals of block#0 are not settable,
+            B_0.AddCCWSignal(new Signal(960, 310, SignalOrientation.CCW, B_0, false, Canvas)); // because switches are pointing straight 
             Blocks.Add(B_0);
 
             // ***************** Block#1 *****************
@@ -39,8 +37,8 @@ namespace simulation
                 B_1.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, B_1, true));
-            B_1.AddCCWSignal(new Signal(960, 380, SignalOrientation.CCW, B_1, true));
+            B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, B_1, true, Canvas));
+            B_1.AddCCWSignal(new Signal(960, 380, SignalOrientation.CCW, B_1, true, Canvas));
             Blocks.Add(B_1);
 
             // ***************** Block#2 *****************
@@ -66,7 +64,7 @@ namespace simulation
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.VerticalCenter));
             y -= Field.SquareSize;
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.BottomRight));
-            B_3.AddCCWSignal(new Signal(230, 380, SignalOrientation.CCW, B_3, true));
+            B_3.AddCCWSignal(new Signal(230, 380, SignalOrientation.CCW, B_3, true, Canvas));
             Blocks.Add(B_3);
 
             // ***************** Block#4 *****************
@@ -91,7 +89,7 @@ namespace simulation
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.TopLeft));
             x -= Field.SquareSize;
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
-            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, B_5, true));
+            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, B_5, true, Canvas));
             Blocks.Add(B_5);
 
             // ***************** Block#6 *****************
@@ -108,7 +106,8 @@ namespace simulation
 
         static public void Draw()
         {
-            Blocks.ForEach(b => b.Draw());
+            DrawBackground(12, 4);
+            Blocks.ForEach(b => b.Draw(Canvas));
         }
 
         static private void DrawBackground(int N, int M) // draws a NxM grid as background
@@ -119,7 +118,7 @@ namespace simulation
                 x = 0;
                 for (int j = 0; j < N; j++)
                 {
-                    (new Field(x, y)).Draw();
+                    (new Field(x, y)).Draw(Canvas);
                     x += Field.SquareSize;
                 }
                 y += Field.SquareSize;

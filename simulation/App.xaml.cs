@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace simulation
 {
@@ -13,5 +7,18 @@ namespace simulation
     /// </summary>
     public partial class App : Application
     {
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            Control Controller = new Control();
+            MainWindow AppWindow = new MainWindow(Controller);
+            Layout.Initialize(AppWindow.AppCanvas);
+            Controller.Initialize();
+
+            Layout.Draw();
+            AppWindow.Title = "Automatikus térköz szimulációja";
+            AppWindow.Show();
+        }
+
     }
 }

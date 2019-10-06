@@ -1,20 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Timers;
-using System.Windows.Threading;
 
 namespace simulation
 {
@@ -23,17 +8,14 @@ namespace simulation
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static Canvas AppCanvas;
-        public static Control Controller;
+        public Canvas AppCanvas;
+        private Control Controller;
 
-        public MainWindow()
+        public MainWindow(Control C)
         {
             InitializeComponent();
             AppCanvas = ApplicationCanvas;
-
-            Layout.Initialize();
-            Layout.Draw();
-            Controller = new Control();
+            Controller = C;
 
             DisplayVelocity.DataContext = Controller.Fecske;
             SpeedSlide.DataContext = Controller;
@@ -62,7 +44,7 @@ namespace simulation
 
         private void DepartureChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Control.Initialized) // checks if there is a train to depart at all
+            if (Controller != null)
             {
                 ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
                 switch (item.Content.ToString())

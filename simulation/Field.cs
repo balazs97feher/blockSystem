@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Shapes;
 
 namespace simulation
@@ -23,7 +18,7 @@ namespace simulation
             Coord.Y = y;
         }
 
-        public virtual void Draw()
+        public virtual void Draw(Canvas Canvas)
         {
             Rectangle Rect = new System.Windows.Shapes.Rectangle
             {
@@ -36,7 +31,7 @@ namespace simulation
 
             Canvas.SetTop(Rect, Coord.Y);
             Canvas.SetLeft(Rect, Coord.X);
-            MainWindow.AppCanvas.Children.Add(Rect);
+            Canvas.Children.Add(Rect);
         }
 
     }

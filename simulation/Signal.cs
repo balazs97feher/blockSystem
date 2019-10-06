@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -35,14 +32,14 @@ namespace simulation
         private Visual Display;
 
 
-        public Signal(int x, int y, SignalOrientation o, Block b, bool settable)
+        public Signal(int x, int y, SignalOrientation o, Block b, bool settable, Canvas Canvas)
         {
             Coord.X = x;
             Coord.Y = y;
             Orientation = o;
             ContainerBlock = b;
             Settable = settable;
-            Display = new Visual(this);
+            Display = new Visual(this, Canvas);
             SetState(SignalState.Red);
             MaxSpeed = 0;
         }
@@ -68,19 +65,21 @@ namespace simulation
             Display.Update();
         }
 
-        public void Draw()
+        public void Draw(Canvas Canvas)
         {
-            Display.Draw();
+            Display.Draw(Canvas);
         }
 
         class Visual
         {
+            private Canvas Canvas;
             private Signal S;
             private BitmapImage bitmap;
             private Image SignalImg;
 
-            public Visual(Signal S)
+            public Visual(Signal S, Canvas Canvas)
             {
+                this.Canvas = Canvas;
                 this.S = S;
                 SignalImg = new Image { Width = 30 };
                 SignalImg.MouseDown += SignalClicked;
@@ -94,7 +93,7 @@ namespace simulation
                     c.ItemsSource = new List<string> { "Zöld", "Piros", "Sárga" };
                     Canvas.SetLeft(c, S.Coord.X);
                     Canvas.SetTop(c, S.Coord.Y);
-                    MainWindow.AppCanvas.Children.Add(c);
+                    Canvas.Children.Add(c);
                     c.SelectionChanged += SignalChanged;
                 }
                 else MessageBox.Show("Signal cannot be set. Please check switches.", "Warning",
@@ -118,7 +117,7 @@ namespace simulation
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                MainWindow.AppCanvas.Children.Remove(C);
+                Canvas.Children.Remove(C);
             }
 
             public void Update()
@@ -141,7 +140,7 @@ namespace simulation
                 SignalImg.Source = bitmap;
             }
 
-            public void Draw()
+            public void Draw(Canvas Canvas)
             {
                 Update();
                 RotateTransform rotateTransform = new RotateTransform((double)S.Orientation);
@@ -149,7 +148,7 @@ namespace simulation
                 Canvas.SetTop(SignalImg, S.Coord.Y);
                 Canvas.SetLeft(SignalImg, S.Coord.X);
                 Canvas.SetZIndex(SignalImg, 1);
-                MainWindow.AppCanvas.Children.Add(SignalImg);
+                Canvas.Children.Add(SignalImg);
             }
 
 

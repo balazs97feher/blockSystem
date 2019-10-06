@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Windows;
 
@@ -15,17 +11,6 @@ namespace simulation
         private void NotifyPropertyChanged(string Property)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
-        }
-
-        private string information; // information, instructions and warnings for the user
-        public string Information
-        {
-            get { return information; }
-            set
-            {
-                information = value;
-                NotifyPropertyChanged("Information");
-            }
         }
 
         public Train Fecske;
@@ -40,13 +25,27 @@ namespace simulation
             }
         }
 
-        public static bool Initialized = false; //do we have a controller
+        private string information;
+        public string Information // the speed that's been set
+        {
+            get { return information; }
+            set
+            {
+                information = value;
+                NotifyPropertyChanged("Information");
+            }
+        }
+
         private DispatcherTimer Timer;
 
         public Control()
         {
             Fecske = new Train(0);
-            Initialized = true;
+            Information = "asdasdasdsa asdasdasdsa asdasdasdsa asdasdasdsa";
+        }
+
+        public void Initialize()
+        {
             SetDeparture(0);
             StartTimer();
         }
@@ -109,14 +108,11 @@ namespace simulation
 
         public void SetDeparture(int BlockId)
         {
-            if (Initialized)
-            {
                 FreeBlock(Fecske.Block);
                 Fecske.Block = BlockId;
                 Fecske.Speed = 0;
                 Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
                 OccupyBlock(BlockId);
-            }
         }
 
         public void OccupyBlock(int BlockId)

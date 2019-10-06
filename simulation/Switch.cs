@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
@@ -39,10 +35,10 @@ namespace simulation
             Display.Update();
         }
 
-        public override void Draw()
+        public override void Draw(Canvas Canvas)
         {
-            base.Draw();
-            Display.Draw();
+            base.Draw(Canvas);
+            Display.Draw(Canvas);
         }
 
         class Visual
@@ -78,7 +74,7 @@ namespace simulation
                 }
             }
 
-            public void Draw()
+            public void Draw(Canvas Canvas)
             {
                 List<Line> Lines = new List<Line> { BackgroundStraight, MiddleStraight, BackgroundDiverging, MiddleDiverging };
                 Lines.ForEach(L => L.StrokeThickness = 10);
@@ -123,7 +119,7 @@ namespace simulation
                     MiddleDiverging.X2 = Field.SquareSize * 5 / 12;
                     MiddleDiverging.Y2 = Field.SquareSize * 1 / 12;
                 }
-                Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
+                Lines.ForEach(L => Canvas.Children.Add(L));
             }
 
         }

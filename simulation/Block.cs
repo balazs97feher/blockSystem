@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace simulation
 {
@@ -55,11 +52,11 @@ namespace simulation
             Tracks.ForEach(t => t.SetState(TrackState.Default));
         }
 
-        public virtual void Draw()
+        public virtual void Draw(Canvas Canvas)
         {
-            Tracks.ForEach(t => t.Draw());
-            if (CWSignal != null) CWSignal.Draw();
-            if (CCWSignal != null) CCWSignal.Draw();
+            Tracks.ForEach(t => t.Draw(Canvas));
+            if (CWSignal != null) CWSignal.Draw(Canvas);
+            if (CCWSignal != null) CCWSignal.Draw(Canvas);
         }
 
     }

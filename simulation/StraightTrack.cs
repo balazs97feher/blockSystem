@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
@@ -35,10 +31,10 @@ namespace simulation
             Display.Update();
         }
 
-        public override void Draw()
+        public override void Draw(Canvas Canvas)
         {
-            base.Draw();
-            Display.Draw();
+            base.Draw(Canvas);
+            Display.Draw(Canvas);
         }
 
         class Visual
@@ -59,23 +55,23 @@ namespace simulation
                 Middle.Stroke = T.GetStateColor(T.State);
             }
 
-            public void Draw()
+            public void Draw(Canvas Canvas)
             {
                 switch (T.Orientation)
                 {
                     case TrackOrientation.HorizontalCenter:
-                        DrawCenter();
+                        DrawCenter(Canvas);
                         break;
                     case TrackOrientation.VerticalCenter:
-                        DrawCenter();
+                        DrawCenter(Canvas);
                         break;
                     default:
-                        DrawCorner();
+                        DrawCorner(Canvas);
                         break;
                 }
             }
 
-            private void DrawCenter()
+            private void DrawCenter(Canvas Canvas)
             {
                 List<Line> Lines = new List<Line> { Background, Middle };
                 Lines.ForEach(L => L.StrokeThickness = 10);
@@ -99,10 +95,10 @@ namespace simulation
                     Middle.X1 = Field.SquareSize * 1 / 5;
                     Middle.X2 = Field.SquareSize * 4 / 5;
                 }
-                Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
+                Lines.ForEach(L => Canvas.Children.Add(L));
             }
 
-            private void DrawCorner()
+            private void DrawCorner(Canvas Canvas)
             {
                 List<Line> Lines = new List<Line> { Background, Middle };
                 Lines.ForEach(L => L.StrokeThickness = 10);
@@ -154,7 +150,7 @@ namespace simulation
                         Middle.Y2 = Field.SquareSize * 11 / 12;
                         break;
                 }
-                Lines.ForEach(L => MainWindow.AppCanvas.Children.Add(L));
+                Lines.ForEach(L => Canvas.Children.Add(L));
             }
 
         }

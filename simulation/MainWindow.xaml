@@ -34,9 +34,10 @@
                 <BitmapImage UriSource="dashboard.jpg" />
             </Image.Source>
         </Image>
+        
         <Label Content="Információ" Canvas.Top="664" Canvas.Bottom="20" FontSize="28" Canvas.Left="10"/>
-        <TextBox x:Name="Information" Height="62" Canvas.Left="15" TextWrapping="Wrap" Text="{Binding Information}" Canvas.Top="712" Width="451" Background="Green" BorderThickness="1" FontSize="22" Foreground="LightGray"/>
-
+        <TextBlock x:Name="Information" Height="56" Canvas.Left="19" TextWrapping="Wrap" Text="{Binding Information}" Canvas.Top="715" Width="444" Background="Green" FontSize="22" Foreground="LightGray"/>
+        <Border BorderBrush="Black" BorderThickness="1" Height="62" Canvas.Left="15" Canvas.Top="712" Width="451"/>
 
     </Canvas>
 </Window>

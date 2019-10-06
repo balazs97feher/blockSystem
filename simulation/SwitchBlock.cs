@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Controls;
 
 namespace simulation
 {
@@ -28,13 +24,13 @@ namespace simulation
             if (S.Straight == false) Bottom.SetState(TrackState.Occupied);
         }
 
-        public override void Draw()
+        public override void Draw(Canvas Canvas)
         {
-            S.Draw();
-            Bottom.Draw();
-            Horizontal.Draw();
-            if (CWSignal != null) CWSignal.Draw();
-            if (CCWSignal != null) CCWSignal.Draw();
+            S.Draw(Canvas);
+            Bottom.Draw(Canvas);
+            Horizontal.Draw(Canvas);
+            if (CWSignal != null) CWSignal.Draw(Canvas);
+            if (CCWSignal != null) CCWSignal.Draw(Canvas);
         }
 
         public override void Free()
