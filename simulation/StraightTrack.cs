@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace simulation
 {
@@ -77,7 +78,7 @@ namespace simulation
                 Lines.ForEach(L => L.StrokeThickness = 10);
                 Lines.ForEach(L => Canvas.SetLeft(L, T.Coord.X));
                 Lines.ForEach(L => Canvas.SetTop(L, T.Coord.Y));
-                Background.Stroke = System.Windows.Media.Brushes.Black;
+                Background.Stroke = Brushes.Black;
                 Middle.Stroke = T.GetStateColor(T.State);
                 if (T.Orientation == TrackOrientation.VerticalCenter)
                 {
@@ -104,9 +105,9 @@ namespace simulation
                 Lines.ForEach(L => L.StrokeThickness = 10);
                 Lines.ForEach(L => Canvas.SetLeft(L, T.Coord.X));
                 Lines.ForEach(L => Canvas.SetTop(L, T.Coord.Y));
-                Background.Stroke = System.Windows.Media.Brushes.Black;
+                Background.Stroke = Brushes.Black;
                 Middle.Stroke = T.GetStateColor(T.State);
-                Background.StrokeStartLineCap = Background.StrokeEndLineCap = System.Windows.Media.PenLineCap.Round;
+                Background.StrokeStartLineCap = Background.StrokeEndLineCap = PenLineCap.Round;
                 switch (T.Orientation)
                 {
                     case TrackOrientation.TopRight:

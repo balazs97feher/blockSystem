@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace simulation
 {
@@ -20,11 +21,11 @@ namespace simulation
 
         public virtual void Draw(Canvas Canvas)
         {
-            Rectangle Rect = new System.Windows.Shapes.Rectangle
+            Rectangle Rect = new Rectangle
             {
-                Stroke = System.Windows.Media.Brushes.LightGray,
+                Stroke = Brushes.LightGray,
                 StrokeThickness = 0.5,
-                Fill = System.Windows.Media.Brushes.Green,
+                Fill = Brushes.Green,
                 Height = Field.SquareSize,
                 Width = Field.SquareSize
             };

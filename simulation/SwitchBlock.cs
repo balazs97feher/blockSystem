@@ -12,11 +12,6 @@ namespace simulation
 
         public SwitchBlock(int Id, int Length) : base(Id, Length) { EOBSpeed = 40; }
 
-        public override void UpdateEOBSpeed()
-        {
-            EOBSpeed = 40;
-        }
-
         public override void Occupy()
         {
             Horizontal.SetState(TrackState.Occupied);

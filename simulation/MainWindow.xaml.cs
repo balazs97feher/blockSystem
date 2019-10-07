@@ -25,11 +25,15 @@ namespace simulation
         private void DirectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBoxItem item = (sender as ComboBox).SelectedItem as ComboBoxItem;
-            if (item.Content.ToString() == "Balra")
+            if (Controller != null)
             {
-                Layout.SetCWDirection(true);
+                if (item.Content.ToString() == "Balra")
+                {
+                    Controller.SetCWDirection(true);
+                }
+                else Controller.SetCWDirection(false);
+                Control.SetInformation("Menetirány megváltozott.");
             }
-            else Layout.SetCWDirection(false);
         }
 
         private void SwitchLeft(object sender, RoutedEventArgs e)

@@ -20,26 +20,17 @@ namespace simulation
             this.Id = Id;
             CCWSignal = null;
             CWSignal = null;
-            EOBSpeed = 80;
+            EOBSpeed = 0;
         }
 
         public void AddCWSignal(Signal S)
         {
             CWSignal = S;
-            UpdateEOBSpeed();
         }
 
         public void AddCCWSignal(Signal S)
         {
             CCWSignal = S;
-            UpdateEOBSpeed();
-        }
-
-        public virtual void UpdateEOBSpeed()
-        {
-            if (Layout.DirectionCW == true && CWSignal != null) EOBSpeed = CWSignal.MaxSpeed;
-            else if (Layout.DirectionCW == false && CCWSignal != null) EOBSpeed = CCWSignal.MaxSpeed;
-            else EOBSpeed = 80;
         }
 
         public virtual void Occupy()

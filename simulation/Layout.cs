@@ -10,6 +10,7 @@ namespace simulation
         static public Switch RightSwitch;
         static public bool DirectionCW = true;
         static private Canvas Canvas;
+        static public bool Initialized=false;
         
 
         static public void Initialize(Canvas C)
@@ -37,8 +38,8 @@ namespace simulation
                 B_1.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, B_1, true, Canvas));
-            B_1.AddCCWSignal(new Signal(960, 380, SignalOrientation.CCW, B_1, true, Canvas));
+            B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, B_1, true, Canvas)); // the only signal that is settable in the beginning
+            B_1.AddCCWSignal(new Signal(960, 380, SignalOrientation.CCW, B_1, false, Canvas));
             Blocks.Add(B_1);
 
             // ***************** Block#2 *****************
@@ -64,7 +65,7 @@ namespace simulation
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.VerticalCenter));
             y -= Field.SquareSize;
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.BottomRight));
-            B_3.AddCCWSignal(new Signal(230, 380, SignalOrientation.CCW, B_3, true, Canvas));
+            B_3.AddCCWSignal(new Signal(230, 380, SignalOrientation.CCW, B_3, false, Canvas)); // track is occupied, signal is not settable
             Blocks.Add(B_3);
 
             // ***************** Block#4 *****************
@@ -89,7 +90,7 @@ namespace simulation
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.TopLeft));
             x -= Field.SquareSize;
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
-            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, B_5, true, Canvas));
+            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, B_5, false, Canvas)); // track is occupied, signal is not settable
             Blocks.Add(B_5);
 
             // ***************** Block#6 *****************
@@ -102,6 +103,8 @@ namespace simulation
             y -= Field.SquareSize;
             B_6.Bottom = new StraightTrack(x, y, TrackOrientation.BottomLeft);
             Blocks.Add(B_6);
+
+            Initialized = true;
         }
 
         static public void Draw()
@@ -143,10 +146,155 @@ namespace simulation
             }
         }
 
-        static public void SetCWDirection(bool IsCW)
+        static public bool DepartureConstraints(int Block)
         {
-            DirectionCW = IsCW;
-            Blocks.ForEach(B => B.UpdateEOBSpeed());
+            if (Block > 1) return true;
+            if (Layout.DirectionCW == true)
+            {
+                if (Block == 0)
+                {
+                    if (Layout.LeftSwitch.Straight == true || Blocks[0].CWSignal.State == SignalState.Red)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (Layout.LeftSwitch.Straight == false || Blocks[1].CWSignal.State == SignalState.Red)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+            else
+            {
+                if (Block == 0)
+                {
+                    if (Layout.RightSwitch.Straight == true || Blocks[0].CCWSignal.State == SignalState.Red)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    if (Layout.RightSwitch.Straight == false || Blocks[1].CCWSignal.State == SignalState.Red)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+
+        static public void UpdateBlockMaxSpeed(int SignalId, SignalState State)
+        {
+            switch(SignalId)
+            {
+                case 0:
+                    switch(State)
+                    {
+                        case SignalState.Red:
+                            Blocks[0].EOBSpeed = 0;
+                            break;
+                        case SignalState.Green:
+                            Blocks[0].EOBSpeed = 40;
+                            Blocks[3].EOBSpeed = 120;
+                            Blocks[4].EOBSpeed = 120;
+                            break;
+                        case SignalState.Yellow:
+                            Blocks[0].EOBSpeed = 40;
+                            Blocks[3].EOBSpeed = 40;
+                            Blocks[4].EOBSpeed = 40;
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (State)
+                    {
+                        case SignalState.Red:
+                            Blocks[0].EOBSpeed = 0;
+                            break;
+                        case SignalState.Green:
+                            Blocks[0].EOBSpeed = 40;
+                            Blocks[5].EOBSpeed = 120;
+                            Blocks[4].EOBSpeed = 120;
+                            break;
+                        case SignalState.Yellow:
+                            Blocks[0].EOBSpeed = 40;
+                            Blocks[5].EOBSpeed = 40;
+                            Blocks[4].EOBSpeed = 40;
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (State)
+                    {
+                        case SignalState.Red:
+                            Blocks[1].EOBSpeed = 0;
+                            break;
+                        case SignalState.Green:
+                            Blocks[1].EOBSpeed = 40;
+                            Blocks[3].EOBSpeed = 120;
+                            Blocks[4].EOBSpeed = 120;
+                            break;
+                        case SignalState.Yellow:
+                            Blocks[1].EOBSpeed = 40;
+                            Blocks[3].EOBSpeed = 40;
+                            Blocks[4].EOBSpeed = 40;
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (State)
+                    {
+                        case SignalState.Red:
+                            Blocks[1].EOBSpeed = 0;
+                            break;
+                        case SignalState.Green:
+                            Blocks[1].EOBSpeed = 40;
+                            Blocks[5].EOBSpeed = 120;
+                            Blocks[4].EOBSpeed = 120;
+                            break;
+                        case SignalState.Yellow:
+                            Blocks[1].EOBSpeed = 40;
+                            Blocks[5].EOBSpeed = 40;
+                            Blocks[4].EOBSpeed = 40;
+                            break;
+                    }
+                    break;
+                case 4:
+                    switch (State)
+                    {
+                        case SignalState.Red:
+                            Blocks[3].EOBSpeed = 0;
+                            break;
+                        case SignalState.Green:
+                            Blocks[3].EOBSpeed = 40;
+                            break;
+                        case SignalState.Yellow:
+                            Blocks[3].EOBSpeed = 40;
+                            break;
+                    }
+                    break;
+                case 5:
+                    switch (State)
+                    {
+                        case SignalState.Red:
+                            Blocks[5].EOBSpeed = 0;
+                            break;
+                        case SignalState.Green:
+                            Blocks[5].EOBSpeed = 40;
+                            break;
+                        case SignalState.Yellow:
+                            Blocks[5].EOBSpeed = 40;
+                            break;
+                    }
+                    break;
+
+            }
         }
 
     }

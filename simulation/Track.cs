@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 
 namespace simulation
 {
@@ -20,16 +21,16 @@ namespace simulation
 
         public abstract void SetState(TrackState S);
 
-        public System.Windows.Media.SolidColorBrush GetStateColor(TrackState s) //milyen szinnel rajzoljuk ki a szakaszt
+        public SolidColorBrush GetStateColor(TrackState s) // what color to paint a given section
         {
             switch(s)
             {
                 case TrackState.Default:
-                    return System.Windows.Media.Brushes.Gray;
+                    return Brushes.Gray;
                 case TrackState.Occupied:
-                    return System.Windows.Media.Brushes.Red;
+                    return Brushes.Red;
                 case TrackState.Highlighted:
-                    return System.Windows.Media.Brushes.White;
+                    return Brushes.White;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

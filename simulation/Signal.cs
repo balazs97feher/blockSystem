@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -30,17 +29,22 @@ namespace simulation
         public int MaxSpeed;
         private SignalOrientation Orientation;
         private Visual Display;
+        public int Id;
+        private static int NextId = 0;
+            
 
 
         public Signal(int x, int y, SignalOrientation o, Block b, bool settable, Canvas Canvas)
         {
+            Id = NextId++;
             Coord.X = x;
             Coord.Y = y;
             Orientation = o;
             ContainerBlock = b;
             Settable = settable;
             Display = new Visual(this, Canvas);
-            SetState(SignalState.Red);
+            State = SignalState.Red;
+            Display.Update();
             MaxSpeed = 0;
         }
 
@@ -61,7 +65,7 @@ namespace simulation
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            ContainerBlock.UpdateEOBSpeed();
+            Layout.UpdateBlockMaxSpeed(Id, State);
             Display.Update();
         }
 
@@ -96,8 +100,7 @@ namespace simulation
                     Canvas.Children.Add(c);
                     c.SelectionChanged += SignalChanged;
                 }
-                else MessageBox.Show("Signal cannot be set. Please check switches.", "Warning",
-                MessageBoxButton.OK, MessageBoxImage.Warning);
+                else Control.SetInformation("Ez a jelző jelenleg nem állítható át.");
             }
 
             private void SignalChanged(object sender, SelectionChangedEventArgs e)
@@ -118,6 +121,7 @@ namespace simulation
                         throw new ArgumentOutOfRangeException();
                 }
                 Canvas.Children.Remove(C);
+                Control.SetInformation("Jelző sikeresen átállítva.");
             }
 
             public void Update()
@@ -150,7 +154,6 @@ namespace simulation
                 Canvas.SetZIndex(SignalImg, 1);
                 Canvas.Children.Add(SignalImg);
             }
-
 
         }
 

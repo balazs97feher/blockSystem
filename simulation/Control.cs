@@ -7,6 +7,8 @@ namespace simulation
 {
     public class Control : INotifyPropertyChanged
     {
+        private static Control Instance;
+        public static void SetInformation(string Text) { Instance.Information = Text; }
         public event PropertyChangedEventHandler PropertyChanged; // need to implement the above interface for data binding
         private void NotifyPropertyChanged(string Property)
         {
@@ -26,7 +28,7 @@ namespace simulation
         }
 
         private string information;
-        public string Information // the speed that's been set
+        public string Information // info displayed for the user
         {
             get { return information; }
             set
@@ -40,8 +42,8 @@ namespace simulation
 
         public Control()
         {
+            Instance = this;
             Fecske = new Train(0);
-            Information = "asdasdasdsa asdasdasdsa asdasdasdsa asdasdasdsa";
         }
 
         public void Initialize()
@@ -60,9 +62,10 @@ namespace simulation
 
         private void Tick(object sender, EventArgs e)
         {
-            if (DepartureConstraints() == false)
+            if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false || Layout.Blocks[Fecske.Block].EOBSpeed == 0))
             {
                 SetSpeed = 0;
+                SetInformation("Indulás megtiltva. Ellenőrizze a váltók és a jelzők állását!");
             }
             else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed) SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
             Roll();
@@ -77,13 +80,31 @@ namespace simulation
             {
                 FreeBlock(Fecske.Block);
                 SetSignal();
-                int NextBlock = Layout.GetNextBlock(Fecske.Block);
-                Fecske.Block = NextBlock;
-                Fecske.DistanceFromEOB = Layout.Blocks[NextBlock].Length;
+                int NextBlockId = Layout.GetNextBlock(Fecske.Block);
+                Fecske.Block = NextBlockId;
+                SecureStation(NextBlockId);
+                Fecske.DistanceFromEOB = Layout.Blocks[NextBlockId].Length;
                 OccupyBlock(Fecske.Block);
                 SetDeceleration();
                 Fecske.Roll(RemainingDistance);
             }
+        }
+
+        public void SecureStation(int BlockId)
+        {
+            if (BlockId < 2)
+            {
+                Layout.Blocks[3].CCWSignal.Settable = false;
+                Layout.Blocks[5].CWSignal.Settable = false;
+                Layout.Blocks[0].CCWSignal.SetState(SignalState.Red);
+                Layout.Blocks[0].CWSignal.SetState(SignalState.Red);
+                Layout.Blocks[1].CCWSignal.SetState(SignalState.Red);
+                Layout.Blocks[1].CWSignal.SetState(SignalState.Red);
+                Layout.Blocks[3].CCWSignal.SetState(SignalState.Red);
+                Layout.Blocks[5].CWSignal.SetState(SignalState.Red);
+            }
+            else if (BlockId == 2 && Layout.DirectionCW == true) Layout.Blocks[5].CWSignal.Settable = true;
+            else if (BlockId == 6 && Layout.DirectionCW == false) Layout.Blocks[3].CCWSignal.Settable = true;
         }
 
 
@@ -108,11 +129,12 @@ namespace simulation
 
         public void SetDeparture(int BlockId)
         {
-                FreeBlock(Fecske.Block);
-                Fecske.Block = BlockId;
-                Fecske.Speed = 0;
-                Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
-                OccupyBlock(BlockId);
+            FreeBlock(Fecske.Block);
+            Fecske.Block = BlockId;
+            Fecske.Speed = 0;
+            Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
+            OccupyBlock(BlockId);
+            SetInformation("Induló vágány megváltozott.");
         }
 
         public void OccupyBlock(int BlockId)
@@ -125,60 +147,20 @@ namespace simulation
             Layout.Blocks[BlockId].Free();
         }
 
-        public bool DepartureConstraints()
-        {
-            if (Fecske.Block > 1) return true;
-            if (Layout.DirectionCW == true)
-            {
-                if (Fecske.Block == 0)
-                {
-                    if (Layout.LeftSwitch.Straight == true)
-                    {
-                        return false;
-                    }
-                    return true;
-                }
-                else
-                {
-                    if (Layout.LeftSwitch.Straight == false)
-                    {
-                        return false;
-                    }
-                    return true;
-                }
-            }
-            else
-            {
-                if (Fecske.Block == 0)
-                {
-                    if (Layout.RightSwitch.Straight == true)
-                    {
-                        return false;
-                    }
-                    return true;
-                }
-                else
-                {
-                    if (Layout.RightSwitch.Straight == false)
-                    {
-                        return false;
-                    }
-                    return true;
-                }
-            }
-        }
-
         public void SwitchRight()
         {
             if (Layout.Blocks[0].CCWSignal.State == SignalState.Red && Layout.Blocks[1].CCWSignal.State == SignalState.Red
                 && Layout.Blocks[5].CWSignal.State == SignalState.Red)
             {
                 Layout.RightSwitch.DoSwitch();
-                Layout.Blocks[0].CCWSignal.Settable = !Layout.Blocks[0].CCWSignal.Settable;
-                Layout.Blocks[1].CCWSignal.Settable = !Layout.Blocks[1].CCWSignal.Settable;
+                SetInformation("Váltó sikeresen átállítva.");
+                if (Layout.DirectionCW == false)
+                {
+                    Layout.Blocks[0].CCWSignal.Settable = !Layout.Blocks[0].CCWSignal.Settable;
+                    Layout.Blocks[1].CCWSignal.Settable = !Layout.Blocks[1].CCWSignal.Settable;
+                }
             }
-            else MessageBox.Show("Switch cannot be done, because signals permit passing.", "Warning",
-                MessageBoxButton.OK, MessageBoxImage.Warning);
+            else SetInformation("Ez a váltó jelenleg nem állítható át.");
         }
 
         public void SwitchLeft()
@@ -187,11 +169,39 @@ namespace simulation
                 && Layout.Blocks[3].CCWSignal.State == SignalState.Red)
             {
                 Layout.LeftSwitch.DoSwitch();
-                Layout.Blocks[0].CWSignal.Settable = !Layout.Blocks[0].CWSignal.Settable;
-                Layout.Blocks[1].CWSignal.Settable = !Layout.Blocks[1].CWSignal.Settable;
+                SetInformation("Váltó sikeresen átállítva.");
+                if (Layout.DirectionCW == true)
+                {
+                    Layout.Blocks[0].CWSignal.Settable = !Layout.Blocks[0].CWSignal.Settable;
+                    Layout.Blocks[1].CWSignal.Settable = !Layout.Blocks[1].CWSignal.Settable;
+                }
             }
-            else MessageBox.Show("Switch cannot be done, because signals permit passing.", "Warning",
-                MessageBoxButton.OK, MessageBoxImage.Warning);
+            else SetInformation("Ez a váltó jelenleg nem állítható át.");
+        }
+
+        public void SetCWDirection(bool IsCW)
+        {
+            if (Fecske.Block < 2 && Fecske.Speed == 0)
+            {
+                Layout.DirectionCW = IsCW;
+                if (Layout.DirectionCW == true)
+                {
+                    Layout.Blocks[0].CCWSignal.Settable = false;
+                    Layout.Blocks[1].CCWSignal.Settable = false;
+                    Layout.Blocks[3].CCWSignal.Settable = false;
+                    if (Layout.LeftSwitch.Straight == true) Layout.Blocks[1].CWSignal.Settable = true;
+                    else Layout.Blocks[0].CWSignal.Settable = true;
+                }
+                else
+                {
+                    Layout.Blocks[0].CWSignal.Settable = false;
+                    Layout.Blocks[1].CWSignal.Settable = false;
+                    Layout.Blocks[5].CWSignal.Settable = false;
+                    if (Layout.RightSwitch.Straight == true) Layout.Blocks[1].CCWSignal.Settable = true;
+                    else Layout.Blocks[0].CCWSignal.Settable = true;
+                }
+            }
+            else SetInformation("Menetirány megváltoztatása csak állomáson várakozó vonat esetén lehetséges.");
         }
 
     }
