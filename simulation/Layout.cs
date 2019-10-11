@@ -26,7 +26,7 @@ namespace simulation
                 B_0.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_0.AddCWSignal(new Signal(480, 340, SignalOrientation.CW, B_0, false, Canvas)); // signals of block#0 are not settable,
+            B_0.AddCWSignal(new Signal(480, 290, SignalOrientation.CW, B_0, false, Canvas)); // signals of block#0 are not settable,
             B_0.AddCCWSignal(new Signal(960, 310, SignalOrientation.CCW, B_0, false, Canvas)); // because switches are pointing straight 
             Blocks.Add(B_0);
 
@@ -39,7 +39,7 @@ namespace simulation
                 x += Field.SquareSize;
             }
             B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, B_1, true, Canvas)); // the only signal that is settable in the beginning
-            B_1.AddCCWSignal(new Signal(960, 380, SignalOrientation.CCW, B_1, false, Canvas));
+            B_1.AddCCWSignal(new Signal(960, 430, SignalOrientation.CCW, B_1, false, Canvas));
             Blocks.Add(B_1);
 
             // ***************** Block#2 *****************
@@ -65,7 +65,7 @@ namespace simulation
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.VerticalCenter));
             y -= Field.SquareSize;
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.BottomRight));
-            B_3.AddCCWSignal(new Signal(230, 380, SignalOrientation.CCW, B_3, false, Canvas)); // track is occupied, signal is not settable
+            B_3.AddCCWSignal(new Signal(230, 430, SignalOrientation.CCW, B_3, false, Canvas)); // track is occupied, signal is not settable
             Blocks.Add(B_3);
 
             // ***************** Block#4 *****************

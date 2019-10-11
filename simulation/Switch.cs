@@ -30,10 +30,15 @@ namespace simulation
             Display.Update();
         }
 
-        public void DoSwitch()
+        public bool DoSwitch()
         {
-            Straight = !Straight;
-            Display.Update();
+            if (State != TrackState.Occupied)
+            {
+                Straight = !Straight;
+                Display.Update();
+                return true;
+            }
+            else return false;
         }
 
         public override void Draw(Canvas Canvas)

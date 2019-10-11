@@ -6,12 +6,13 @@ namespace simulation
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SimulationWindow : Window
     {
+        private static SimulationWindow Instance = null;
         public Canvas AppCanvas;
         private Control Controller;
 
-        public MainWindow(Control C)
+        private SimulationWindow(Control C)
         {
             InitializeComponent();
             AppCanvas = ApplicationCanvas;
@@ -20,6 +21,12 @@ namespace simulation
             DisplayVelocity.DataContext = Controller.Fecske;
             SpeedSlide.DataContext = Controller;
             Information.DataContext = Controller;
+        }
+
+        public static SimulationWindow CreateWindow(Control C)
+        {
+            if (Instance != null) return Instance;
+            else return new SimulationWindow(C);
         }
 
         private void DirectionChanged(object sender, SelectionChangedEventArgs e)
@@ -32,7 +39,6 @@ namespace simulation
                     Controller.SetCWDirection(true);
                 }
                 else Controller.SetCWDirection(false);
-                Control.SetInformation("Menetirány megváltozott.");
             }
         }
 

@@ -1,4 +1,4 @@
-﻿<Window x:Class="simulation.MainWindow"
+﻿<Window x:Class="simulation.SimulationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,7 +19,7 @@
         <Button Content="Működtetés" Canvas.Left="964" Canvas.Top="529" Width="100" Height="32" Click="SwitchRight" FontSize="16"/>
 
         <Label Content="Indulás" Canvas.Top="482" Canvas.Bottom="20" FontSize="28" Canvas.Left="193" Width="134"/>
-        <ComboBox Canvas.Left="197" Canvas.Top="529" Width="129" Height="32" SelectionChanged="DepartureChanged" SelectedIndex="0" FontSize="16">
+        <ComboBox x:Name="Dir" Canvas.Left="197" Canvas.Top="529" Width="129" Height="32" SelectionChanged="DepartureChanged" SelectedIndex="0" FontSize="16">
             <ComboBoxItem Content="Felső vágány"/>
             <ComboBoxItem Content="Alsó vágány"/>
         </ComboBox>

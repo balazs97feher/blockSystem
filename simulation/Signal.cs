@@ -11,7 +11,8 @@ namespace simulation
     {
         Red,
         Green,
-        Yellow
+        Yellow,
+        Blank
     }
 
     public enum SignalOrientation
@@ -26,12 +27,11 @@ namespace simulation
         private Block ContainerBlock;
         public SignalState State;
         public bool Settable;
-        public int MaxSpeed;
         private SignalOrientation Orientation;
         private Visual Display;
         public int Id;
         private static int NextId = 0;
-            
+
 
 
         public Signal(int x, int y, SignalOrientation o, Block b, bool settable, Canvas Canvas)
@@ -45,26 +45,12 @@ namespace simulation
             Display = new Visual(this, Canvas);
             State = SignalState.Red;
             Display.Update();
-            MaxSpeed = 0;
         }
 
         public void SetState(SignalState s)
         {
             State = s;
-            switch (s)
-            {
-                case SignalState.Green:
-                    MaxSpeed = 80;
-                    break;
-                case SignalState.Red:
-                    MaxSpeed = 0;
-                    break;
-                case SignalState.Yellow:
-                    MaxSpeed = 40;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            if (State == SignalState.Blank) Settable = false;
             Layout.UpdateBlockMaxSpeed(Id, State);
             Display.Update();
         }
@@ -138,6 +124,9 @@ namespace simulation
                         break;
                     case SignalState.Yellow:
                         bitmap.UriSource = new Uri(@"pack://application:,,,/3l_yellow.png");
+                        break;
+                    case SignalState.Blank:
+                        bitmap.UriSource = new Uri(@"pack://application:,,,/3l_blank.png");
                         break;
                 }
                 bitmap.EndInit();
