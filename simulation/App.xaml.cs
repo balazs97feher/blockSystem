@@ -2,16 +2,16 @@
 
 namespace simulation
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
-
+        private Communication Messenger;
+        private Control Controller;
+        private SimulationWindow AppWindow;
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Control Controller = Control.CreateController();
-            SimulationWindow AppWindow = SimulationWindow.CreateWindow(Controller);
+            Messenger = Communication.CreateMessenger();
+            Controller = Control.CreateController(Messenger);
+            AppWindow = SimulationWindow.CreateWindow(Controller, Messenger);
             Layout.Initialize(AppWindow.AppCanvas);
             Controller.Initialize();
 
@@ -20,5 +20,10 @@ namespace simulation
             AppWindow.Show();
         }
 
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            Messenger.ClosePorts();
+        }
     }
 }

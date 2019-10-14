@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.IO.Ports;
 
 namespace simulation
 {
@@ -11,22 +12,25 @@ namespace simulation
         private static SimulationWindow Instance = null;
         public Canvas AppCanvas;
         private Control Controller;
+        private Communication Messenger;
 
-        private SimulationWindow(Control C)
+        private SimulationWindow(Control C, Communication M)
         {
             InitializeComponent();
             AppCanvas = ApplicationCanvas;
             Controller = C;
+            Messenger = M;
 
             DisplayVelocity.DataContext = Controller.Fecske;
             SpeedSlide.DataContext = Controller;
             Information.DataContext = Controller;
+
         }
 
-        public static SimulationWindow CreateWindow(Control C)
+        public static SimulationWindow CreateWindow(Control C, Communication M)
         {
             if (Instance != null) return Instance;
-            else return new SimulationWindow(C);
+            else return new SimulationWindow(C, M);
         }
 
         private void DirectionChanged(object sender, SelectionChangedEventArgs e)
@@ -72,6 +76,32 @@ namespace simulation
         private void SpeedChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Controller.SetSpeed = (int)(sender as Slider).Value;
+        }
+
+        private string[] ArrayComPortNames;
+        private void DiscoverPorts(object sender, RoutedEventArgs e)
+        {
+            ArrayComPortNames = null;
+            ArrayComPortNames = SerialPort.GetPortNames();
+            if (ArrayComPortNames == null) Control.SetInformation("Nem találhatók portok.");
+            else
+            {
+                ControlPort.ItemsSource = ArrayComPortNames;
+                OccupationPort.ItemsSource = ArrayComPortNames;
+                Control.SetInformation("Soros portok felderítve.");
+            }
+        }
+
+        private void SetControlPort(object sender, SelectionChangedEventArgs e)
+        {
+            string S = ControlPort.SelectedItem.ToString();
+            Messenger.SetControlPort(S);
+        }
+
+        private void SetOccupationPort(object sender, SelectionChangedEventArgs e)
+        {
+            string S = OccupationPort.SelectedItem.ToString();
+            Messenger.SetControlPort(S);
         }
 
     }

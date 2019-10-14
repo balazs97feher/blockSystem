@@ -15,6 +15,8 @@ namespace simulation
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
         }
 
+        private Communication Messenger;
+
         public Train Fecske;
         private int setSpeed;
         public int SetSpeed // the speed that's been set
@@ -40,16 +42,17 @@ namespace simulation
 
         private DispatcherTimer Timer;
 
-        private Control()
+        private Control(Communication M)
         {
             Instance = this;
+            Messenger = M;
             Fecske = new Train(0);
         }
 
-        public static Control CreateController()
+        public static Control CreateController(Communication M)
         {
             if (Instance != null) return Instance;
-            else return new Control();
+            else return new Control(M);
         }
 
         public void Initialize()

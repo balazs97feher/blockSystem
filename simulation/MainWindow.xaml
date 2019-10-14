@@ -39,5 +39,16 @@
         <TextBlock x:Name="Information" Height="59" Canvas.Left="19" TextWrapping="Wrap" Text="{Binding Information}" Canvas.Top="711" Width="444" Background="Green" FontSize="22" Foreground="LightGray"/>
         <Border BorderBrush="Black" BorderThickness="1" Height="67" Canvas.Left="15" Canvas.Top="707" Width="451"/>
 
+
+        <Button Content="Portok felderítése" Canvas.Left="964" Canvas.Top="582" Width="140" Height="32" Click="DiscoverPorts" FontSize="16"/>
+        <Label Content="Vezérlő port" Canvas.Top="614" Canvas.Bottom="20" FontSize="28" Canvas.Left="964"/>
+        <ComboBox x:Name="ControlPort" Canvas.Left="964" Canvas.Top="662" Width="140" Height="32" FontSize="16" SelectionChanged="SetControlPort">
+        </ComboBox>
+        <Label Content="Foglaltság port" Canvas.Top="695" Canvas.Bottom="20" FontSize="28" Canvas.Left="964" />
+        <ComboBox x:Name="OccupationPort" Canvas.Left="964" Canvas.Top="742" Width="140" Height="32" FontSize="16" SelectionChanged="SetOccupationPort">
+        </ComboBox>
+        
+        
+
     </Canvas>
 </Window>
