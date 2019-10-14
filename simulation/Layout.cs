@@ -10,12 +10,14 @@ namespace simulation
         static public Switch RightSwitch;
         static public bool DirectionCW = true;
         static private Canvas Canvas;
-        static public bool Initialized=false;
-        
+        static private bool Initialized=false;
+        static private Communication Messenger;
 
-        static public void Initialize(Canvas C)
+
+        static public void Initialize(Canvas C, Communication M)
         {
             Canvas = C;
+            Messenger = M;
             int x = 0, y = 0;
             
             // ***************** Block#0 *****************
@@ -26,8 +28,8 @@ namespace simulation
                 B_0.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_0.AddCWSignal(new Signal(480, 290, SignalOrientation.CW, B_0, false, Canvas)); // signals of block#0 are not settable,
-            B_0.AddCCWSignal(new Signal(960, 310, SignalOrientation.CCW, B_0, false, Canvas)); // because switches are pointing straight 
+            B_0.AddCWSignal(new Signal(480, 290, SignalOrientation.CW, false, Canvas, Messenger)); // signals of block#0 are not settable,
+            B_0.AddCCWSignal(new Signal(960, 310, SignalOrientation.CCW, false, Canvas, Messenger)); // because switches are pointing straight 
             Blocks.Add(B_0);
 
             // ***************** Block#1 *****************
@@ -38,8 +40,8 @@ namespace simulation
                 B_1.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, B_1, true, Canvas)); // the only signal that is settable in the beginning
-            B_1.AddCCWSignal(new Signal(960, 430, SignalOrientation.CCW, B_1, false, Canvas));
+            B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, true, Canvas, Messenger)); // the only signal that is settable in the beginning
+            B_1.AddCCWSignal(new Signal(960, 430, SignalOrientation.CCW, false, Canvas, Messenger));
             Blocks.Add(B_1);
 
             // ***************** Block#2 *****************
@@ -47,7 +49,7 @@ namespace simulation
             x = Field.SquareSize * 3; y = Field.SquareSize * 2;
             B_2.Bottom = new StraightTrack(x, y, TrackOrientation.BottomRight);
             y += Field.SquareSize;
-            LeftSwitch = new Switch(x, y, SwitchOrientation.CCW);
+            LeftSwitch = new Switch(x, y, SwitchOrientation.CCW, Messenger);
             B_2.S = LeftSwitch;
             x -= Field.SquareSize;
             B_2.Horizontal = new StraightTrack(x, y, TrackOrientation.HorizontalCenter);
@@ -65,7 +67,7 @@ namespace simulation
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.VerticalCenter));
             y -= Field.SquareSize;
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.BottomRight));
-            B_3.AddCCWSignal(new Signal(230, 430, SignalOrientation.CCW, B_3, false, Canvas)); // track is occupied, signal is not settable
+            B_3.AddCCWSignal(new Signal(230, 430, SignalOrientation.CCW, false, Canvas, Messenger)); // track is occupied, signal is not settable
             Blocks.Add(B_3);
 
             // ***************** Block#4 *****************
@@ -90,7 +92,7 @@ namespace simulation
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.TopLeft));
             x -= Field.SquareSize;
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
-            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, B_5, false, Canvas)); // track is occupied, signal is not settable
+            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, false, Canvas, Messenger)); // track is occupied, signal is not settable
             Blocks.Add(B_5);
 
             // ***************** Block#6 *****************
@@ -98,7 +100,7 @@ namespace simulation
             x = Field.SquareSize * 9; y = Field.SquareSize * 3;
             B_6.Horizontal = new StraightTrack(x, y, TrackOrientation.HorizontalCenter);
             x -= Field.SquareSize;
-            RightSwitch = new Switch(x, y, SwitchOrientation.CW);
+            RightSwitch = new Switch(x, y, SwitchOrientation.CW, Messenger);
             B_6.S = RightSwitch;
             y -= Field.SquareSize;
             B_6.Bottom = new StraightTrack(x, y, TrackOrientation.BottomLeft);

@@ -16,12 +16,17 @@ namespace simulation
         private SwitchOrientation Orientation;
         public bool Straight;
         private Visual Display;
+        private Communication Messenger;
+        private int Id;
+        private static int NextId = 0;
 
-        public Switch(int x, int y, SwitchOrientation so) : base(x, y)
+        public Switch(int x, int y, SwitchOrientation so, Communication M) : base(x, y)
         {
+            Id = NextId++;
             Straight = true;
             Orientation = so;
             Display = new Visual(this);
+            Messenger = M;
         }
 
         public override void SetState(TrackState S)
@@ -35,6 +40,7 @@ namespace simulation
             if (State != TrackState.Occupied)
             {
                 Straight = !Straight;
+                Messenger.SetSwitch(Id, Straight);
                 Display.Update();
                 return true;
             }

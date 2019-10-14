@@ -24,23 +24,23 @@ namespace simulation
     public class Signal
     {
         public Coordinates Coord;
-        private Block ContainerBlock;
         public SignalState State;
         public bool Settable;
         private SignalOrientation Orientation;
         private Visual Display;
         public int Id;
         private static int NextId = 0;
+        private Communication Messenger;
 
 
 
-        public Signal(int x, int y, SignalOrientation o, Block b, bool settable, Canvas Canvas)
+        public Signal(int x, int y, SignalOrientation o, bool settable, Canvas Canvas, Communication Messenger)
         {
+            this.Messenger = Messenger;
             Id = NextId++;
             Coord.X = x;
             Coord.Y = y;
             Orientation = o;
-            ContainerBlock = b;
             Settable = settable;
             Display = new Visual(this, Canvas);
             State = SignalState.Red;
@@ -51,6 +51,7 @@ namespace simulation
         {
             State = s;
             if (State == SignalState.Blank) Settable = false;
+            Messenger.SetSignal(Id, State);
             Layout.UpdateBlockMaxSpeed(Id, State);
             Display.Update();
         }

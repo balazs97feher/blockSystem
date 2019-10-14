@@ -7,8 +7,9 @@ namespace simulation
         private static Communication Instance = null;
         public SerialPort ControlPort;
         public SerialPort OccupationPort;
+        private bool Connected;
 
-        private Communication() {}
+        private Communication() { }
 
         static public Communication CreateMessenger()
         {
@@ -24,6 +25,12 @@ namespace simulation
                 PortName = PortName
             };
             OccupationPort.Open();
+            OccupationPort.DataReceived += OccupationPort_DataReceived;
+        }
+
+        private void OccupationPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void SetControlPort(string PortName)
@@ -34,6 +41,7 @@ namespace simulation
                 PortName = PortName
             };
             ControlPort.Open();
+            BoosterConnect();
         }
 
         public void ClosePorts()
@@ -44,9 +52,62 @@ namespace simulation
 
         private void SendControlByte(byte b)
         {
-            byte[] c = new byte[1];
-            c[0]= b;
-            ControlPort.Write(c, 0, 1);
+            if (ControlPort != null)
+            {
+                byte[] c = new byte[1];
+                c[0] = b;
+                ControlPort.Write(c, 0, 1);
+            }
+        }
+
+        public void SetSignal(int Id, SignalState State)
+        {
+            switch (Id)
+            {
+                default:
+                    switch (State)
+                    {
+                        case SignalState.Green:
+                            SendControlByte(0x8A);
+                            break;
+                        case SignalState.Red:
+                            SendControlByte(0x9A);
+                            break;
+                        case SignalState.Yellow:
+                            SendControlByte(0xA2);
+                            break;
+                        case SignalState.Blank:
+                            SendControlByte(0x82);
+                            break;
+                    }
+                    break;
+            }
+        }
+
+        public void SetSwitch(int Id, bool Straight)
+        {
+            switch (Id)
+            {
+                case 0:
+                    if (Straight) SendControlByte(0xC1);
+                    else SendControlByte(0xC9);
+                    break;
+                case 1:
+                    if (Straight) SendControlByte(0xC2);
+                    else SendControlByte(0xCA);
+                    break;
+            }
+        }
+
+        private void BoosterConnect()
+        {
+            SendControlByte(0xFF);
+            Connected = true;
+        }
+
+        public void BoosterDisconnect()
+        {
+            if (Connected) SendControlByte(0xEE);
         }
 
 

@@ -12,7 +12,7 @@ namespace simulation
             Messenger = Communication.CreateMessenger();
             Controller = Control.CreateController(Messenger);
             AppWindow = SimulationWindow.CreateWindow(Controller, Messenger);
-            Layout.Initialize(AppWindow.AppCanvas);
+            Layout.Initialize(AppWindow.AppCanvas, Messenger);
             Controller.Initialize();
 
             Layout.Draw();
@@ -23,6 +23,7 @@ namespace simulation
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            Messenger.BoosterDisconnect();
             Messenger.ClosePorts();
         }
     }

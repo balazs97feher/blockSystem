@@ -89,7 +89,7 @@ namespace simulation
             if (RemainingDistance > 0) // the train crosses a block border
             {
                 FreeBlock(Fecske.Block);
-                SetSignal();
+                SetSignalRed();
                 int NextBlockId = Layout.GetNextBlock(Fecske.Block);
                 Fecske.Block = NextBlockId;
                 SecureStation(NextBlockId);
@@ -112,7 +112,7 @@ namespace simulation
         }
 
 
-        public void SetSignal() // sets the signal to red that the train has passed
+        public void SetSignalRed() // sets the signal to red that the train has passed
         {
             if (Layout.DirectionCW == true && Layout.Blocks[Fecske.Block].CWSignal != null)
                 Layout.Blocks[Fecske.Block].CWSignal.SetState(SignalState.Red);
