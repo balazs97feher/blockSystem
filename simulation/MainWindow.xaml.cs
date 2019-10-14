@@ -24,6 +24,8 @@ namespace simulation
             DisplayVelocity.DataContext = Controller.Fecske;
             SpeedSlide.DataContext = Controller;
             Information.DataContext = Controller;
+            BoosterReceivedData.DataContext = Messenger;
+            OccupationReceivedData.DataContext = Messenger;
 
         }
 

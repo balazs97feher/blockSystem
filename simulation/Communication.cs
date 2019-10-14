@@ -1,15 +1,60 @@
-﻿using System.IO.Ports;
+﻿using System.ComponentModel;
+using System.IO.Ports;
 
 namespace simulation
 {
-    public class Communication
+    public class Communication : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged; // need to implement the above interface for data binding
+        private void NotifyPropertyChanged(string Property)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(Property));
+        }
+
+        private string boosterReceived;
+        public string BoosterReceived
+        {
+            get { return boosterReceived; }
+            set
+            {
+                boosterReceived = value;
+                NotifyPropertyChanged("BoosterReceived");
+            }
+        }
+        private void PrintBoosterReceived(byte b)
+        {
+            if (BoosterReceived.Length > 25) BoosterReceived = "";
+            BoosterReceived += b.ToString() + " ";
+        }
+
+        private string occupationReceived;
+        public string OccupationReceived
+        {
+            get { return occupationReceived; }
+            set
+            {
+                if (occupationReceived.Length > 24) occupationReceived = "";
+                occupationReceived = value;
+                NotifyPropertyChanged("OccupationReceived");
+            }
+        }
+        private void PrintOccupationReceived(byte b)
+        {
+            if (OccupationReceived.Length > 25) OccupationReceived = "";
+            OccupationReceived += b.ToString() + " ";
+        }
+
+
         private static Communication Instance = null;
         public SerialPort ControlPort;
         public SerialPort OccupationPort;
         private bool Connected;
 
-        private Communication() { }
+        private Communication()
+        {
+            boosterReceived = "";
+            occupationReceived = "";
+        }
 
         static public Communication CreateMessenger()
         {
@@ -57,6 +102,7 @@ namespace simulation
                 byte[] c = new byte[1];
                 c[0] = b;
                 ControlPort.Write(c, 0, 1);
+                PrintBoosterReceived(b); // DEBUG
             }
         }
 
