@@ -81,7 +81,7 @@ namespace simulation
                 if (S.Settable)
                 {
                     ComboBox c = new ComboBox();
-                    c.ItemsSource = new List<string> { "Zöld", "Piros", "Sárga" };
+                    c.ItemsSource = new List<string> { "Zöld", "Vörös", "Sárga", "Sötét"};
                     Canvas.SetLeft(c, S.Coord.X);
                     Canvas.SetTop(c, S.Coord.Y);
                     Canvas.Children.Add(c);
@@ -98,11 +98,14 @@ namespace simulation
                     case "Zöld":
                         S.SetState(SignalState.Green);
                         break;
-                    case "Piros":
+                    case "Vörös":
                         S.SetState(SignalState.Red);
                         break;
                     case "Sárga":
                         S.SetState(SignalState.Yellow);
+                        break;
+                    case "Sötét":
+                        S.SetState(SignalState.Blank);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

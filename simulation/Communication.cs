@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
 using System.IO.Ports;
+using System.Threading;
 
 namespace simulation
 {
     public class Communication : INotifyPropertyChanged
     {
+        private bool ready = true; // soros port kesz
         public event PropertyChangedEventHandler PropertyChanged; // need to implement the above interface for data binding
         private void NotifyPropertyChanged(string Property)
         {
@@ -48,12 +50,13 @@ namespace simulation
         private static Communication Instance = null;
         public SerialPort ControlPort;
         public SerialPort OccupationPort;
-        private bool Connected;
+        private bool BoosterConnected; // is the software connected to the booster
 
         private Communication()
         {
             boosterReceived = "";
             occupationReceived = "";
+            BoosterConnected = false;
         }
 
         static public Communication CreateMessenger()
@@ -75,7 +78,8 @@ namespace simulation
 
         private void OccupationPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            //PrintBoosterReceived(b); // DEBUG
+            ready = true;
         }
 
         public void SetControlPort(string PortName)
@@ -97,12 +101,20 @@ namespace simulation
 
         private void SendControlByte(byte b)
         {
-            if (ControlPort != null)
+            if (BoosterConnected)
             {
-                byte[] c = new byte[1];
-                c[0] = b;
-                ControlPort.Write(c, 0, 1);
-                PrintBoosterReceived(b); // DEBUG
+                if (ControlPort != null && ready == true)
+                {
+                    byte[] c = new byte[1];
+                    c[0] = b;
+                    ControlPort.Write(c, 0, 1);
+                    ready = false;
+                }
+                else
+                {
+                    Thread.Sleep(100);
+                    SendControlByte(b);
+                }
             }
         }
 
@@ -110,7 +122,7 @@ namespace simulation
         {
             switch (Id)
             {
-                default:
+                case 2:
                     switch (State)
                     {
                         case SignalState.Green:
@@ -124,6 +136,91 @@ namespace simulation
                             break;
                         case SignalState.Blank:
                             SendControlByte(0x82);
+                            break;
+                    }
+                    break;
+                case 0:
+                    switch (State)
+                    {
+                        case SignalState.Green:
+                            SendControlByte(0x8B);
+                            break;
+                        case SignalState.Red:
+                            SendControlByte(0x9B);
+                            break;
+                        case SignalState.Yellow:
+                            SendControlByte(0xAB);
+                            break;
+                        case SignalState.Blank:
+                            SendControlByte(0x83);
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (State)
+                    {
+                        case SignalState.Green:
+                            SendControlByte(0x8C);
+                            break;
+                        case SignalState.Red:
+                            SendControlByte(0x9C);
+                            break;
+                        case SignalState.Yellow:
+                            SendControlByte(0xAC);
+                            break;
+                        case SignalState.Blank:
+                            SendControlByte(0x84);
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (State)
+                    {
+                        case SignalState.Green:
+                            SendControlByte(0x8D);
+                            break;
+                        case SignalState.Red:
+                            SendControlByte(0x9D);
+                            break;
+                        case SignalState.Yellow:
+                            SendControlByte(0xAD);
+                            break;
+                        case SignalState.Blank:
+                            SendControlByte(0x85);
+                            break;
+                    }
+                    break;
+                case 5:
+                    switch (State)
+                    {
+                        case SignalState.Green:
+                            SendControlByte(0x8E);
+                            break;
+                        case SignalState.Red:
+                            SendControlByte(0x9E);
+                            break;
+                        case SignalState.Yellow:
+                            SendControlByte(0xAE);
+                            break;
+                        case SignalState.Blank:
+                            SendControlByte(0x86);
+                            break;
+                    }
+                    break;
+                case 4:
+                    switch (State)
+                    {
+                        case SignalState.Green:
+                            SendControlByte(0x89);
+                            break;
+                        case SignalState.Red:
+                            SendControlByte(0x99);
+                            break;
+                        case SignalState.Yellow:
+                            SendControlByte(0xA9);
+                            break;
+                        case SignalState.Blank:
+                            SendControlByte(0x81);
                             break;
                     }
                     break;
@@ -148,12 +245,12 @@ namespace simulation
         private void BoosterConnect()
         {
             SendControlByte(0xFF);
-            Connected = true;
+            BoosterConnected = true;
         }
 
         public void BoosterDisconnect()
         {
-            if (Connected) SendControlByte(0xEE);
+            if (BoosterConnected) SendControlByte(0xEE);
         }
 
 
