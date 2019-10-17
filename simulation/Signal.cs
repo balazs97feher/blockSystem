@@ -24,23 +24,19 @@ namespace simulation
     public class Signal
     {
         public Coordinates Coord;
-        private Block ContainerBlock;
-        public SignalState State;
-        public bool Settable;
         private SignalOrientation Orientation;
-        private Visual Display;
+        public SignalState State;
         public int Id;
         private static int NextId = 0;
+        public bool Settable;
+        private Visual Display;
 
-
-
-        public Signal(int x, int y, SignalOrientation o, Block b, bool settable, Canvas Canvas)
+        public Signal(int x, int y, SignalOrientation o, bool settable, Canvas Canvas)
         {
             Id = NextId++;
             Coord.X = x;
             Coord.Y = y;
             Orientation = o;
-            ContainerBlock = b;
             Settable = settable;
             Display = new Visual(this, Canvas);
             State = SignalState.Red;
@@ -80,7 +76,7 @@ namespace simulation
                 if (S.Settable)
                 {
                     ComboBox c = new ComboBox();
-                    c.ItemsSource = new List<string> { "Zöld", "Piros", "Sárga" };
+                    c.ItemsSource = new List<string> { "Zöld", "Vörös", "Sárga" };
                     Canvas.SetLeft(c, S.Coord.X);
                     Canvas.SetTop(c, S.Coord.Y);
                     Canvas.Children.Add(c);
@@ -97,7 +93,7 @@ namespace simulation
                     case "Zöld":
                         S.SetState(SignalState.Green);
                         break;
-                    case "Piros":
+                    case "Vörös":
                         S.SetState(SignalState.Red);
                         break;
                     case "Sárga":

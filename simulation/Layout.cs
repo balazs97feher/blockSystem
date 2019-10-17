@@ -10,14 +10,14 @@ namespace simulation
         static public Switch RightSwitch;
         static public bool DirectionCW = true;
         static private Canvas Canvas;
-        static public bool Initialized=false;
-        
+        static public bool Initialized = false;
+
 
         static public void Initialize(Canvas C)
         {
             Canvas = C;
             int x = 0, y = 0;
-            
+
             // ***************** Block#0 *****************
             Block B_0 = new Block(0, 2000);
             x = Field.SquareSize * 4; y = Field.SquareSize * 2;
@@ -26,8 +26,8 @@ namespace simulation
                 B_0.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_0.AddCWSignal(new Signal(480, 290, SignalOrientation.CW, B_0, false, Canvas)); // signals of block#0 are not settable,
-            B_0.AddCCWSignal(new Signal(960, 310, SignalOrientation.CCW, B_0, false, Canvas)); // because switches are pointing straight 
+            B_0.AddCWSignal(new Signal(480, 290, SignalOrientation.CW, false, Canvas)); // signals of block#0 are not settable,
+            B_0.AddCCWSignal(new Signal(960, 310, SignalOrientation.CCW, false, Canvas)); // because switches are pointing straight 
             Blocks.Add(B_0);
 
             // ***************** Block#1 *****************
@@ -38,8 +38,8 @@ namespace simulation
                 B_1.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
                 x += Field.SquareSize;
             }
-            B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, B_1, true, Canvas)); // the only signal that is settable in the beginning
-            B_1.AddCCWSignal(new Signal(960, 430, SignalOrientation.CCW, B_1, false, Canvas));
+            B_1.AddCWSignal(new Signal(480, 410, SignalOrientation.CW, true, Canvas)); // the only signal that is settable in the beginning
+            B_1.AddCCWSignal(new Signal(960, 430, SignalOrientation.CCW, false, Canvas));
             Blocks.Add(B_1);
 
             // ***************** Block#2 *****************
@@ -65,7 +65,7 @@ namespace simulation
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.VerticalCenter));
             y -= Field.SquareSize;
             B_3.Tracks.Add(new StraightTrack(x, y, TrackOrientation.BottomRight));
-            B_3.AddCCWSignal(new Signal(230, 430, SignalOrientation.CCW, B_3, false, Canvas)); // track is occupied, signal is not settable
+            B_3.AddCCWSignal(new Signal(230, 430, SignalOrientation.CCW, false, Canvas)); // track is occupied, signal is not settable
             Blocks.Add(B_3);
 
             // ***************** Block#4 *****************
@@ -90,7 +90,7 @@ namespace simulation
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.TopLeft));
             x -= Field.SquareSize;
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
-            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, B_5, false, Canvas)); // track is occupied, signal is not settable
+            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, false, Canvas)); // track is occupied, signal is not settable
             Blocks.Add(B_5);
 
             // ***************** Block#6 *****************
@@ -191,10 +191,10 @@ namespace simulation
 
         static public void UpdateBlockMaxSpeed(int SignalId, SignalState State)
         {
-            switch(SignalId)
+            switch (SignalId)
             {
                 case 0:
-                    switch(State)
+                    switch (State)
                     {
                         case SignalState.Red:
                             Blocks[0].EOBSpeed = 0;

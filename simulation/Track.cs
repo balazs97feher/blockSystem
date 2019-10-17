@@ -14,7 +14,7 @@ namespace simulation
     {
         public TrackState State;
 
-        protected Track(int x, int y) : base(x,y)
+        protected Track(int x, int y) : base(x, y)
         {
             State = TrackState.Default;
         }
@@ -23,7 +23,7 @@ namespace simulation
 
         public SolidColorBrush GetStateColor(TrackState s) // what color to paint a given section
         {
-            switch(s)
+            switch (s)
             {
                 case TrackState.Default:
                     return Brushes.Gray;

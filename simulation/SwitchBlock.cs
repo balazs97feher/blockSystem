@@ -3,7 +3,7 @@
 namespace simulation
 {
     // a fork shaped block
-    // contains exactly 3 Track instances: 1 horizontal, 1 switch, 1 bottomleft/bottomright
+    // contains exactly 3 Track objects: 1 horizontal, 1 switch, 1 bottomleft/bottomright
     class SwitchBlock : Block
     {
         public Switch S;

@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:simulation"
         mc:Ignorable="d"
-        Title="Simulation" Height="1080" Width="1920">
+        Title="Simulation" Height="830" Width="1455" ResizeMode="NoResize">
     <Canvas x:Name="ApplicationCanvas" Background="Green">
+        <Rectangle Fill="#FFF4F4F5" Height="480" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="1440" />
+
         <Label Content="Menetirány" Canvas.Top="482" Canvas.Bottom="20" FontSize="28" Canvas.Left="10" Width="155"/>
         <ComboBox Canvas.Left="15" Canvas.Top="529" Width="140" SelectionChanged="DirectionChanged" SelectedIndex="0" Height="32" FontSize="16">
             <ComboBoxItem>Balra</ComboBoxItem>
@@ -24,9 +26,8 @@
             <ComboBoxItem Content="Alsó vágány"/>
         </ComboBox>
 
-        <Label Content="Sebesség beállítása" Canvas.Top="583" Canvas.Bottom="20" FontSize="28" Canvas.Left="10"/>
-        <Slider Name="SpeedSlide" Value="{Binding SetSpeed}" Canvas.Left="15" Canvas.Top="625" Width="280" Maximum="80" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
-        <TextBox Height="39" Canvas.Left="300" TextWrapping="Wrap" Text="{Binding ElementName=SpeedSlide, Path=Value, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="610" Width="51" FontSize="28" Background="Green" BorderThickness="0"/>
+        <Label Content="Sebesség beállítása" Canvas.Top="602" Canvas.Bottom="20" FontSize="28" Canvas.Left="225" Width="250"/>
+        <Slider Name="SpeedSlide" Value="{Binding SetSpeed}" Canvas.Left="230" Canvas.Top="655" Width="245" Maximum="80" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged" AutoToolTipPlacement="TopLeft" AutoToolTipPrecision="0"/>
 
         <TextBlock x:Name="DisplayVelocity" Canvas.Left="654" TextWrapping="Wrap" Text="{Binding Speed}" Canvas.Top="622" Height="90" Width="133" FontSize="64" Foreground="Red" Panel.ZIndex="2" TextAlignment="Center"/>
         <Image Height="280" Canvas.Left="455" Canvas.Top="494" Width="524" >
@@ -35,9 +36,10 @@
             </Image.Source>
         </Image>
 
-        <Label Content="Információ" Canvas.Top="664" Canvas.Bottom="20" FontSize="28" Canvas.Left="10"/>
-        <TextBlock x:Name="Information" Height="59" Canvas.Left="19" TextWrapping="Wrap" Text="{Binding Information}" Canvas.Top="711" Width="444" Background="Green" FontSize="22" Foreground="LightGray"/>
-        <Border BorderBrush="Black" BorderThickness="1" Height="67" Canvas.Left="15" Canvas.Top="707" Width="451"/>
+        <Label Content="Információ" Canvas.Top="602" Canvas.Bottom="20" FontSize="28" Canvas.Left="959"/>
+        <TextBlock x:Name="Information" Height="59" Canvas.Left="968" TextWrapping="Wrap" Text="{Binding Information}" Canvas.Top="649" Width="355" Background="Green" FontSize="22" Foreground="LightGray"/>
+        <Border BorderBrush="Black" BorderThickness="1" Height="67" Canvas.Left="964" Canvas.Top="645" Width="363"/>
+
 
     </Canvas>
 </Window>

@@ -61,7 +61,7 @@ namespace simulation
 
         private void StartTimer()
         {
-            Timer = new System.Windows.Threading.DispatcherTimer();
+            Timer = new DispatcherTimer();
             Timer.Tick += new EventHandler(Tick);
             Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             Timer.Start();
@@ -86,7 +86,7 @@ namespace simulation
             if (RemainingDistance > 0) // the train crosses a block border
             {
                 FreeBlock(Fecske.Block);
-                SetSignal();
+                SetSignalRed();
                 int NextBlockId = Layout.GetNextBlock(Fecske.Block);
                 Fecske.Block = NextBlockId;
                 SecureStation(NextBlockId);
@@ -109,7 +109,7 @@ namespace simulation
         }
 
 
-        public void SetSignal() // sets the signal to red that the train has passed
+        public void SetSignalRed() // sets the signal to red that the train has passed
         {
             if (Layout.DirectionCW == true && Layout.Blocks[Fecske.Block].CWSignal != null)
                 Layout.Blocks[Fecske.Block].CWSignal.SetState(SignalState.Red);
@@ -130,12 +130,16 @@ namespace simulation
 
         public void SetDeparture(int BlockId)
         {
-            FreeBlock(Fecske.Block);
-            Fecske.Block = BlockId;
-            Fecske.Speed = 0;
-            Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
-            OccupyBlock(BlockId);
-            SetInformation("Induló vágány megváltozott.");
+            if (Fecske.Block < 2 && Fecske.Speed == 0)
+            {
+                FreeBlock(Fecske.Block);
+                Fecske.Block = BlockId;
+                Fecske.Speed = 0;
+                Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
+                OccupyBlock(BlockId);
+                SetInformation("Induló vágány megváltozott.");
+            }
+            else SetInformation("Induló vágány megváltoztatása jelenleg nem lehetséges.");
         }
 
         public void OccupyBlock(int BlockId)
@@ -215,7 +219,7 @@ namespace simulation
                 }
                 SetInformation("Menetirány megváltozott.");
             }
-            else SetInformation("Menetirány megváltoztatása csak állomáson várakozó vonat esetén lehetséges.");
+            else SetInformation("Menetirány megváltoztatása jelenleg nem lehetséges.");
         }
 
     }

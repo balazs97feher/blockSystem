@@ -8,7 +8,7 @@ namespace simulation
         public int Length;
         public List<Track> Tracks;
         public Signal CWSignal;
-        public Signal CCWSignal; // signals at either end of the block
+        public Signal CCWSignal; // signals at either end of the block (optional)
         public int Id;
 
         public int EOBSpeed; // maximum speed at which the train is allowed to reach the end of the current block
