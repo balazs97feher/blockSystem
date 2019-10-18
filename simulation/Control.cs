@@ -74,7 +74,11 @@ namespace simulation
                 SetSpeed = 0;
                 SetInformation("Indulás megtiltva. Ellenőrizze a váltók és a jelzők állását!");
             }
-            else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed) SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
+            else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed)
+            {
+                SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
+                SetInformation("Maximális sebesség: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
+            }
             Roll();
             if (SetSpeed > Fecske.Speed) Fecske.Accelerate();
             else if (SetSpeed < Fecske.Speed) Fecske.Break();
@@ -89,6 +93,7 @@ namespace simulation
                 SetSignalRed();
                 int NextBlockId = Layout.GetNextBlock(Fecske.Block);
                 Fecske.Block = NextBlockId;
+                SetInformation("Maximális sebesség: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
                 SecureStation(NextBlockId);
                 Fecske.DistanceFromEOB = Layout.Blocks[NextBlockId].Length;
                 OccupyBlock(Fecske.Block);

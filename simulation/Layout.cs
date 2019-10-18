@@ -201,8 +201,8 @@ namespace simulation
                             break;
                         case SignalState.Green:
                             Blocks[0].EOBSpeed = 40;
-                            Blocks[3].EOBSpeed = 120;
-                            Blocks[4].EOBSpeed = 120;
+                            Blocks[3].EOBSpeed = 80;
+                            Blocks[4].EOBSpeed = 80;
                             break;
                         case SignalState.Yellow:
                             Blocks[0].EOBSpeed = 40;
@@ -219,8 +219,8 @@ namespace simulation
                             break;
                         case SignalState.Green:
                             Blocks[0].EOBSpeed = 40;
-                            Blocks[5].EOBSpeed = 120;
-                            Blocks[4].EOBSpeed = 120;
+                            Blocks[5].EOBSpeed = 80;
+                            Blocks[4].EOBSpeed = 80;
                             break;
                         case SignalState.Yellow:
                             Blocks[0].EOBSpeed = 40;
@@ -237,8 +237,8 @@ namespace simulation
                             break;
                         case SignalState.Green:
                             Blocks[1].EOBSpeed = 40;
-                            Blocks[3].EOBSpeed = 120;
-                            Blocks[4].EOBSpeed = 120;
+                            Blocks[3].EOBSpeed = 80;
+                            Blocks[4].EOBSpeed = 80;
                             break;
                         case SignalState.Yellow:
                             Blocks[1].EOBSpeed = 40;
@@ -255,8 +255,8 @@ namespace simulation
                             break;
                         case SignalState.Green:
                             Blocks[1].EOBSpeed = 40;
-                            Blocks[5].EOBSpeed = 120;
-                            Blocks[4].EOBSpeed = 120;
+                            Blocks[5].EOBSpeed = 80;
+                            Blocks[4].EOBSpeed = 80;
                             break;
                         case SignalState.Yellow:
                             Blocks[1].EOBSpeed = 40;
