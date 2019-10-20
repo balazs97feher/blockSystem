@@ -14,16 +14,16 @@ namespace simulation
     {
         public TrackState State;
 
-        protected Track(int x, int y) : base(x, y)
+        public Track(int x, int y) : base(x, y)
         {
             State = TrackState.Default;
         }
 
         public abstract void SetState(TrackState S);
 
-        public SolidColorBrush GetStateColor(TrackState s) // what color to paint a given section
+        public SolidColorBrush GetStateColor(TrackState S) // what color to paint a given section
         {
-            switch (s)
+            switch (S)
             {
                 case TrackState.Default:
                     return Brushes.Gray;

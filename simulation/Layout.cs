@@ -148,8 +148,9 @@ namespace simulation
 
         static public bool DepartureConstraints(int Block)
         {
-            if (Block > 1) return true;
-            if (Layout.DirectionCW == true)
+            if (Layout.Blocks[Block].EOBSpeed == 0) return false;
+            else if (Block > 1) return true;
+            else if (Layout.DirectionCW == true)
             {
                 if (Block == 0)
                 {

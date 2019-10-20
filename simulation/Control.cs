@@ -69,7 +69,7 @@ namespace simulation
 
         private void Tick(object sender, EventArgs e)
         {
-            if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false || Layout.Blocks[Fecske.Block].EOBSpeed == 0))
+            if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false))
             {
                 SetSpeed = 0;
                 SetInformation("Indulás megtiltva. Ellenőrizze a váltók és a jelzők állását!");
@@ -79,9 +79,9 @@ namespace simulation
                 SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
                 SetInformation("Maximális sebesség: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
             }
-            Roll();
             if (SetSpeed > Fecske.Speed) Fecske.Accelerate();
             else if (SetSpeed < Fecske.Speed) Fecske.Break();
+            Roll();
         }
 
         public void Roll()
@@ -104,10 +104,35 @@ namespace simulation
 
         public void SecureStation(int BlockId)
         {
-            if (BlockId < 2)
+            if (BlockId == 0)
             {
-                Layout.Blocks[3].CCWSignal.Settable = false;
-                Layout.Blocks[5].CWSignal.Settable = false;
+                if (Layout.DirectionCW == true)
+                {
+                    if (Layout.RightSwitch.Straight == true) Layout.Blocks[5].CWSignal.Settable = true;
+                    else Layout.Blocks[5].CWSignal.Settable = false;
+                }
+                else
+                {
+                    if (Layout.LeftSwitch.Straight == true) Layout.Blocks[3].CCWSignal.Settable = true;
+                    else Layout.Blocks[3].CCWSignal.Settable = false;
+                }
+                //Layout.Blocks[3].CCWSignal.Settable = false;
+                //Layout.Blocks[5].CWSignal.Settable = false;
+            }
+            else if (BlockId == 1)
+            {
+                if (Layout.DirectionCW == true)
+                {
+                    if (Layout.RightSwitch.Straight == true) Layout.Blocks[5].CWSignal.Settable = false;
+                    else Layout.Blocks[5].CWSignal.Settable = true;
+                }
+                else
+                {
+                    if (Layout.LeftSwitch.Straight == true) Layout.Blocks[3].CCWSignal.Settable = false;
+                    else Layout.Blocks[3].CCWSignal.Settable = true;
+                }
+                //Layout.Blocks[3].CCWSignal.Settable = false;
+                //Layout.Blocks[5].CWSignal.Settable = false;
             }
             else if (BlockId == 2 && Layout.DirectionCW == true) Layout.Blocks[5].CWSignal.Settable = true;
             else if (BlockId == 6 && Layout.DirectionCW == false) Layout.Blocks[3].CCWSignal.Settable = true;
@@ -142,6 +167,7 @@ namespace simulation
                 Fecske.Speed = 0;
                 Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
                 OccupyBlock(BlockId);
+                SecureStation(BlockId);
                 SetInformation("Induló vágány megváltozott.");
             }
             else SetInformation("Induló vágány megváltoztatása jelenleg nem lehetséges.");
@@ -170,6 +196,7 @@ namespace simulation
                         Layout.Blocks[0].CCWSignal.Settable = !Layout.Blocks[0].CCWSignal.Settable;
                         Layout.Blocks[1].CCWSignal.Settable = !Layout.Blocks[1].CCWSignal.Settable;
                     }
+                    SecureStation(Fecske.Block);
                 }
                 else SetInformation("Ez a váltó jelenleg nem állítható át.");
             }
@@ -189,6 +216,7 @@ namespace simulation
                         Layout.Blocks[0].CWSignal.Settable = !Layout.Blocks[0].CWSignal.Settable;
                         Layout.Blocks[1].CWSignal.Settable = !Layout.Blocks[1].CWSignal.Settable;
                     }
+                    SecureStation(Fecske.Block);
                 }
                 else SetInformation("Ez a váltó jelenleg nem állítható át.");
             }
@@ -223,6 +251,7 @@ namespace simulation
                     else Layout.Blocks[0].CCWSignal.Settable = true;
                 }
                 SetInformation("Menetirány megváltozott.");
+                SecureStation(Fecske.Block);
             }
             else SetInformation("Menetirány megváltoztatása jelenleg nem lehetséges.");
         }
