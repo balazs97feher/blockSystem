@@ -1,1 +1,4 @@
 *.lock
+simulation/.vs/simulation/v16/.suo
+simulation/.vs/simulation/v16/Server/sqlite3/storage.ide
+simulation/obj/Debug/simulation.csprojAssemblyReference.cache
