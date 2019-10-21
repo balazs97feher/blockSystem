@@ -92,7 +92,7 @@ namespace simulation
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.TopLeft));
             x -= Field.SquareSize;
             B_5.Tracks.Add(new StraightTrack(x, y, TrackOrientation.HorizontalCenter));
-            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, false, Canvas, Messenger)); // track is occupied, signal is not settable
+            B_5.AddCWSignal(new Signal(1210, 410, SignalOrientation.CW, true, Canvas, Messenger)); // track is free, signal is settable
             Blocks.Add(B_5);
 
             // ***************** Block#6 *****************

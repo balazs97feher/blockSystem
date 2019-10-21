@@ -72,15 +72,19 @@ namespace simulation
 
         private void Tick(object sender, EventArgs e)
         {
-            if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false || Layout.Blocks[Fecske.Block].EOBSpeed == 0))
+            if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false))
             {
                 SetSpeed = 0;
                 SetInformation("Indulás megtiltva. Ellenőrizze a váltók és a jelzők állását!");
             }
-            else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed) SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
-            Roll();
+            else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed)
+            {
+                SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
+                SetInformation("Maximális sebesség: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
+            }
             if (SetSpeed > Fecske.Speed) Fecske.Accelerate();
             else if (SetSpeed < Fecske.Speed) Fecske.Break();
+            Roll();
         }
 
         public void Roll()
@@ -92,6 +96,7 @@ namespace simulation
                 SetSignalRed();
                 int NextBlockId = Layout.GetNextBlock(Fecske.Block);
                 Fecske.Block = NextBlockId;
+                SetInformation("Maximális sebesség: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
                 SecureStation(NextBlockId);
                 Fecske.DistanceFromEOB = Layout.Blocks[NextBlockId].Length;
                 OccupyBlock(Fecske.Block);
@@ -102,10 +107,31 @@ namespace simulation
 
         public void SecureStation(int BlockId)
         {
-            if (BlockId < 2)
+            if (BlockId == 0)
             {
-                Layout.Blocks[3].CCWSignal.Settable = false;
-                Layout.Blocks[5].CWSignal.Settable = false;
+                if (Layout.DirectionCW == true)
+                {
+                    if (Layout.RightSwitch.Straight == true) Layout.Blocks[5].CWSignal.Settable = true;
+                    else Layout.Blocks[5].CWSignal.Settable = false;
+                }
+                else
+                {
+                    if (Layout.LeftSwitch.Straight == true) Layout.Blocks[3].CCWSignal.Settable = true;
+                    else Layout.Blocks[3].CCWSignal.Settable = false;
+                }
+            }
+            else if (BlockId == 1)
+            {
+                if (Layout.DirectionCW == true)
+                {
+                    if (Layout.RightSwitch.Straight == true) Layout.Blocks[5].CWSignal.Settable = false;
+                    else Layout.Blocks[5].CWSignal.Settable = true;
+                }
+                else
+                {
+                    if (Layout.LeftSwitch.Straight == true) Layout.Blocks[3].CCWSignal.Settable = false;
+                    else Layout.Blocks[3].CCWSignal.Settable = true;
+                }
             }
             else if (BlockId == 2 && Layout.DirectionCW == true) Layout.Blocks[5].CWSignal.Settable = true;
             else if (BlockId == 6 && Layout.DirectionCW == false) Layout.Blocks[3].CCWSignal.Settable = true;
@@ -133,12 +159,17 @@ namespace simulation
 
         public void SetDeparture(int BlockId)
         {
-            FreeBlock(Fecske.Block);
-            Fecske.Block = BlockId;
-            Fecske.Speed = 0;
-            Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
-            OccupyBlock(BlockId);
-            SetInformation("Induló vágány megváltozott.");
+            if (Fecske.Block < 2 && Fecske.Speed == 0)
+            {
+                FreeBlock(Fecske.Block);
+                Fecske.Block = BlockId;
+                Fecske.Speed = 0;
+                Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
+                OccupyBlock(BlockId);
+                SecureStation(BlockId);
+                SetInformation("Induló vágány megváltozott.");
+            }
+            else SetInformation("Induló vágány megváltoztatása jelenleg nem lehetséges.");
         }
 
         public void OccupyBlock(int BlockId)
