@@ -41,7 +41,7 @@ namespace simulation
             Coord.X = x;
             Coord.Y = y;
             Orientation = o;
-            Settable = settable;
+            Settable = true;
             Display = new Visual(this, Canvas);
             State = SignalState.Red;
             Display.Update();
@@ -50,7 +50,7 @@ namespace simulation
         public void SetState(SignalState s)
         {
             State = s;
-            if (State == SignalState.Blank) Settable = false;
+            //if (State == SignalState.Blank) Settable = false;
             Messenger.SetSignal(Id, State);
             Layout.UpdateBlockMaxSpeed(Id, State);
             Display.Update();
@@ -78,16 +78,16 @@ namespace simulation
 
             private void SignalClicked(object sender, MouseButtonEventArgs e)
             {
-                if (S.Settable)
-                {
+                //if (S.Settable)
+                //{
                     ComboBox c = new ComboBox();
                     c.ItemsSource = new List<string> { "Zöld", "Vörös", "Sárga", "Sötét"};
                     Canvas.SetLeft(c, S.Coord.X);
                     Canvas.SetTop(c, S.Coord.Y);
                     Canvas.Children.Add(c);
                     c.SelectionChanged += SignalChanged;
-                }
-                else Control.SetInformation("Ez a jelző jelenleg nem állítható át.");
+                //}
+                //else Control.SetInformation("Ez a jelző jelenleg nem állítható át.");
             }
 
             private void SignalChanged(object sender, SelectionChangedEventArgs e)

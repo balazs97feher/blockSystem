@@ -106,5 +106,18 @@ namespace simulation
             Messenger.SetControlPort(S);
         }
 
+        private void BoosterOnOff(object sender, RoutedEventArgs e)
+        {
+            if(Messenger.BoosterConnected==false)
+            {
+                if (Messenger.BoosterConnect() == true) (sender as Button).Content = "Booster OFF";
+                else Control.SetInformation("Jelenleg nem lehet a Boosterhez csatlakozni.");
+            }
+            else
+            {
+                Messenger.BoosterDisconnect();
+                (sender as Button).Content = "Booster ON";
+            }
+        }
     }
 }

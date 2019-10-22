@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections;
+using System.ComponentModel;
 using System.IO.Ports;
 using System.Threading;
 
@@ -6,7 +8,8 @@ namespace simulation
 {
     public class Communication : INotifyPropertyChanged
     {
-        private bool ready = true; // soros port kesz
+        private Queue ToBeSent;
+        private bool ready = true; // serial port ready
         public event PropertyChangedEventHandler PropertyChanged; // need to implement the above interface for data binding
         private void NotifyPropertyChanged(string Property)
         {
@@ -23,9 +26,9 @@ namespace simulation
                 NotifyPropertyChanged("BoosterReceived");
             }
         }
-        private void PrintBoosterReceived(byte b)
+        private void PrintBoosterReceived(byte b) //prints the byte received from the booster
         {
-            if (BoosterReceived.Length > 25) BoosterReceived = "";
+            if (BoosterReceived.Length > 16) BoosterReceived = "";
             BoosterReceived += b.ToString() + " ";
         }
 
@@ -35,12 +38,11 @@ namespace simulation
             get { return occupationReceived; }
             set
             {
-                if (occupationReceived.Length > 24) occupationReceived = "";
                 occupationReceived = value;
                 NotifyPropertyChanged("OccupationReceived");
             }
         }
-        private void PrintOccupationReceived(byte b)
+        private void PrintOccupationReceived(byte b) //prints the byte received from the hall sensors
         {
             if (OccupationReceived.Length > 25) OccupationReceived = "";
             OccupationReceived += b.ToString() + " ";
@@ -50,13 +52,14 @@ namespace simulation
         private static Communication Instance = null;
         public SerialPort ControlPort;
         public SerialPort OccupationPort;
-        private bool BoosterConnected; // is the software connected to the booster
+        public bool BoosterConnected; // is the software connected to the booster
 
         private Communication()
         {
             boosterReceived = "";
             occupationReceived = "";
             BoosterConnected = false;
+            ToBeSent = new Queue();
         }
 
         static public Communication CreateMessenger()
@@ -78,8 +81,7 @@ namespace simulation
 
         private void OccupationPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //PrintBoosterReceived(b); // DEBUG
-            ready = true;
+            //TODO
         }
 
         public void SetControlPort(string PortName)
@@ -90,20 +92,26 @@ namespace simulation
                 PortName = PortName
             };
             ControlPort.Open();
-            BoosterConnect();
+            ControlPort.DataReceived += ControlPort_DataReceived;
         }
 
-        public void ClosePorts()
+        private void ControlPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if (ControlPort != null) ControlPort.Close();
-            if (OccupationPort != null) OccupationPort.Close();
+            PrintBoosterReceived((byte)e.EventType);
+            if (ToBeSent.Count != 0)
+            {
+                byte[] c = new byte[1];
+                c[0] = (byte)ToBeSent.Dequeue();
+                ControlPort.Write(c, 0, 1);
+                if (ToBeSent.Count == 0) ready = true;
+            }
         }
 
         private void SendControlByte(byte b)
         {
-            if (BoosterConnected)
+            if (BoosterConnected && ControlPort != null)
             {
-                if (ControlPort != null && ready == true)
+                if (ready == true)
                 {
                     byte[] c = new byte[1];
                     c[0] = b;
@@ -112,9 +120,25 @@ namespace simulation
                 }
                 else
                 {
-                    Thread.Sleep(100);
-                    SendControlByte(b);
+                    ToBeSent.Enqueue(b);
+                    PrintOccupationReceived(b); // DEBUG
                 }
+            }
+        }
+
+        public void SetSpeed(int SetSpeed)
+        {
+            if(Layout.DirectionCW==true)
+            {
+                int b = 0x50;
+                b += SetSpeed / 10;
+                SendControlByte((byte)b);
+            }
+            else
+            {
+                int b = 0x40;
+                b += SetSpeed / 10;
+                SendControlByte((byte)b);
             }
         }
 
@@ -242,18 +266,31 @@ namespace simulation
             }
         }
 
-        private void BoosterConnect()
+        public bool BoosterConnect() //returns true, if connection was successful
         {
-            SendControlByte(0xFF);
-            BoosterConnected = true;
+            if (ControlPort != null)
+            {
+                BoosterConnected = true;
+                SendControlByte(0xFF);
+                return true;
+            }
+            else return false;
         }
 
         public void BoosterDisconnect()
         {
-            if (BoosterConnected) SendControlByte(0xEE);
+            if (BoosterConnected)
+            {
+                SendControlByte(0xEE);
+                BoosterConnected = false;
+            }
         }
 
-
+        public void ClosePorts()
+        {
+            if (ControlPort != null) ControlPort.Close();
+            if (OccupationPort != null) OccupationPort.Close();
+        }
 
     }
 }

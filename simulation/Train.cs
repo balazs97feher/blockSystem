@@ -26,12 +26,14 @@ namespace simulation
         public int Acceleration;
         public int Deceleration;
 
-        public Train(int Block)
+        private Communication Messenger;
+        public Train(int Block, Communication M)
         {
             this.Block = Block;
             Speed = 0;
-            Acceleration = 1;
-            Deceleration = 1;
+            Messenger = M;
+            /*Acceleration = 1;
+            Deceleration = 1;*/
         }
 
         public int Roll() //when crossing block border, returns the remaining distance that the train goes after crossing
@@ -49,16 +51,17 @@ namespace simulation
             DistanceFromEOB -= D;
         }
 
-        public void Accelerate()
+        public void ChangeSpeed(int SetSpeed)
         {
-            Speed += Acceleration;
+            Speed = SetSpeed;
+            Messenger.SetSpeed(SetSpeed);
         }
 
-        public void Break()
+        /*public void Break(int SetSpeed)
         {
             if (Speed > Deceleration) Speed -= Deceleration;
             else Speed = 0;
-        }
+        }*/
 
     }
 }

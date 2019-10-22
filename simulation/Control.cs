@@ -46,7 +46,7 @@ namespace simulation
         {
             Instance = this;
             Messenger = M;
-            Fecske = new Train(0);
+            Fecske = new Train(0, M);
         }
 
         public static Control CreateController(Communication M)
@@ -72,7 +72,7 @@ namespace simulation
 
         private void Tick(object sender, EventArgs e)
         {
-            if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false))
+            /*if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false))
             {
                 SetSpeed = 0;
                 SetInformation("Indulás megtiltva. Ellenőrizze a váltók és a jelzők állását!");
@@ -81,10 +81,14 @@ namespace simulation
             {
                 SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
                 SetInformation("Maximális sebesség: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
-            }
-            if (SetSpeed > Fecske.Speed) Fecske.Accelerate();
-            else if (SetSpeed < Fecske.Speed) Fecske.Break();
-            Roll();
+            }*/
+
+
+            if (SetSpeed > Fecske.Speed) Fecske.ChangeSpeed(SetSpeed);
+            else if (SetSpeed < Fecske.Speed) Fecske.ChangeSpeed(SetSpeed);
+
+
+            //Roll();
         }
 
         public void Roll()
@@ -97,7 +101,7 @@ namespace simulation
                 int NextBlockId = Layout.GetNextBlock(Fecske.Block);
                 Fecske.Block = NextBlockId;
                 SetInformation("Maximális sebesség: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
-                SecureStation(NextBlockId);
+                //SecureStation(NextBlockId);
                 Fecske.DistanceFromEOB = Layout.Blocks[NextBlockId].Length;
                 OccupyBlock(Fecske.Block);
                 SetDeceleration();
@@ -105,7 +109,7 @@ namespace simulation
             }
         }
 
-        public void SecureStation(int BlockId)
+        /*public void SecureStation(int BlockId)
         {
             if (BlockId == 0)
             {
@@ -135,7 +139,7 @@ namespace simulation
             }
             else if (BlockId == 2 && Layout.DirectionCW == true) Layout.Blocks[5].CWSignal.Settable = true;
             else if (BlockId == 6 && Layout.DirectionCW == false) Layout.Blocks[3].CCWSignal.Settable = true;
-        }
+        }*/
 
 
         public void SetSignalRed() // sets the signal to red that the train has passed
@@ -166,8 +170,9 @@ namespace simulation
                 Fecske.Speed = 0;
                 Fecske.DistanceFromEOB = Layout.Blocks[BlockId].Length / 2;
                 OccupyBlock(BlockId);
-                SecureStation(BlockId);
+                //SecureStation(BlockId);
                 SetInformation("Induló vágány megváltozott.");
+                //SecureStation(Fecske.Block);
             }
             else SetInformation("Induló vágány megváltoztatása jelenleg nem lehetséges.");
         }
@@ -190,11 +195,12 @@ namespace simulation
                 if (Layout.RightSwitch.DoSwitch() == true)
                 {
                     SetInformation("Váltó sikeresen átállítva.");
-                    if (Layout.DirectionCW == false)
+                    /*if (Layout.DirectionCW == false)
                     {
                         Layout.Blocks[0].CCWSignal.Settable = !Layout.Blocks[0].CCWSignal.Settable;
                         Layout.Blocks[1].CCWSignal.Settable = !Layout.Blocks[1].CCWSignal.Settable;
                     }
+                    SecureStation(Fecske.Block);*/
                 }
                 else SetInformation("Ez a váltó jelenleg nem állítható át.");
             }
@@ -209,11 +215,12 @@ namespace simulation
                 if (Layout.LeftSwitch.DoSwitch() == true)
                 {
                     SetInformation("Váltó sikeresen átállítva.");
-                    if (Layout.DirectionCW == true)
+                    /*if (Layout.DirectionCW == true)
                     {
                         Layout.Blocks[0].CWSignal.Settable = !Layout.Blocks[0].CWSignal.Settable;
                         Layout.Blocks[1].CWSignal.Settable = !Layout.Blocks[1].CWSignal.Settable;
                     }
+                    SecureStation(Fecske.Block);*/
                 }
                 else SetInformation("Ez a váltó jelenleg nem állítható át.");
             }
@@ -248,6 +255,7 @@ namespace simulation
                     else Layout.Blocks[0].CCWSignal.Settable = true;
                 }
                 SetInformation("Menetirány megváltozott.");
+                //SecureStation(Fecske.Block);
             }
             else SetInformation("Menetirány megváltoztatása csak állomáson várakozó vonat esetén lehetséges.");
         }
