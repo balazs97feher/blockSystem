@@ -26,10 +26,10 @@ namespace simulation
                 NotifyPropertyChanged("BoosterReceived");
             }
         }
-        private void PrintBoosterReceived(byte b) //prints the byte received from the booster
+        private void PrintBoosterReceived(string b) //prints the byte received from the booster
         {
             if (BoosterReceived.Length > 16) BoosterReceived = "";
-            BoosterReceived += b.ToString() + " ";
+            BoosterReceived += b + " ";
         }
 
         private string occupationReceived;
@@ -42,10 +42,10 @@ namespace simulation
                 NotifyPropertyChanged("OccupationReceived");
             }
         }
-        private void PrintOccupationReceived(byte b) //prints the byte received from the hall sensors
+        private void PrintOccupationReceived(string b) //prints the byte received from the hall sensors
         {
-            if (OccupationReceived.Length > 25) OccupationReceived = "";
-            OccupationReceived += b.ToString() + " ";
+            if (OccupationReceived.Length > 16) OccupationReceived = "";
+            OccupationReceived += b + " ";
         }
 
 
@@ -76,12 +76,17 @@ namespace simulation
                 PortName = PortName
             };
             OccupationPort.Open();
-            OccupationPort.DataReceived += OccupationPort_DataReceived;
+            if (OccupationPort.IsOpen == true)
+            {
+                Control.SetInformation("bt ok");
+                OccupationPort.DataReceived += OccupationPort_DataReceived;
+            }
+            else Control.SetInformation("bt nem ok");
         }
 
         private void OccupationPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //TODO
+            PrintOccupationReceived((sender as SerialPort).ReadExisting());
         }
 
         public void SetControlPort(string PortName)
@@ -97,7 +102,7 @@ namespace simulation
 
         private void ControlPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            PrintBoosterReceived((byte)e.EventType);
+            PrintBoosterReceived((sender as SerialPort).ReadExisting());
             if (ToBeSent.Count != 0)
             {
                 byte[] c = new byte[1];
@@ -105,6 +110,7 @@ namespace simulation
                 ControlPort.Write(c, 0, 1);
                 if (ToBeSent.Count == 0) ready = true;
             }
+            else ready = true;
         }
 
         private void SendControlByte(byte b)
@@ -121,7 +127,7 @@ namespace simulation
                 else
                 {
                     ToBeSent.Enqueue(b);
-                    PrintOccupationReceived(b); // DEBUG
+                    //PrintOccupationReceived(b); // DEBUG
                 }
             }
         }
@@ -288,8 +294,8 @@ namespace simulation
 
         public void ClosePorts()
         {
-            if (ControlPort != null) ControlPort.Close();
-            if (OccupationPort != null) OccupationPort.Close();
+            if (ControlPort!=null && ControlPort.IsOpen) ControlPort.Close();
+            if (OccupationPort!=null && OccupationPort.IsOpen) OccupationPort.Close();
         }
 
     }

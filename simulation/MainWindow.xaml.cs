@@ -103,7 +103,7 @@ namespace simulation
         private void SetOccupationPort(object sender, SelectionChangedEventArgs e)
         {
             string S = OccupationPort.SelectedItem.ToString();
-            Messenger.SetControlPort(S);
+            Messenger.SetOccupationPort(S);
         }
 
         private void BoosterOnOff(object sender, RoutedEventArgs e)
