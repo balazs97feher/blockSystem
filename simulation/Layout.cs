@@ -10,7 +10,7 @@ namespace simulation
         static public Switch RightSwitch;
         static public bool DirectionCW = true;
         static private Canvas Canvas;
-        static private bool Initialized=false;
+        static private bool Initialized = false;
         static private Communication Messenger;
 
 
@@ -19,7 +19,7 @@ namespace simulation
             Canvas = C;
             Messenger = M;
             int x = 0, y = 0;
-            
+
             // ***************** Block#0 *****************
             Block B_0 = new Block(0, 2000);
             x = Field.SquareSize * 4; y = Field.SquareSize * 2;
@@ -130,7 +130,7 @@ namespace simulation
             }
         }
 
-        static public int GetNextBlock(int CurrentBlock)
+        /*static public int GetNextBlock(int CurrentBlock) ***** FOR SIMULATION PURPOSES *****
         {
             if (DirectionCW)
             {
@@ -146,6 +146,16 @@ namespace simulation
                 if (Layout.LeftSwitch.Straight == true) return 1; // Block#3
                 else return 0;
             }
+        }*/
+
+
+        //Look-up-tables: mapping between HallIds and Layout Ids
+        private static readonly int[] HallIdToBlockId_CW = { -1, 4, 5, 6, 3, 1, 0, 2, 2 };
+        private static readonly int[] HallIdToBlockId_CCW = { -1, 3, 4, 5, 2, 6, 6, 0, 1 };
+        public static int HallIdToBlockId(int HallId)
+        {
+            if (DirectionCW == true) return HallIdToBlockId_CW[HallId];
+            else return HallIdToBlockId_CCW[HallId];
         }
 
         static public bool DepartureConstraints(int Block)
@@ -193,18 +203,18 @@ namespace simulation
 
         static public void UpdateBlockMaxSpeed(int SignalId, SignalState State)
         {
-            switch(SignalId)
+            switch (SignalId)
             {
                 case 0:
-                    switch(State)
+                    switch (State)
                     {
                         case SignalState.Red:
                             Blocks[0].EOBSpeed = 0;
                             break;
                         case SignalState.Green:
                             Blocks[0].EOBSpeed = 40;
-                            Blocks[3].EOBSpeed = 120;
-                            Blocks[4].EOBSpeed = 120;
+                            Blocks[3].EOBSpeed = 80;
+                            Blocks[4].EOBSpeed = 80;
                             break;
                         case SignalState.Yellow:
                             Blocks[0].EOBSpeed = 40;
@@ -221,8 +231,8 @@ namespace simulation
                             break;
                         case SignalState.Green:
                             Blocks[0].EOBSpeed = 40;
-                            Blocks[5].EOBSpeed = 120;
-                            Blocks[4].EOBSpeed = 120;
+                            Blocks[5].EOBSpeed = 80;
+                            Blocks[4].EOBSpeed = 80;
                             break;
                         case SignalState.Yellow:
                             Blocks[0].EOBSpeed = 40;
@@ -239,8 +249,8 @@ namespace simulation
                             break;
                         case SignalState.Green:
                             Blocks[1].EOBSpeed = 40;
-                            Blocks[3].EOBSpeed = 120;
-                            Blocks[4].EOBSpeed = 120;
+                            Blocks[3].EOBSpeed = 80;
+                            Blocks[4].EOBSpeed = 80;
                             break;
                         case SignalState.Yellow:
                             Blocks[1].EOBSpeed = 40;
@@ -257,8 +267,8 @@ namespace simulation
                             break;
                         case SignalState.Green:
                             Blocks[1].EOBSpeed = 40;
-                            Blocks[5].EOBSpeed = 120;
-                            Blocks[4].EOBSpeed = 120;
+                            Blocks[5].EOBSpeed = 80;
+                            Blocks[4].EOBSpeed = 80;
                             break;
                         case SignalState.Yellow:
                             Blocks[1].EOBSpeed = 40;

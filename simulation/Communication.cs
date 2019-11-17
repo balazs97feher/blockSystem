@@ -127,17 +127,16 @@ namespace simulation
                 else
                 {
                     ToBeSent.Enqueue(b);
-                    //PrintOccupationReceived(b); // DEBUG
                 }
             }
         }
 
         public void SetSpeed(int SetSpeed)
         {
-            if(Layout.DirectionCW==true)
+            if (Layout.DirectionCW == true)
             {
                 int b = 0x50;
-                b += SetSpeed / 10;
+                b += (int)System.Math.Ceiling(Convert.ToDouble(SetSpeed) / 10D);
                 SendControlByte((byte)b);
             }
             else
@@ -294,8 +293,8 @@ namespace simulation
 
         public void ClosePorts()
         {
-            if (ControlPort!=null && ControlPort.IsOpen) ControlPort.Close();
-            if (OccupationPort!=null && OccupationPort.IsOpen) OccupationPort.Close();
+            if (ControlPort != null && ControlPort.IsOpen) ControlPort.Close();
+            if (OccupationPort != null && OccupationPort.IsOpen) OccupationPort.Close();
         }
 
     }

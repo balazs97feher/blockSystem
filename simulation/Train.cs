@@ -36,20 +36,20 @@ namespace simulation
             Deceleration = 1;*/
         }
 
-        public int Roll() //when crossing block border, returns the remaining distance that the train goes after crossing
+        /*public int Roll() //when crossing block border, returns the remaining distance that the train goes after crossing
         {
-            if (DistanceFromEOB >= Speed)
+            if (DistanceFromEOB >= Speed) ***** FUNCTION FOR SIMULATION PURPOSES *****
             {
                 DistanceFromEOB -= Speed;
                 return 0;
             }
             else return Speed - DistanceFromEOB;
-        }
+        }*/
 
-        public void Roll(int D) // the train rolls for D distance
+        /*public void Roll(int D) // the train rolls for D distance ***** FUNCTION FOR SIMULATION PURPOSES *****
         {
             DistanceFromEOB -= D;
-        }
+        }*/
 
         public void ChangeSpeed(int SetSpeed)
         {
@@ -57,7 +57,7 @@ namespace simulation
             Messenger.SetSpeed(SetSpeed);
         }
 
-        /*public void Break(int SetSpeed)
+        /*public void Break(int SetSpeed) ***** FUNCTION FOR SIMULATION PURPOSES *****
         {
             if (Speed > Deceleration) Speed -= Deceleration;
             else Speed = 0;

@@ -25,7 +25,7 @@
         </ComboBox>
 
         <Label Content="Sebesség beállítása" Canvas.Top="583" Canvas.Bottom="20" FontSize="28" Canvas.Left="10"/>
-        <Slider Name="SpeedSlide" Value="{Binding SetSpeed}" Canvas.Left="15" Canvas.Top="625" Width="280" Maximum="150" TickPlacement="BottomRight" TickFrequency="10" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
+        <Slider Name="SpeedSlide" Value="{Binding SetSpeed}" Canvas.Left="15" Canvas.Top="625" Width="280" Maximum="80" TickPlacement="BottomRight" TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="SpeedChanged"/>
         <TextBox Height="39" Canvas.Left="300" TextWrapping="Wrap" Text="{Binding ElementName=SpeedSlide, Path=Value, UpdateSourceTrigger=PropertyChanged}" Canvas.Top="610" Width="51" FontSize="28" Background="Green" BorderThickness="0"/>
 
         <TextBlock x:Name="DisplayVelocity" Canvas.Left="654" TextWrapping="Wrap" Text="{Binding Speed}" Canvas.Top="622" Height="90" Width="133" FontSize="64" Foreground="Red" Panel.ZIndex="2" TextAlignment="Center"/>

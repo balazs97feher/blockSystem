@@ -85,7 +85,7 @@ namespace simulation
         {
             ArrayComPortNames = null;
             ArrayComPortNames = SerialPort.GetPortNames();
-            if (ArrayComPortNames == null) Control.SetInformation("Nem találhatók portok.");
+            if (ArrayComPortNames.Length == 0) Control.SetInformation("Nem találhatók portok.");
             else
             {
                 ControlPort.ItemsSource = ArrayComPortNames;
@@ -104,6 +104,7 @@ namespace simulation
         {
             string S = OccupationPort.SelectedItem.ToString();
             Messenger.SetOccupationPort(S);
+            Controller.SubscribeToOccupationPort();
         }
 
         private void BoosterOnOff(object sender, RoutedEventArgs e)

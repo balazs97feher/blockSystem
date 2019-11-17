@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Threading;
 using System.Windows;
+using System.IO.Ports;
 
 namespace simulation
 {
@@ -18,6 +19,7 @@ namespace simulation
         private Communication Messenger;
 
         public Train Fecske;
+        private int TrainPreviousBlock;
         private int setSpeed;
         public int SetSpeed // the speed that's been set
         {
@@ -47,6 +49,7 @@ namespace simulation
             Instance = this;
             Messenger = M;
             Fecske = new Train(0, M);
+            TrainPreviousBlock = 0;
         }
 
         public static Control CreateController(Communication M)
@@ -72,6 +75,7 @@ namespace simulation
 
         private void Tick(object sender, EventArgs e)
         {
+            // ***** FOR SIMULATION PURPOSES *****
             /*if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false))
             {
                 SetSpeed = 0;
@@ -88,10 +92,27 @@ namespace simulation
             else if (SetSpeed < Fecske.Speed) Fecske.ChangeSpeed(SetSpeed);
 
 
-            //Roll();
+            //Roll(); ***** FOR SIMULATION PURPOSES *****
         }
 
-        public void Roll()
+        public void SubscribeToOccupationPort()
+        {
+            Messenger.OccupationPort.DataReceived += OccupationPort_DataReceived;
+        }
+
+        private void OccupationPort_DataReceived(object sender, SerialDataReceivedEventArgs e) // receive ID from Hall sensor,set the train's current position
+        {
+            int HallId = Int32.Parse((sender as SerialPort).ReadExisting());
+            Fecske.Block = Layout.HallIdToBlockId(HallId);
+            if (Fecske.Block != TrainPreviousBlock)
+            {
+                FreeBlock(TrainPreviousBlock);
+                OccupyBlock(Fecske.Block);
+                TrainPreviousBlock = Fecske.Block;
+            }
+        }
+
+        /*public void Roll() ***** FUNCTION FOR SIMULATION PURPOSES *****
         {
             int RemainingDistance = Fecske.Roll();
             if (RemainingDistance > 0) // the train crosses a block border
@@ -107,9 +128,9 @@ namespace simulation
                 SetDeceleration();
                 Fecske.Roll(RemainingDistance);
             }
-        }
+        }*/
 
-        /*public void SecureStation(int BlockId)
+        /*public void SecureStation(int BlockId) // ***** COMMENTED OUT FOR TEST PURPOSES *****
         {
             if (BlockId == 0)
             {
@@ -144,6 +165,7 @@ namespace simulation
 
         public void SetSignalRed() // sets the signal to red that the train has passed
         {
+            //TODO: call fcn when leaving block, ater: Fecske.Block <-> TrainPreviousBlock ?
             if (Layout.DirectionCW == true && Layout.Blocks[Fecske.Block].CWSignal != null)
                 Layout.Blocks[Fecske.Block].CWSignal.SetState(SignalState.Red);
             else if (Layout.DirectionCW == false && Layout.Blocks[Fecske.Block].CCWSignal != null)

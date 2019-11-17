@@ -78,14 +78,14 @@ namespace simulation
 
             private void SignalClicked(object sender, MouseButtonEventArgs e)
             {
-                //if (S.Settable)
+                //if (S.Settable) // ***** FOR TEST PURPOSES *****
                 //{
-                    ComboBox c = new ComboBox();
-                    c.ItemsSource = new List<string> { "Zöld", "Vörös", "Sárga", "Sötét"};
-                    Canvas.SetLeft(c, S.Coord.X);
-                    Canvas.SetTop(c, S.Coord.Y);
-                    Canvas.Children.Add(c);
-                    c.SelectionChanged += SignalChanged;
+                ComboBox c = new ComboBox();
+                c.ItemsSource = new List<string> { "Zöld", "Vörös", "Sárga", "Sötét" };
+                Canvas.SetLeft(c, S.Coord.X);
+                Canvas.SetTop(c, S.Coord.Y);
+                Canvas.Children.Add(c);
+                c.SelectionChanged += SignalChanged;
                 //}
                 //else Control.SetInformation("Ez a jelző jelenleg nem állítható át.");
             }
