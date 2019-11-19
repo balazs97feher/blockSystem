@@ -52,6 +52,7 @@ namespace simulation
         private static Communication Instance = null;
         public SerialPort ControlPort;
         public SerialPort OccupationPort;
+        public string OccupationLastReceived; // last received data from occupation port
         public bool BoosterConnected; // is the software connected to the booster
 
         private Communication()
@@ -86,7 +87,8 @@ namespace simulation
 
         private void OccupationPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            PrintOccupationReceived((sender as SerialPort).ReadExisting());
+            OccupationLastReceived = (sender as SerialPort).ReadExisting();
+            PrintOccupationReceived(OccupationLastReceived);
         }
 
         public void SetControlPort(string PortName)

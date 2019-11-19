@@ -87,7 +87,12 @@ namespace simulation
                 SetInformation("Maximális sebesség: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
             }*/
 
-
+            if (Fecske.Block != TrainPreviousBlock)
+            {
+                FreeBlock(TrainPreviousBlock);
+                OccupyBlock(Fecske.Block);
+                TrainPreviousBlock = Fecske.Block;
+            }
             if (SetSpeed > Fecske.Speed) Fecske.ChangeSpeed(SetSpeed);
             else if (SetSpeed < Fecske.Speed) Fecske.ChangeSpeed(SetSpeed);
 
@@ -102,14 +107,8 @@ namespace simulation
 
         private void OccupationPort_DataReceived(object sender, SerialDataReceivedEventArgs e) // receive ID from Hall sensor,set the train's current position
         {
-            int HallId = Int32.Parse((sender as SerialPort).ReadExisting());
+            int HallId = Int32.Parse(Messenger.OccupationLastReceived);
             Fecske.Block = Layout.HallIdToBlockId(HallId);
-            if (Fecske.Block != TrainPreviousBlock)
-            {
-                FreeBlock(TrainPreviousBlock);
-                OccupyBlock(Fecske.Block);
-                TrainPreviousBlock = Fecske.Block;
-            }
         }
 
         /*public void Roll() ***** FUNCTION FOR SIMULATION PURPOSES *****
