@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.IO.Ports;
+using System.Threading;
 
 namespace simulation
 {
@@ -111,7 +112,14 @@ namespace simulation
         {
             if(Messenger.BoosterConnected==false)
             {
-                if (Messenger.BoosterConnect() == true) (sender as Button).Content = "Booster OFF";
+                if (Messenger.BoosterConnect() == true)
+                { // synchronize layout and hardware status
+                    (sender as Button).Content = "Booster OFF";
+                    Thread.Sleep(2000); // wait for power
+                    Controller.SetCWDirection(true);
+                    Controller.SetSpeed = 0;
+                    Control.SetInformation("Ellenőrizze a váltók állását a szoftverben és hardverben.");
+                }
                 else Control.SetInformation("Jelenleg nem lehet a Boosterhez csatlakozni.");
             }
             else

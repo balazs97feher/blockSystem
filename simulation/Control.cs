@@ -228,6 +228,11 @@ namespace simulation
             else SetInformation("Ez a váltó jelenleg nem állítható át.");
         }
 
+        public void SwitchRight(bool Straight)
+        {
+            if (Layout.RightSwitch.Straight != Straight) SwitchRight();
+        }
+
         public void SwitchLeft()
         {
             if ((Layout.Blocks[0].CWSignal.State == SignalState.Red && Layout.Blocks[1].CWSignal.State == SignalState.Red)
@@ -246,6 +251,11 @@ namespace simulation
                 else SetInformation("Ez a váltó jelenleg nem állítható át.");
             }
             else SetInformation("Ez a váltó jelenleg nem állítható át.");
+        }
+
+        public void SwitchLeft(bool Straight)
+        {
+            if (Layout.LeftSwitch.Straight != Straight) SwitchLeft();
         }
 
         public void SetCWDirection(bool IsCW)
