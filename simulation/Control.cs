@@ -75,8 +75,7 @@ namespace simulation
 
         private void Tick(object sender, EventArgs e)
         {
-            // ***** FOR SIMULATION PURPOSES *****
-            /*if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false))
+            if (SetSpeed > 0 && (Layout.DepartureConstraints(Fecske.Block) == false))
             {
                 SetSpeed = 0;
                 SetInformation("Indulás megtiltva. Ellenőrizze a váltók és a jelzők állását!");
@@ -84,20 +83,28 @@ namespace simulation
             else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed)
             {
                 SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
-                SetInformation("Maximális sebesség: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
-            }*/
+                SetInformation("Maximális sebesség következő szakaszon: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
+            }
 
             if (Fecske.Block != TrainPreviousBlock)
             {
+                // Fecske.ChangeSpeed(Layout.Blocks[TrainPreviousBlock].EOBSpeed);
+                SetSpeed = Layout.Blocks[TrainPreviousBlock].EOBSpeed;
                 FreeBlock(TrainPreviousBlock);
                 OccupyBlock(Fecske.Block);
                 TrainPreviousBlock = Fecske.Block;
             }
-            if (SetSpeed > Fecske.Speed) Fecske.ChangeSpeed(SetSpeed);
-            else if (SetSpeed < Fecske.Speed) Fecske.ChangeSpeed(SetSpeed);
+            if (SetSpeed > Fecske.Speed)
+            {
+                Fecske.Speed -= 2;
+                Fecske.ChangeSpeed(Fecske.Speed);
+            }
+            else if (SetSpeed < Fecske.Speed)
+            {
+                Fecske.Speed += 5;
+                Fecske.ChangeSpeed(Fecske.Speed);
+            }
 
-
-            //Roll(); ***** FOR SIMULATION PURPOSES *****
         }
 
         public void SubscribeToOccupationPort()
@@ -164,7 +171,7 @@ namespace simulation
 
         public void SetSignalRed() // sets the signal to red that the train has passed
         {
-            //TODO: call fcn when leaving block, ater: Fecske.Block <-> TrainPreviousBlock ?
+            //TODO: call fcn when leaving block, alter: Fecske.Block <-> TrainPreviousBlock ?
             if (Layout.DirectionCW == true && Layout.Blocks[Fecske.Block].CWSignal != null)
                 Layout.Blocks[Fecske.Block].CWSignal.SetState(SignalState.Red);
             else if (Layout.DirectionCW == false && Layout.Blocks[Fecske.Block].CCWSignal != null)
@@ -206,6 +213,11 @@ namespace simulation
         public void FreeBlock(int BlockId)
         {
             Layout.Blocks[BlockId].Free();
+        }
+
+        public void HighlightBlock(int BlockId)
+        {
+            Layout.Blocks[BlockId].Highlight();
         }
 
         public void SwitchRight()

@@ -34,5 +34,12 @@ namespace simulation
             Horizontal.SetState(TrackState.Default);
             Bottom.SetState(TrackState.Default);
         }
+
+        public override void Highlight()
+        {
+            S.SetState(TrackState.Highlighted);
+            Horizontal.SetState(TrackState.Highlighted);
+            if (S.Straight == false) Bottom.SetState(TrackState.Highlighted);
+        }
     }
 }

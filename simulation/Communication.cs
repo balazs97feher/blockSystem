@@ -79,7 +79,7 @@ namespace simulation
             OccupationPort.Open();
             if (OccupationPort.IsOpen == true)
             {
-                Control.SetInformation("bt ok");
+                Control.SetInformation("Sikeres kapcsolódás a foglaltság modulhoz.");
                 OccupationPort.DataReceived += OccupationPort_DataReceived;
             }
             else Control.SetInformation("bt nem ok");
@@ -99,6 +99,7 @@ namespace simulation
                 PortName = PortName
             };
             ControlPort.Open();
+            Control.SetInformation("Sikeres kapcsolódás a Boosterhez.");
             ControlPort.DataReceived += ControlPort_DataReceived;
         }
 

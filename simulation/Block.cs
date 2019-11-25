@@ -43,6 +43,11 @@ namespace simulation
             Tracks.ForEach(t => t.SetState(TrackState.Default));
         }
 
+        public virtual void Highlight()
+        {
+            Tracks.ForEach(t => t.SetState(TrackState.Highlighted));
+        }
+
         public virtual void Draw(Canvas Canvas)
         {
             Tracks.ForEach(t => t.Draw(Canvas));

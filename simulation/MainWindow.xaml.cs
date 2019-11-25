@@ -117,8 +117,8 @@ namespace simulation
                     (sender as Button).Content = "Booster OFF";
                     Thread.Sleep(2000); // wait for power
                     Controller.SetCWDirection(true);
-                    Controller.SetSpeed = 0;
-                    Control.SetInformation("Ellenőrizze a váltók állását a szoftverben és hardverben.");
+                    Messenger.SetSpeed(0);
+                    Control.SetInformation("Ellenőrizze a váltók állását és az induló vágányt a szoftverben és hardverben.");
                 }
                 else Control.SetInformation("Jelenleg nem lehet a Boosterhez csatlakozni.");
             }

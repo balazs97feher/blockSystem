@@ -50,7 +50,7 @@ namespace simulation
         public void SetState(SignalState s)
         {
             State = s;
-            //if (State == SignalState.Blank) Settable = false;
+            if (State == SignalState.Blank) Settable = false;
             Messenger.SetSignal(Id, State);
             Layout.UpdateBlockMaxSpeed(Id, State);
             Display.Update();
