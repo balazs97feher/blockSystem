@@ -85,6 +85,10 @@ namespace simulation
                 SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
                 SetInformation("Maximális sebesség következő szakaszon: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
             }
+            else if(Layout.ValidRoute==true)
+            {
+                SetSpeed= Layout.Blocks[Fecske.Block].EOBSpeed;
+            }
 
             if (Fecske.Block != TrainPreviousBlock)
             {
@@ -92,16 +96,17 @@ namespace simulation
                 SetSpeed = Layout.Blocks[TrainPreviousBlock].EOBSpeed;
                 FreeBlock(TrainPreviousBlock);
                 OccupyBlock(Fecske.Block);
+                SetSignalRed();
                 TrainPreviousBlock = Fecske.Block;
             }
-            if (SetSpeed > Fecske.Speed)
+            if (SetSpeed < Fecske.Speed)
             {
                 Fecske.Speed -= 2;
                 Fecske.ChangeSpeed(Fecske.Speed);
             }
-            else if (SetSpeed < Fecske.Speed)
+            else if (SetSpeed > Fecske.Speed)
             {
-                Fecske.Speed += 5;
+                Fecske.Speed += 1;
                 Fecske.ChangeSpeed(Fecske.Speed);
             }
 
@@ -171,11 +176,10 @@ namespace simulation
 
         public void SetSignalRed() // sets the signal to red that the train has passed
         {
-            //TODO: call fcn when leaving block, alter: Fecske.Block <-> TrainPreviousBlock ?
-            if (Layout.DirectionCW == true && Layout.Blocks[Fecske.Block].CWSignal != null)
-                Layout.Blocks[Fecske.Block].CWSignal.SetState(SignalState.Red);
-            else if (Layout.DirectionCW == false && Layout.Blocks[Fecske.Block].CCWSignal != null)
-                Layout.Blocks[Fecske.Block].CCWSignal.SetState(SignalState.Red);
+            if (Layout.DirectionCW == true && Layout.Blocks[TrainPreviousBlock].CWSignal != null)
+                Layout.Blocks[TrainPreviousBlock].CWSignal.SetState(SignalState.Red);
+            else if (Layout.DirectionCW == false && Layout.Blocks[TrainPreviousBlock].CCWSignal != null)
+                Layout.Blocks[TrainPreviousBlock].CCWSignal.SetState(SignalState.Red);
         }
 
         public void SetDeceleration() // sets the deceleration of the train according to its speed and the current block's speedlimit

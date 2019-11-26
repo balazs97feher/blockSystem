@@ -10,6 +10,7 @@ namespace simulation
         public Coordinates Coord;
         private Visual Display;
         private bool Clicked;
+        public bool Active; // is automatic mode turned on
         public int Id;
         private static int NextId = 0;
 
@@ -19,6 +20,7 @@ namespace simulation
             Coord.X = x;
             Coord.Y = y;
             Clicked = false;
+            Active = false;
             Display = new Visual(this, C);
             Display.Update();
         }
@@ -51,9 +53,13 @@ namespace simulation
 
             private void ButtonClicked(object sender, MouseButtonEventArgs e)
             {
-                B.Clicked = !B.Clicked;
-                Update();
-                Layout.ButtonClicked(B.Id, B.Clicked);
+                if (B.Active)
+                {
+                    B.Clicked = !B.Clicked;
+                    Update();
+                    Layout.ButtonClicked(B.Id, B.Clicked);
+                }
+                else Control.SetInformation("Automata térköz inaktív.");
             }
 
             public void Update()

@@ -14,6 +14,8 @@ namespace simulation
         static private Communication Messenger;
 
         // for the automatic control
+        static public bool Automatic = false;
+        static public bool ValidRoute = false;
         static private List<RButton> Buttons = new List<RButton>();
         static public int startButtonId = -1;
         static public int endButtonId = -1;
@@ -323,6 +325,21 @@ namespace simulation
             }
         }
 
+
+
+
+        static public void StartAutomatic()
+        {
+            Automatic = true;
+            Buttons.ForEach(b => b.Active = true);
+        }
+
+        static public void EndAutomatic()
+        {
+            Automatic = false;
+            Buttons.ForEach(b => b.Active = false);
+        }
+
         static public void ButtonClicked(int Id, bool active)
         {
             if (active == false)
@@ -345,6 +362,7 @@ namespace simulation
                             Blocks[4].Highlight();
                             Blocks[5].Highlight();
                         } // highlight route
+                        ValidRoute = true;
                     }
                     else if (startButtonId == 5 && endButtonId == 0 && DirectionCW == true) // 5 -> 0
                     {
@@ -353,6 +371,7 @@ namespace simulation
                             Blocks[6].Highlight();
                             Blocks[0].Highlight();
                         } // highlight route
+                        ValidRoute = true;
                     }
                     else if (startButtonId == 5 && endButtonId == 2 && DirectionCW == true) // 5 -> 2
                     {
@@ -361,6 +380,7 @@ namespace simulation
                             Blocks[6].Highlight();
                             Blocks[1].Highlight();
                         } // highlight route
+                        ValidRoute = true;
                     }
                     else if (startButtonId == 2 && endButtonId == 5 && DirectionCW == true) // 2 -> 5
                     {
@@ -371,6 +391,7 @@ namespace simulation
                             Blocks[4].Highlight();
                             Blocks[5].Highlight();
                         } // highlight route
+                        ValidRoute = true;
                     }
                     else if (startButtonId == 1 && endButtonId == 4 && DirectionCW == false) // 1 -> 4
                     {
@@ -381,6 +402,7 @@ namespace simulation
                             Blocks[4].Highlight();
                             Blocks[3].Highlight();
                         } // highlight route
+                        ValidRoute = true;
                     }
                     else if (startButtonId == 4 && endButtonId == 1 && DirectionCW == false) // 4 -> 1
                     {
@@ -389,6 +411,7 @@ namespace simulation
                             Blocks[0].Highlight();
                             Blocks[2].Highlight();
                         } // highlight route
+                        ValidRoute = true;
                     }
                     else if (startButtonId == 4 && endButtonId == 3 && DirectionCW == false) // 4 -> 3
                     {
@@ -397,6 +420,7 @@ namespace simulation
                             Blocks[1].Highlight();
                             Blocks[2].Highlight();
                         } // highlight route
+                        ValidRoute = true;
                     }
                     else if (startButtonId == 3 && endButtonId == 4 && DirectionCW == false) // 3 -> 4
                     {
@@ -407,6 +431,7 @@ namespace simulation
                             Blocks[4].Highlight();
                             Blocks[3].Highlight();
                         } // highlight route
+                        ValidRoute = true;
                     }
                     else
                     {
@@ -415,7 +440,7 @@ namespace simulation
                         startButtonId = -1;
                         Buttons[endButtonId].Reset();
                         endButtonId = -1;
-                    }
+                    } // invalid route
                 }
             }
         }

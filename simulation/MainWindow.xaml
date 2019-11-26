@@ -56,6 +56,9 @@
         <TextBlock x:Name="OccupationReceivedData" Canvas.Left="1179" TextWrapping="Wrap" Text="{Binding OccupationReceived}" Canvas.Top="742" Height="26" Width="244" Background="Green" FontSize="22" Foreground="LightGray"/>
 
         <Button Content="Booster ON" Canvas.Left="1175" Canvas.Top="582" Width="96" Height="32" Click="BoosterOnOff"  FontSize="16"/>
+        
+        <Label Content="Automatikus térköz" Canvas.Top="482" Canvas.Bottom="20" FontSize="28" Canvas.Left="1171"/>
+        <Button Content="Inaktív" Canvas.Left="1175" Canvas.Top="529" Width="100" Height="32" Click="AutomaticBlocks" FontSize="16"/>
 
 
 

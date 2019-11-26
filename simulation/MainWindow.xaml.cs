@@ -128,5 +128,19 @@ namespace simulation
                 (sender as Button).Content = "Booster ON";
             }
         }
+
+        private void AutomaticBlocks(object sender, RoutedEventArgs e)
+        {
+            if(Layout.Automatic==false)
+            {
+                Layout.StartAutomatic();
+                (sender as Button).Content = "Aktív";
+            }
+            else
+            {
+                Layout.EndAutomatic();
+                (sender as Button).Content = "Inaktív";
+            }
+        }
     }
 }
