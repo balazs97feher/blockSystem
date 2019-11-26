@@ -47,6 +47,11 @@ namespace simulation
             else return false;
         }
 
+        public void DoSwitch(bool straight)
+        {
+            if (Straight != straight) DoSwitch();
+        }
+
         public override void Draw(Canvas Canvas)
         {
             base.Draw(Canvas);

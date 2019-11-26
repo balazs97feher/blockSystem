@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("3l_blank.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("button_clicked2.png")]
 
 

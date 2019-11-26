@@ -13,6 +13,11 @@ namespace simulation
         static private bool Initialized = false;
         static private Communication Messenger;
 
+        // for the automatic control
+        static private List<RButton> Buttons = new List<RButton>();
+        static public int startButtonId = -1;
+        static public int endButtonId = -1;
+
 
         static public void Initialize(Canvas C, Communication M)
         {
@@ -106,6 +111,14 @@ namespace simulation
             B_6.Bottom = new StraightTrack(x, y, TrackOrientation.BottomLeft);
             Blocks.Add(B_6);
 
+            // ***************** Add buttons *****************
+            Buttons.Add(new RButton(525, 285, Canvas));
+            Buttons.Add(new RButton(885, 285, Canvas));
+            Buttons.Add(new RButton(525, 405, Canvas));
+            Buttons.Add(new RButton(885, 405, Canvas));
+            Buttons.Add(new RButton(165, 405, Canvas));
+            Buttons.Add(new RButton(1245, 405, Canvas));
+
             Initialized = true;
         }
 
@@ -113,6 +126,7 @@ namespace simulation
         {
             DrawBackground(12, 4);
             Blocks.ForEach(b => b.Draw(Canvas));
+            Buttons.ForEach(b => b.Draw(Canvas));
         }
 
         static private void DrawBackground(int N, int M) // draws a NxM grid as background
@@ -308,6 +322,105 @@ namespace simulation
 
             }
         }
+
+        static public void ButtonClicked(int Id, bool active)
+        {
+            if (active == false)
+            {
+                startButtonId = -1;
+                endButtonId = -1;
+            }
+            else
+            {
+                if (startButtonId == -1) startButtonId = Id;
+                else
+                {
+                    endButtonId = Id;
+                    if(startButtonId==0 && endButtonId== 5 && DirectionCW == true) // 0 -> 5
+                    {
+                        LeftSwitch.DoSwitch(false); // set left switch diverging
+                        {
+                            Blocks[2].Highlight();
+                            Blocks[3].Highlight();
+                            Blocks[4].Highlight();
+                            Blocks[5].Highlight();
+                        } // highlight route
+                    }
+                    else if (startButtonId == 5 && endButtonId == 0 && DirectionCW == true) // 5 -> 0
+                    {
+                        RightSwitch.DoSwitch(false); // set right switch diverging
+                        {
+                            Blocks[6].Highlight();
+                            Blocks[0].Highlight();
+                        } // highlight route
+                    }
+                    else if (startButtonId == 5 && endButtonId == 2 && DirectionCW == true) // 5 -> 2
+                    {
+                        RightSwitch.DoSwitch(true); // set right switch straight
+                        {
+                            Blocks[6].Highlight();
+                            Blocks[1].Highlight();
+                        } // highlight route
+                    }
+                    else if (startButtonId == 2 && endButtonId == 5 && DirectionCW == true) // 2 -> 5
+                    {
+                        LeftSwitch.DoSwitch(true); // set right switch straight
+                        {
+                            Blocks[2].Highlight();
+                            Blocks[3].Highlight();
+                            Blocks[4].Highlight();
+                            Blocks[5].Highlight();
+                        } // highlight route
+                    }
+                    else if (startButtonId == 1 && endButtonId == 4 && DirectionCW == false) // 1 -> 4
+                    {
+                        RightSwitch.DoSwitch(false); // set right switch diverging
+                        {
+                            Blocks[6].Highlight();
+                            Blocks[5].Highlight();
+                            Blocks[4].Highlight();
+                            Blocks[3].Highlight();
+                        } // highlight route
+                    }
+                    else if (startButtonId == 4 && endButtonId == 1 && DirectionCW == false) // 4 -> 1
+                    {
+                        LeftSwitch.DoSwitch(false); // set left switch diverging
+                        {
+                            Blocks[0].Highlight();
+                            Blocks[2].Highlight();
+                        } // highlight route
+                    }
+                    else if (startButtonId == 4 && endButtonId == 3 && DirectionCW == false) // 4 -> 3
+                    {
+                        LeftSwitch.DoSwitch(true); // set left switch straight
+                        {
+                            Blocks[1].Highlight();
+                            Blocks[2].Highlight();
+                        } // highlight route
+                    }
+                    else if (startButtonId == 3 && endButtonId == 4 && DirectionCW == false) // 3 -> 4
+                    {
+                        RightSwitch.DoSwitch(true); // set right switch straight
+                        {
+                            Blocks[6].Highlight();
+                            Blocks[5].Highlight();
+                            Blocks[4].Highlight();
+                            Blocks[3].Highlight();
+                        } // highlight route
+                    }
+                    else
+                    {
+                        Control.SetInformation("Érvénytelen menet.");
+                        Buttons[startButtonId].Reset();
+                        startButtonId = -1;
+                        Buttons[endButtonId].Reset();
+                        endButtonId = -1;
+                    }
+                }
+            }
+        }
+
+
 
     }
 }

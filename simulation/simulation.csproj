@@ -59,6 +59,7 @@
     <Compile Include="Communication.cs" />
     <Compile Include="Control.cs" />
     <Compile Include="Layout.cs" />
+    <Compile Include="RButton.cs" />
     <Compile Include="Signal.cs" />
     <Compile Include="StraightTrack.cs" />
     <Compile Include="Switch.cs" />
@@ -117,6 +118,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="3l_blank.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="button_clicked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="button_clicked2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
