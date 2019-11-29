@@ -69,7 +69,7 @@ namespace simulation
         {
             Timer = new System.Windows.Threading.DispatcherTimer();
             Timer.Tick += new EventHandler(Tick);
-            Timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            Timer.Interval = new TimeSpan(0, 0, 0, 0, 200);
             Timer.Start();
         }
 
@@ -80,7 +80,7 @@ namespace simulation
                 SetSpeed = 0;
                 SetInformation("Indulás megtiltva. Ellenőrizze a váltók és a jelzők állását!");
             }
-            else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed)
+            else if (SetSpeed > Layout.Blocks[Fecske.Block].EOBSpeed) // for automatic control
             {
                 SetSpeed = Layout.Blocks[Fecske.Block].EOBSpeed;
                 SetInformation("Maximális sebesség következő szakaszon: " + Layout.Blocks[Fecske.Block].EOBSpeed.ToString() + " km/h");
@@ -93,20 +93,23 @@ namespace simulation
             if (Fecske.Block != TrainPreviousBlock)
             {
                 // Fecske.ChangeSpeed(Layout.Blocks[TrainPreviousBlock].EOBSpeed);
-                SetSpeed = Layout.Blocks[TrainPreviousBlock].EOBSpeed;
+                if (Layout.ValidRoute == true) SetSpeed = Layout.Blocks[TrainPreviousBlock].EOBSpeed;
                 FreeBlock(TrainPreviousBlock);
                 OccupyBlock(Fecske.Block);
                 SetSignalRed();
+                Fecske.setDeceleration();
                 TrainPreviousBlock = Fecske.Block;
             }
             if (SetSpeed < Fecske.Speed)
             {
-                Fecske.Speed -= 2;
-                Fecske.ChangeSpeed(Fecske.Speed);
+                /*if (Fecske.Speed > 40) Fecske.Speed -= 1;
+                else Fecske.Speed -= 2;
+                Fecske.ChangeSpeed(Fecske.Speed);*/
+                Fecske.Break();
             }
             else if (SetSpeed > Fecske.Speed)
             {
-                Fecske.Speed += 1;
+                Fecske.Speed += 2;
                 Fecske.ChangeSpeed(Fecske.Speed);
             }
 

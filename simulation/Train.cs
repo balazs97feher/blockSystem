@@ -63,5 +63,32 @@ namespace simulation
             else Speed = 0;
         }*/
 
+        private double a = 0.5;
+        private static double DoubleSpeed = 0;
+        public void setDeceleration()
+        {
+            DoubleSpeed = Speed;
+            if (Block == 5 || Block == 3)
+            {
+                if (Speed > 50) a = 2.3;
+                else a = 0.4;
+            }
+            else if (Block == 0) a = 1.8;
+            else a = 1.5;
+        }
+
+
+        public void Break()
+        {
+            if ((Block == 5 || Block == 3))
+            {
+                if (Speed > 20) DoubleSpeed -= a;
+                else DoubleSpeed -= 2;
+            }
+            else DoubleSpeed -= a;
+            Speed = (int)DoubleSpeed;
+            ChangeSpeed(Speed);
+        }
+
     }
 }
